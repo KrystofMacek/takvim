@@ -1,0 +1,69 @@
+{
+  "project_info": {
+    "project_number": "734647730920",
+    "firebase_url": "https://takvim-ch-default-rtdb.europe-west1.firebasedatabase.app",
+    "project_id": "takvim-ch",
+    "storage_bucket": "takvim-ch.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:734647730920:android:34402bec67bc143c6b3f5d",
+        "android_client_info": {
+          "package_name": "ch.takvim.brew_crew"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "734647730920-020hsnofmncachj9qsoav62qcqko7l5u.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDztCpFrA5jKwjh8gKhZ8DeWFYKB8UqfNQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "734647730920-020hsnofmncachj9qsoav62qcqko7l5u.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:734647730920:android:938b539a516621e16b3f5d",
+        "android_client_info": {
+          "package_name": "dev.oneblue.takvim"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "734647730920-020hsnofmncachj9qsoav62qcqko7l5u.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDztCpFrA5jKwjh8gKhZ8DeWFYKB8UqfNQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "734647730920-020hsnofmncachj9qsoav62qcqko7l5u.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
