@@ -3,9 +3,7 @@ import 'dart:convert';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter_riverpod/all.dart';
 import 'package:hive/hive.dart';
-import 'package:takvim/data/models/day_data.dart';
 import 'package:takvim/data/models/mosque_data.dart';
-import 'package:takvim/providers/date_provider.dart';
 
 final selectedMosque = StateNotifierProvider<SelectedMosque>((ref) {
   return SelectedMosque();
@@ -82,15 +80,14 @@ class MosqueController extends StateNotifier<MosqueController> {
     return mosqueData;
   }
 
-  Future<DayData> getPrayersForDate(String date) async {
-    final ref = await _databaseReference
+  Stream<Event> getPrayersForDate(String date) {
+    final Stream<Event> ref = _databaseReference
         .child('prayerTimes')
         .child(_selectedMosque.state)
         .child(date)
-        .once();
+        .onValue;
 
-    print('date ${ref.value}');
-    return DayData.fromFirebase(ref.value);
+    return ref;
   }
 }
 

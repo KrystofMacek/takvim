@@ -7,6 +7,7 @@ import 'package:takvim/data/models/mosque_data.dart';
 import 'package:takvim/providers/date_provider.dart';
 import 'package:takvim/providers/language_provider.dart';
 import 'package:takvim/providers/mosque_provider.dart';
+import 'package:firebase_database/firebase_database.dart';
 
 class HomePage extends ConsumerWidget {
   @override
@@ -170,16 +171,18 @@ class HomePage extends ConsumerWidget {
                                   ),
                                 ],
                               ),
-                              FutureBuilder<DayData>(
-                                future: _mosqueController.getPrayersForDate(
+                              StreamBuilder<Event>(
+                                stream: _mosqueController.getPrayersForDate(
                                   _selectedDate.getDateId(),
                                 ),
-                                builder: (
-                                  BuildContext context,
-                                  AsyncSnapshot<DayData> snapshot,
-                                ) {
-                                  if (snapshot.hasData) {
-                                    DayData data = snapshot.data;
+                                builder: (BuildContext context,
+                                    AsyncSnapshot<Event> snapshot) {
+                                  if (snapshot.hasData &&
+                                      !snapshot.hasError &&
+                                      snapshot.data.snapshot.value != null) {
+                                    DayData data = DayData.fromFirebase(
+                                        snapshot.data.snapshot.value);
+
                                     return Expanded(
                                       child: Column(
                                         children: [
@@ -280,6 +283,17 @@ class HomePage extends ConsumerWidget {
                                   }
                                 },
                               ),
+                              // FutureBuilder<DayData>(
+                              //   future: _mosqueController.getPrayersForDate(
+                              //     _selectedDate.getDateId(),
+                              //   ),
+                              //   builder: (
+                              //     BuildContext context,
+                              //     AsyncSnapshot<DayData> snapshot,
+                              //   ) {
+
+                              //   },
+                              // ),
                             ],
                           ),
                         );

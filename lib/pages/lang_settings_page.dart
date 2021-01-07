@@ -35,12 +35,9 @@ class LangSettingsPage extends ConsumerWidget {
         onPressed: () {
           final prefBox = Hive.box('pref');
 
-          String appLang = prefBox.get('appLang');
-          String prayerLang = prefBox.get('prayerLang');
-          String mosque = prefBox.get('mosque');
-
-          print('BOX lang: $appLang $prayerLang $mosque');
-          if (_mosq == null) {
+          bool firstOpen = prefBox.get('firstOpen');
+          print('firstopen lang : $firstOpen');
+          if (firstOpen) {
             Navigator.pushNamed(context, '/mosque');
           } else {
             Navigator.pushNamed(context, '/home');

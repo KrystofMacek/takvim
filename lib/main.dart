@@ -24,8 +24,7 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  bool langPrefSet = false;
-  bool mosquePrefSet = false;
+  bool firstOpen = false;
   @override
   void initState() {
     super.initState();
@@ -37,19 +36,16 @@ class _MyAppState extends State<MyApp> {
 
     print('BOX main: $appLang $prayerLang $mosque');
 
-    if (appLang != null && prayerLang != null) {
-      langPrefSet = true;
+    if (appLang == null && prayerLang == null && mosque == null) {
+      firstOpen = true;
     }
-    if (mosque != null) {
-      mosquePrefSet = true;
-    }
+    print('BOX main: $firstOpen');
+    prefBox.put('firstOpen', firstOpen);
   }
 
   String _getInitialRoute() {
-    if (!langPrefSet) {
+    if (firstOpen) {
       return '/lang';
-    } else if (!mosquePrefSet) {
-      return '/mosque';
     } else {
       return '/home';
     }
