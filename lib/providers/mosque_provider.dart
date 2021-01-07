@@ -12,6 +12,8 @@ final selectedMosque = StateNotifierProvider<SelectedMosque>((ref) {
 class SelectedMosque extends StateNotifier<String> {
   SelectedMosque() : super(null);
 
+  String getSelectedMosqueId() => state;
+
   void updateSelectedMosque(String id) {
     final Box _prefBox = Hive.box('pref');
     _prefBox.put('mosque', id);
@@ -19,28 +21,59 @@ class SelectedMosque extends StateNotifier<String> {
   }
 }
 
+final mosqueList = StateNotifierProvider<MosqueList>((ref) {
+  return MosqueList();
+});
+
+class MosqueList extends StateNotifier<List<MosqueData>> {
+  MosqueList() : super([]);
+
+  void updateList(List<MosqueData> data) {
+    state = data;
+  }
+}
+
+final filteredMosqueList = StateNotifierProvider<FilteredMosqueList>((ref) {
+  return FilteredMosqueList();
+});
+
+class FilteredMosqueList extends StateNotifier<List<MosqueData>> {
+  FilteredMosqueList() : super([]);
+
+  void updateList(List<MosqueData> data) {
+    state = data;
+  }
+}
+
 final mosqueController = StateNotifierProvider<MosqueController>((ref) {
   SelectedMosque _selectedMosque = ref.watch(selectedMosque);
-  ListOfMosques _listOfMosques = ref.watch(listOfMosques);
+  MosqueList _listOfMosques = ref.watch(mosqueList);
+  FilteredMosqueList _filteredMosqueList = ref.watch(filteredMosqueList);
   return MosqueController(
     FirebaseDatabase.instance.reference(),
     _selectedMosque,
     _listOfMosques,
+    _filteredMosqueList,
   );
 });
 
 class MosqueController extends StateNotifier<MosqueController> {
   MosqueController(
-      this._databaseReference, this._selectedMosque, this._listOfMosques)
-      : super(null);
+    this._databaseReference,
+    this._selectedMosque,
+    this._mosqueList,
+    this._filteredMosqueList,
+  ) : super(null);
 
   final SelectedMosque _selectedMosque;
-  final ListOfMosques _listOfMosques;
+  final MosqueList _mosqueList;
+  final FilteredMosqueList _filteredMosqueList;
   final DatabaseReference _databaseReference;
 
   final Box _prefBox = Hive.box('pref');
 
   Future<List<MosqueData>> getListOfMosques() async {
+    print('getListOFMosques');
     List<MosqueData> mosques = [];
     final DataSnapshot ref =
         await _databaseReference.child('mosques').orderByChild('Name').once();
@@ -54,7 +87,25 @@ class MosqueController extends StateNotifier<MosqueController> {
       );
     }
 
+    _mosqueList.updateList(mosques);
+    _filteredMosqueList.updateList(mosques);
+
     return mosques;
+  }
+
+  void filterMosqueList(String key) {
+    List<MosqueData> fullList = _mosqueList.state;
+    _filteredMosqueList.updateList(
+      fullList
+          .where(
+            //check name
+            (mosque) =>
+                (mosque.name.toLowerCase().contains(key.toLowerCase()) ||
+                    mosque.kanton.toLowerCase().contains(key.toLowerCase()) ||
+                    mosque.ort.toLowerCase().contains(key.toLowerCase())),
+          )
+          .toList(),
+    );
   }
 
   Future<MosqueData> getSelectedMosque(String selectedMosque) async {
@@ -88,17 +139,5 @@ class MosqueController extends StateNotifier<MosqueController> {
         .onValue;
 
     return ref;
-  }
-}
-
-final listOfMosques = StateNotifierProvider<ListOfMosques>((ref) {
-  return ListOfMosques();
-});
-
-class ListOfMosques extends StateNotifier<List<MosqueData>> {
-  ListOfMosques() : super([]);
-
-  void updateList(List<MosqueData> data) {
-    state = data;
   }
 }

@@ -1,5 +1,7 @@
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter_riverpod/all.dart';
 import 'package:intl/intl.dart';
+import 'package:takvim/data/models/dateBounds.dart';
 import 'package:takvim/data/models/language_pack.dart';
 
 final selectedDate = StateNotifierProvider<SelectedDate>((ref) {
@@ -8,6 +10,15 @@ final selectedDate = StateNotifierProvider<SelectedDate>((ref) {
 
 class SelectedDate extends StateNotifier<DateTime> {
   SelectedDate() : super(DateTime.now());
+
+  DatabaseReference db = FirebaseDatabase.instance.reference();
+
+  Future<DateBounds> getDateBounds() async {
+    final DataSnapshot ref = await db.child('dateBounds').once();
+    DateBounds bounds = DateBounds.fromFirebase(ref.value);
+
+    return bounds;
+  }
 
   void updateSelectedDate(DateTime date) {
     state = date;

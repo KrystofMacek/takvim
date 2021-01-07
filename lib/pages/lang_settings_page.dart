@@ -6,12 +6,13 @@ import 'package:takvim/data/models/language_pack.dart';
 import 'package:takvim/providers/language_provider.dart';
 import 'package:takvim/providers/mosque_provider.dart';
 import '../common/constants.dart';
+import '../common/styling.dart';
 
 class LangSettingsPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, ScopedReader watch) {
     final LanguagePack _appLang = watch(appLanguagePackProvider.state);
-    final LanguagePack _prayerLang = watch(prayerLanguagePackProvider.state);
+    // final LanguagePack _prayerLang = watch(prayerLanguagePackProvider.state);
     final LanguagePackController _langPackController = watch(
       languagePackController,
     );
@@ -21,11 +22,15 @@ class LangSettingsPage extends ConsumerWidget {
     if (_appLang == null) {
       _langPackController.updateAppLanguage();
     }
-    if (_prayerLang == null) {
-      _langPackController.updatePrayerLanguage();
-    }
+    // if (_prayerLang == null) {
+    //   _langPackController.updatePrayerLanguage();
+    // }
 
     return Scaffold(
+      appBar: AppBar(
+        automaticallyImplyLeading: false,
+        title: Center(child: Text('${_appLang.select} ${_appLang.language}')),
+      ),
       floatingActionButton: FloatingActionButton(
         child: Icon(
           Icons.check,
@@ -34,6 +39,9 @@ class LangSettingsPage extends ConsumerWidget {
         backgroundColor: Colors.blue,
         onPressed: () {
           final prefBox = Hive.box('pref');
+
+          String code = LANG_MAP[_appLang.name];
+          prefBox.put('appLang', code);
 
           bool firstOpen = prefBox.get('firstOpen');
           print('firstopen lang : $firstOpen');
@@ -49,82 +57,29 @@ class LangSettingsPage extends ConsumerWidget {
           future: _langPackController.getPacks(),
           builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
             if (snapshot.hasData) {
-              String prayerLanFlag = FLAG_MAP[_prayerLang.name];
-              String appLanFlag = FLAG_MAP[_appLang.name];
-
               return Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text('${_appLang.app} ${_appLang.language}'),
-                  Container(
-                    padding: EdgeInsets.all(10),
-                    child: Flag(
-                      appLanFlag,
-                      height: 30,
-                      width: 40,
-                    ),
-                  ),
-                  Text('${_appLang.name}'),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      DropdownButton<String>(
-                        value: _appLang.name,
-                        iconSize: 24,
-                        elevation: 16,
-                        style: TextStyle(color: Colors.blue),
-                        onChanged: (String newValue) {
-                          String code = LANG_MAP[newValue];
-                          Hive.box('pref').put('appLang', code);
-                          print(Hive.box('pref').get('appLang'));
-                          _langPackController.updateAppLanguage();
-                        },
-                        items: LANGUAGES
-                            .map<DropdownMenuItem<String>>((String value) {
-                          return DropdownMenuItem<String>(
-                            value: value,
-                            child: Text(value),
-                          );
-                        }).toList(),
+                  Expanded(
+                    child: ListView.separated(
+                      itemCount: LANGUAGES.length,
+                      separatorBuilder: (context, index) => SizedBox(
+                        height: 10,
                       ),
-                    ],
-                  ),
-                  SizedBox(
-                    height: 50,
-                  ),
-                  Text('${_appLang.takvim} ${_appLang.language}'),
-                  Container(
-                    padding: EdgeInsets.all(10),
-                    child: Flag(
-                      prayerLanFlag,
-                      height: 30,
-                      width: 40,
+                      itemBuilder: (context, index) {
+                        bool isSelected = false;
+                        if (_appLang.name == LANGUAGES[index]) {
+                          isSelected = true;
+                        }
+                        String flag = FLAG_MAP[LANGUAGES[index]];
+                        return LanguageItem(
+                          langPackController: _langPackController,
+                          flag: flag,
+                          index: index,
+                          isSelected: isSelected,
+                        );
+                      },
                     ),
-                  ),
-                  Text('${_prayerLang.name}'),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      DropdownButton<String>(
-                        value: _prayerLang.name,
-                        iconSize: 24,
-                        elevation: 16,
-                        style: TextStyle(color: Colors.blue),
-                        onChanged: (String newValue) {
-                          String code = LANG_MAP[newValue];
-                          Hive.box('pref').put('prayerLang', code);
-                          print(Hive.box('pref').get('prayerLang'));
-                          _langPackController.updatePrayerLanguage();
-                        },
-                        items: LANGUAGES
-                            .map<DropdownMenuItem<String>>((String value) {
-                          return DropdownMenuItem<String>(
-                            value: value,
-                            child: Text(value),
-                          );
-                        }).toList(),
-                      ),
-                    ],
                   ),
                 ],
               );
@@ -135,5 +90,99 @@ class LangSettingsPage extends ConsumerWidget {
         ),
       ),
     );
+  }
+}
+
+class LanguageItem extends StatelessWidget {
+  const LanguageItem({
+    Key key,
+    @required LanguagePackController langPackController,
+    @required this.flag,
+    @required this.index,
+    @required this.isSelected,
+  })  : _langPackController = langPackController,
+        super(key: key);
+
+  final LanguagePackController _langPackController;
+  final String flag;
+  final int index;
+  final bool isSelected;
+
+  @override
+  Widget build(BuildContext context) {
+    if (isSelected) {
+      return GestureDetector(
+        onTap: () {
+          String code = LANG_MAP[LANGUAGES[index]];
+          Hive.box('pref').put('appLang', code);
+          _langPackController.updateAppLanguage();
+        },
+        child: Card(
+          color: Colors.blue[100],
+          child: Container(
+            padding: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              mainAxisSize: MainAxisSize.max,
+              children: [
+                Container(
+                  padding: EdgeInsets.all(10),
+                  child: Flag(
+                    flag,
+                    height: 30,
+                    width: 40,
+                  ),
+                ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      '${LANGUAGES[index]}',
+                      style: CustomTextFonts.contentText,
+                    ),
+                  ],
+                )
+              ],
+            ),
+          ),
+        ),
+      );
+    } else {
+      return GestureDetector(
+        onTap: () {
+          String code = LANG_MAP[LANGUAGES[index]];
+          Hive.box('pref').put('appLang', code);
+          _langPackController.updateAppLanguage();
+        },
+        child: Card(
+          child: Container(
+            padding: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              mainAxisSize: MainAxisSize.max,
+              children: [
+                Container(
+                  padding: EdgeInsets.all(10),
+                  child: Flag(
+                    flag,
+                    height: 30,
+                    width: 40,
+                  ),
+                ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      '${LANGUAGES[index]}',
+                      style: CustomTextFonts.contentText,
+                    ),
+                  ],
+                )
+              ],
+            ),
+          ),
+        ),
+      );
+    }
   }
 }

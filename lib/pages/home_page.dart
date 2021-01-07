@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/all.dart';
 import 'package:takvim/common/constants.dart';
+import 'package:takvim/data/models/dateBounds.dart';
 import 'package:takvim/data/models/day_data.dart';
 import 'package:takvim/data/models/language_pack.dart';
 import 'package:takvim/data/models/mosque_data.dart';
@@ -8,12 +9,13 @@ import 'package:takvim/providers/date_provider.dart';
 import 'package:takvim/providers/language_provider.dart';
 import 'package:takvim/providers/mosque_provider.dart';
 import 'package:firebase_database/firebase_database.dart';
+import '../common/styling.dart';
 
 class HomePage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, ScopedReader watch) {
     final LanguagePack _appLang = watch(appLanguagePackProvider.state);
-    final LanguagePack _prayerLang = watch(prayerLanguagePackProvider.state);
+    // final LanguagePack _prayerLang = watch(prayerLanguagePackProvider.state);
     final String _selectedMosque = watch(selectedMosque.state);
     final LanguagePackController _langPackController = watch(
       languagePackController,
@@ -21,27 +23,15 @@ class HomePage extends ConsumerWidget {
     if (_appLang == null) {
       _langPackController.updateAppLanguage();
     }
-    if (_prayerLang == null) {
-      _langPackController.updatePrayerLanguage();
-    }
+    // if (_prayerLang == null) {
+    //   _langPackController.updatePrayerLanguage();
+    // }
 
     final SelectedDate _selectedDate = watch(selectedDate);
 
     final MosqueController _mosqueController = watch(
       mosqueController,
     );
-
-    void _settingsMenuItemSelected(String choice) {
-      switch (choice) {
-        case LANG_SETTINGS:
-          Navigator.pushNamed(context, '/lang');
-          break;
-        case MOSQUE_SETTINGS:
-          Navigator.pushNamed(context, '/mosque');
-          break;
-        default:
-      }
-    }
 
     return Scaffold(
       body: Container(
@@ -54,61 +44,10 @@ class HomePage extends ConsumerWidget {
                 return Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        PopupMenuButton<String>(
-                          onSelected: _settingsMenuItemSelected,
-                          icon: Icon(Icons.settings),
-                          itemBuilder: (context) {
-                            return [LANG_SETTINGS, MOSQUE_SETTINGS].map(
-                              (String choice) {
-                                switch (choice) {
-                                  case LANG_SETTINGS:
-                                    return PopupMenuItem(
-                                      value: choice,
-                                      child: Text('${_appLang.language}'),
-                                    );
-                                    break;
-                                  case MOSQUE_SETTINGS:
-                                    return PopupMenuItem(
-                                      value: choice,
-                                      child: Text('${_appLang.mosque}'),
-                                    );
-                                    break;
-                                  default:
-                                }
-                              },
-                            ).toList();
-                          },
-                        ),
-                      ],
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        FutureBuilder<MosqueData>(
-                          future: _mosqueController
-                              .getSelectedMosque(_selectedMosque),
-                          builder: (BuildContext context,
-                              AsyncSnapshot<MosqueData> snapshot) {
-                            if (snapshot.hasData) {
-                              return Column(
-                                children: [
-                                  Text('${snapshot.data.name}'),
-                                  Text(
-                                      '${snapshot.data.ort} ${snapshot.data.kanton}'),
-                                ],
-                              );
-                            } else {
-                              return Center(
-                                child: CircularProgressIndicator(),
-                              );
-                            }
-                          },
-                        ),
-                      ],
-                    ),
+                    SettingBtnView(appLang: _appLang),
+                    SelectedMosqueView(
+                        mosqueController: _mosqueController,
+                        selectedMosque: _selectedMosque),
                     Consumer(
                       builder: (context, watch, child) {
                         watch(selectedDate.state);
@@ -116,61 +55,10 @@ class HomePage extends ConsumerWidget {
                         return Expanded(
                           child: Column(
                             children: [
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  IconButton(
-                                    icon: Icon(Icons.calendar_today),
-                                    onPressed: () async {
-                                      DateTime firstDate = DateTime(
-                                          DateTime.now().year,
-                                          DateTime.january,
-                                          1);
-                                      DateTime lastDate = DateTime(
-                                          DateTime.now().year + 1,
-                                          DateTime.january,
-                                          0);
-                                      final DateTime picked =
-                                          await showDatePicker(
-                                        context: context,
-                                        initialDate: DateTime.now(),
-                                        firstDate: firstDate,
-                                        lastDate: lastDate,
-                                      );
-                                      if (picked != null) {
-                                        _selectedDate
-                                            .updateSelectedDate(picked);
-                                      }
-                                    },
-                                  ),
-                                ],
-                              ),
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceEvenly,
-                                children: [
-                                  IconButton(
-                                    icon: Icon(Icons.arrow_back),
-                                    onPressed: () {
-                                      _selectedDate.subsOneDay();
-                                    },
-                                  ),
-                                  Column(
-                                    children: [
-                                      Text(
-                                          '${_selectedDate.getDateFormatted()}'),
-                                      Text(
-                                          '${_selectedDate.getDayOfTheWeek(_appLang)}'),
-                                    ],
-                                  ),
-                                  IconButton(
-                                    icon: Icon(Icons.arrow_forward),
-                                    onPressed: () {
-                                      _selectedDate.addOneDay();
-                                    },
-                                  ),
-                                ],
-                              ),
+                              CalendarDayPicker(selectedDate: _selectedDate),
+                              DateSelectorRow(
+                                  selectedDate: _selectedDate,
+                                  appLang: _appLang),
                               StreamBuilder<Event>(
                                 stream: _mosqueController.getPrayersForDate(
                                   _selectedDate.getDateId(),
@@ -183,117 +71,82 @@ class HomePage extends ConsumerWidget {
                                     DayData data = DayData.fromFirebase(
                                         snapshot.data.snapshot.value);
 
-                                    return Expanded(
-                                      child: Column(
-                                        children: [
-                                          Expanded(
-                                            child: ListView.separated(
-                                              shrinkWrap: true,
-                                              itemCount: PRAYER_TIMES.length,
-                                              itemBuilder: (context, index) {
-                                                Map<String, String> dataMap =
-                                                    _getTimeName(index,
-                                                        _prayerLang, data);
+                                    String isha =
+                                        data.isha.replaceFirst(":", "");
+                                    String ishaTime =
+                                        data.ishaTime.replaceFirst(":", "");
+                                    print('replacing : $isha $ishaTime');
 
-                                                bool minor = false;
+                                    bool skipIshaTime = false;
 
-                                                if (index == 0 ||
-                                                    index == 2 ||
-                                                    index == 6) {
-                                                  minor = true;
-                                                }
-                                                if (!minor) {
-                                                  return Card(
-                                                    child: Container(
-                                                      padding:
-                                                          EdgeInsets.symmetric(
-                                                              vertical: 5,
-                                                              horizontal: 10),
-                                                      child: Row(
-                                                        mainAxisAlignment:
-                                                            MainAxisAlignment
-                                                                .spaceBetween,
-                                                        children: [
-                                                          Text(
-                                                            '${dataMap['name']}',
-                                                            style: TextStyle(
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .bold),
-                                                          ),
-                                                          Text(
-                                                            '${dataMap['time']}',
-                                                            style: TextStyle(
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .bold),
-                                                          ),
-                                                        ],
-                                                      ),
-                                                    ),
-                                                  );
-                                                } else {
-                                                  return Card(
-                                                    child: Container(
-                                                      padding:
-                                                          EdgeInsets.symmetric(
-                                                              vertical: 5,
-                                                              horizontal: 10),
-                                                      child: Row(
-                                                        mainAxisAlignment:
-                                                            MainAxisAlignment
-                                                                .spaceBetween,
-                                                        children: [
-                                                          Text(
-                                                            '${dataMap['name']}',
-                                                            style: TextStyle(
-                                                                fontStyle:
-                                                                    FontStyle
-                                                                        .italic),
-                                                          ),
-                                                          Text(
-                                                            '${dataMap['time']}',
-                                                            style: TextStyle(
-                                                                fontStyle:
-                                                                    FontStyle
-                                                                        .italic),
-                                                          ),
-                                                        ],
-                                                      ),
-                                                    ),
-                                                  );
-                                                }
-                                              },
-                                              separatorBuilder:
-                                                  (context, index) => SizedBox(
-                                                height: 10,
-                                              ),
-                                            ),
+                                    if (int.tryParse(ishaTime) >=
+                                        int.tryParse(isha)) {
+                                      print('swap = true');
+                                      skipIshaTime = true;
+                                    }
+
+                                    return Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        ListView.separated(
+                                          shrinkWrap: true,
+                                          itemCount: PRAYER_TIMES.length,
+                                          itemBuilder: (context, index) {
+                                            Map<String, String> dataMap =
+                                                _getTimeName(
+                                                    index, _appLang, data);
+
+                                            bool minor = false;
+
+                                            if (index == 0 ||
+                                                index == 2 ||
+                                                index == 6) {
+                                              minor = true;
+                                            }
+
+                                            if (index == 6 && skipIshaTime) {
+                                              print('skip = true');
+                                              return SizedBox();
+                                            }
+                                            return PrayerTimeItem(
+                                              dataMap: dataMap,
+                                              minor: minor,
+                                            );
+                                          },
+                                          separatorBuilder: (context, index) {
+                                            switch (index) {
+                                              case 2:
+                                              case 4:
+                                                return SizedBox(
+                                                  height: 10,
+                                                );
+                                              default:
+                                                return SizedBox(
+                                                  height: 0,
+                                                );
+                                            }
+                                          },
+                                        ),
+                                        SizedBox(
+                                          height: 10,
+                                        ),
+                                        SingleChildScrollView(
+                                          child: Text(
+                                            '${data.notes}',
+                                            style: CustomTextFonts
+                                                .mosqueListName
+                                                .copyWith(
+                                                    color: Colors.green[400]),
                                           ),
-                                          Container(
-                                            width: double.infinity,
-                                            child: Center(
-                                                child: Text('${data.notes}')),
-                                          )
-                                        ],
-                                      ),
+                                        ),
+                                      ],
                                     );
                                   } else {
                                     return CircularProgressIndicator();
                                   }
                                 },
                               ),
-                              // FutureBuilder<DayData>(
-                              //   future: _mosqueController.getPrayersForDate(
-                              //     _selectedDate.getDateId(),
-                              //   ),
-                              //   builder: (
-                              //     BuildContext context,
-                              //     AsyncSnapshot<DayData> snapshot,
-                              //   ) {
-
-                              //   },
-                              // ),
                             ],
                           ),
                         );
@@ -353,6 +206,275 @@ class HomePage extends ConsumerWidget {
       default:
         break;
     }
+
     return timeName;
+  }
+}
+
+class PrayerTimeItem extends StatelessWidget {
+  const PrayerTimeItem({
+    Key key,
+    bool this.minor,
+    @required this.dataMap,
+  }) : super(key: key);
+
+  final Map<String, String> dataMap;
+  final bool minor;
+
+  @override
+  Widget build(BuildContext context) {
+    if (minor) {
+      return Card(
+        child: Container(
+          padding: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                '${dataMap['name']}',
+                style: CustomTextFonts.mosqueListName,
+              ),
+              Text(
+                '${dataMap['time']}',
+                style: CustomTextFonts.mosqueListName,
+              ),
+            ],
+          ),
+        ),
+      );
+    } else {
+      return Card(
+        child: Container(
+          padding: EdgeInsets.symmetric(vertical: 2, horizontal: 10),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                '${dataMap['name']}',
+                style: CustomTextFonts.contentTextBold,
+              ),
+              Text(
+                '${dataMap['time']}',
+                style: CustomTextFonts.contentTextBold,
+              ),
+            ],
+          ),
+        ),
+      );
+    }
+  }
+}
+
+class DateSelectorRow extends StatelessWidget {
+  const DateSelectorRow({
+    Key key,
+    @required SelectedDate selectedDate,
+    @required LanguagePack appLang,
+  })  : _selectedDate = selectedDate,
+        _appLang = appLang,
+        super(key: key);
+
+  final SelectedDate _selectedDate;
+  final LanguagePack _appLang;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: [
+        Material(
+          borderRadius: BorderRadius.circular(50),
+          elevation: 2,
+          child: IconButton(
+            icon: Icon(
+              Icons.arrow_back,
+              size: 30,
+              color: Colors.blue,
+            ),
+            onPressed: () {
+              _selectedDate.subsOneDay();
+            },
+          ),
+        ),
+        Column(
+          children: [
+            Text(
+              '${_selectedDate.getDateFormatted()}',
+              style: CustomTextFonts.contentText,
+            ),
+            Text(
+              '${_selectedDate.getDayOfTheWeek(_appLang)}',
+              style: CustomTextFonts.contentText,
+            ),
+          ],
+        ),
+        Material(
+          elevation: 2,
+          child: IconButton(
+            icon: Icon(
+              Icons.arrow_forward,
+              size: 30,
+              color: Colors.blue,
+            ),
+            onPressed: () {
+              _selectedDate.addOneDay();
+            },
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class CalendarDayPicker extends StatelessWidget {
+  const CalendarDayPicker({
+    Key key,
+    @required SelectedDate selectedDate,
+  })  : _selectedDate = selectedDate,
+        super(key: key);
+
+  final SelectedDate _selectedDate;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        IconButton(
+          icon: Icon(
+            Icons.calendar_today,
+            color: Colors.blue,
+            size: 30,
+          ),
+          onPressed: () async {
+            DateBounds bounds = await _selectedDate.getDateBounds();
+
+            final DateTime picked = await showDatePicker(
+              context: context,
+              initialDate: DateTime.now(),
+              firstDate: bounds.firstDate,
+              lastDate: bounds.lastDate,
+            );
+            if (picked != null) {
+              _selectedDate.updateSelectedDate(picked);
+            }
+          },
+        ),
+        IconButton(
+          icon: Icon(
+            Icons.refresh,
+            size: 30,
+          ),
+          color: Colors.blue,
+          onPressed: () async {
+            _selectedDate.updateSelectedDate(DateTime.now());
+          },
+        ),
+      ],
+    );
+  }
+}
+
+class SelectedMosqueView extends StatelessWidget {
+  const SelectedMosqueView({
+    Key key,
+    @required MosqueController mosqueController,
+    @required String selectedMosque,
+  })  : _mosqueController = mosqueController,
+        _selectedMosque = selectedMosque,
+        super(key: key);
+
+  final MosqueController _mosqueController;
+  final String _selectedMosque;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        FutureBuilder<MosqueData>(
+          future: _mosqueController.getSelectedMosque(_selectedMosque),
+          builder: (BuildContext context, AsyncSnapshot<MosqueData> snapshot) {
+            if (snapshot.hasData) {
+              return Column(
+                children: [
+                  Text(
+                    '${snapshot.data.name}',
+                    style: CustomTextFonts.contentTextItalic,
+                  ),
+                  Text(
+                    '${snapshot.data.ort} ${snapshot.data.kanton}',
+                    style: CustomTextFonts.contentText,
+                  ),
+                ],
+              );
+            } else {
+              return Center(
+                child: CircularProgressIndicator(),
+              );
+            }
+          },
+        ),
+      ],
+    );
+  }
+}
+
+class SettingBtnView extends StatelessWidget {
+  const SettingBtnView({
+    Key key,
+    @required LanguagePack appLang,
+  })  : _appLang = appLang,
+        super(key: key);
+
+  final LanguagePack _appLang;
+
+  @override
+  Widget build(BuildContext context) {
+    void _settingsMenuItemSelected(String choice) {
+      switch (choice) {
+        case LANG_SETTINGS:
+          Navigator.pushNamed(context, '/lang');
+          break;
+        case MOSQUE_SETTINGS:
+          Navigator.pushNamed(context, '/mosque');
+          break;
+        default:
+      }
+    }
+
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.end,
+      children: [
+        PopupMenuButton<String>(
+          onSelected: _settingsMenuItemSelected,
+          icon: Icon(
+            Icons.settings,
+            color: Colors.blue,
+          ),
+          itemBuilder: (context) {
+            return [LANG_SETTINGS, MOSQUE_SETTINGS].map(
+              (String choice) {
+                switch (choice) {
+                  case LANG_SETTINGS:
+                    return PopupMenuItem(
+                      value: choice,
+                      child: Text('${_appLang.language}'),
+                    );
+                    break;
+                  case MOSQUE_SETTINGS:
+                    return PopupMenuItem(
+                      value: choice,
+                      child: Text('${_appLang.mosque}'),
+                    );
+                    break;
+                  default:
+                }
+              },
+            ).toList();
+          },
+        ),
+      ],
+    );
   }
 }

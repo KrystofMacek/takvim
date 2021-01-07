@@ -31,12 +31,12 @@ class _MyAppState extends State<MyApp> {
     final prefBox = Hive.box('pref');
 
     String appLang = prefBox.get('appLang');
-    String prayerLang = prefBox.get('prayerLang');
+    // String prayerLang = prefBox.get('prayerLang');
     String mosque = prefBox.get('mosque');
 
-    print('BOX main: $appLang $prayerLang $mosque');
+    print('BOX main: $appLang $mosque');
 
-    if (appLang == null && prayerLang == null && mosque == null) {
+    if (appLang == null && mosque == null) {
       firstOpen = true;
     }
     print('BOX main: $firstOpen');
