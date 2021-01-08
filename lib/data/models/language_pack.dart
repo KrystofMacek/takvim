@@ -11,29 +11,32 @@ LanguagePack languagePackFromJson(String str) =>
 String languagePackToJson(LanguagePack data) => json.encode(data.toJson());
 
 class LanguagePack {
-  LanguagePack(
-      {@required this.app,
-      @required this.asr,
-      @required this.dhuhr,
-      @required this.fajr,
-      @required this.friday,
-      @required this.isha,
-      @required this.ishaTime,
-      @required this.language,
-      @required this.maghrib,
-      @required this.monday,
-      @required this.mosque,
-      @required this.name,
-      @required this.ort,
-      @required this.sabah,
-      @required this.saturday,
-      @required this.sunday,
-      @required this.sunrise,
-      @required this.takvim,
-      @required this.thursday,
-      @required this.tuesday,
-      @required this.wednesday,
-      @required this.select});
+  LanguagePack({
+    @required this.app,
+    @required this.asr,
+    @required this.dhuhr,
+    @required this.fajr,
+    @required this.friday,
+    @required this.isha,
+    @required this.ishaTime,
+    @required this.language,
+    @required this.maghrib,
+    @required this.monday,
+    @required this.mosque,
+    @required this.name,
+    @required this.ort,
+    @required this.sabah,
+    @required this.saturday,
+    @required this.sunday,
+    @required this.sunrise,
+    @required this.takvim,
+    @required this.thursday,
+    @required this.tuesday,
+    @required this.wednesday,
+    @required this.selectLang,
+    @required this.selectMosque,
+    @required this.hint,
+  });
 
   final String app;
   final String asr;
@@ -56,31 +59,36 @@ class LanguagePack {
   final String thursday;
   final String tuesday;
   final String wednesday;
-  final String select;
+  final String selectLang;
+  final String selectMosque;
+  final String hint;
 
-  LanguagePack copyWith(
-          {String app,
-          String asr,
-          String dhuhr,
-          String fajr,
-          String friday,
-          String isha,
-          String ishaTime,
-          String language,
-          String maghrib,
-          String monday,
-          String mosque,
-          String name,
-          String ort,
-          String sabah,
-          String saturday,
-          String sunday,
-          String sunrise,
-          String takvim,
-          String thursday,
-          String tuesday,
-          String wednesday,
-          String select}) =>
+  LanguagePack copyWith({
+    String app,
+    String asr,
+    String dhuhr,
+    String fajr,
+    String friday,
+    String isha,
+    String ishaTime,
+    String language,
+    String maghrib,
+    String monday,
+    String mosque,
+    String name,
+    String ort,
+    String sabah,
+    String saturday,
+    String sunday,
+    String sunrise,
+    String takvim,
+    String thursday,
+    String tuesday,
+    String wednesday,
+    String selectLang,
+    String selectMosque,
+    String hint,
+  }) =>
       LanguagePack(
         app: app ?? this.app,
         asr: asr ?? this.asr,
@@ -103,7 +111,9 @@ class LanguagePack {
         thursday: thursday ?? this.thursday,
         tuesday: tuesday ?? this.tuesday,
         wednesday: wednesday ?? this.wednesday,
-        select: select ?? this.select,
+        selectLang: selectLang ?? this.selectLang,
+        selectMosque: selectMosque ?? this.selectMosque,
+        hint: hint ?? this.hint,
       );
 
   factory LanguagePack.fromJson(Map<String, dynamic> json) => LanguagePack(
@@ -128,7 +138,9 @@ class LanguagePack {
         thursday: json["Thursday"],
         tuesday: json["Tuesday"],
         wednesday: json["Wednesday"],
-        select: json["Select"],
+        selectLang: json["SelectLang"],
+        selectMosque: json["SelectMosque"],
+        hint: json["Hint"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -153,6 +165,8 @@ class LanguagePack {
         "Thursday": thursday,
         "Tuesday": tuesday,
         "Wednesday": wednesday,
-        "Select": select,
+        "SelectLang": selectLang,
+        "SelectMosque": selectMosque,
+        "Hint": hint,
       };
 }

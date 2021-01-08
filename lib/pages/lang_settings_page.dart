@@ -1,4 +1,3 @@
-import 'package:flag/flag.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/all.dart';
 import 'package:hive/hive.dart';
@@ -7,6 +6,7 @@ import 'package:takvim/providers/language_provider.dart';
 import 'package:takvim/providers/mosque_provider.dart';
 import '../common/constants.dart';
 import '../common/styling.dart';
+import '../widgets/language_page/language_page_widgets.dart';
 
 class LangSettingsPage extends ConsumerWidget {
   @override
@@ -28,15 +28,20 @@ class LangSettingsPage extends ConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: CustomColors.mainColor,
         automaticallyImplyLeading: false,
-        title: Center(child: Text('${_appLang.select} ${_appLang.language}')),
+        title: Center(
+            child: Text(
+          '${_appLang.selectLang}',
+          style: CustomTextFonts.appBarTextNormal,
+        )),
       ),
       floatingActionButton: FloatingActionButton(
         child: Icon(
           Icons.check,
           color: Colors.white,
         ),
-        backgroundColor: Colors.blue,
+        backgroundColor: CustomColors.mainColor,
         onPressed: () {
           final prefBox = Hive.box('pref');
 
@@ -57,31 +62,31 @@ class LangSettingsPage extends ConsumerWidget {
           future: _langPackController.getPacks(),
           builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
             if (snapshot.hasData) {
-              return Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Expanded(
-                    child: ListView.separated(
-                      itemCount: LANGUAGES.length,
-                      separatorBuilder: (context, index) => SizedBox(
-                        height: 10,
+              return Container(
+                padding: EdgeInsets.symmetric(vertical: 4, horizontal: 3),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Expanded(
+                      child: ListView.builder(
+                        itemCount: LANGUAGES.length,
+                        itemBuilder: (context, index) {
+                          bool isSelected = false;
+                          if (_appLang.name == LANGUAGES[index]) {
+                            isSelected = true;
+                          }
+                          String flag = FLAG_MAP[LANGUAGES[index]];
+                          return LanguageItem(
+                            langPackController: _langPackController,
+                            flag: flag,
+                            index: index,
+                            isSelected: isSelected,
+                          );
+                        },
                       ),
-                      itemBuilder: (context, index) {
-                        bool isSelected = false;
-                        if (_appLang.name == LANGUAGES[index]) {
-                          isSelected = true;
-                        }
-                        String flag = FLAG_MAP[LANGUAGES[index]];
-                        return LanguageItem(
-                          langPackController: _langPackController,
-                          flag: flag,
-                          index: index,
-                          isSelected: isSelected,
-                        );
-                      },
                     ),
-                  ),
-                ],
+                  ],
+                ),
               );
             } else {
               return CircularProgressIndicator();
@@ -90,99 +95,5 @@ class LangSettingsPage extends ConsumerWidget {
         ),
       ),
     );
-  }
-}
-
-class LanguageItem extends StatelessWidget {
-  const LanguageItem({
-    Key key,
-    @required LanguagePackController langPackController,
-    @required this.flag,
-    @required this.index,
-    @required this.isSelected,
-  })  : _langPackController = langPackController,
-        super(key: key);
-
-  final LanguagePackController _langPackController;
-  final String flag;
-  final int index;
-  final bool isSelected;
-
-  @override
-  Widget build(BuildContext context) {
-    if (isSelected) {
-      return GestureDetector(
-        onTap: () {
-          String code = LANG_MAP[LANGUAGES[index]];
-          Hive.box('pref').put('appLang', code);
-          _langPackController.updateAppLanguage();
-        },
-        child: Card(
-          color: Colors.blue[100],
-          child: Container(
-            padding: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              mainAxisSize: MainAxisSize.max,
-              children: [
-                Container(
-                  padding: EdgeInsets.all(10),
-                  child: Flag(
-                    flag,
-                    height: 30,
-                    width: 40,
-                  ),
-                ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      '${LANGUAGES[index]}',
-                      style: CustomTextFonts.contentText,
-                    ),
-                  ],
-                )
-              ],
-            ),
-          ),
-        ),
-      );
-    } else {
-      return GestureDetector(
-        onTap: () {
-          String code = LANG_MAP[LANGUAGES[index]];
-          Hive.box('pref').put('appLang', code);
-          _langPackController.updateAppLanguage();
-        },
-        child: Card(
-          child: Container(
-            padding: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              mainAxisSize: MainAxisSize.max,
-              children: [
-                Container(
-                  padding: EdgeInsets.all(10),
-                  child: Flag(
-                    flag,
-                    height: 30,
-                    width: 40,
-                  ),
-                ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      '${LANGUAGES[index]}',
-                      style: CustomTextFonts.contentText,
-                    ),
-                  ],
-                )
-              ],
-            ),
-          ),
-        ),
-      );
-    }
   }
 }

@@ -20,6 +20,8 @@
     "Thursday": "E Enjte",
     "Tuesday": "E Martë",
     "Wednesday": "E Mërkurë",
-    "Select": "Zgjidhni"
+    "SelectLang": "Zgjidh gjuhën",
+    "SelectMosque": "Zgjidh xhaminë",
+    "Hint": "Kërkoni xhaminë ose vedin"
 
 }

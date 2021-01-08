@@ -20,5 +20,7 @@
     "Thursday": "Thursday",
     "Tuesday": "Tuesday",
     "Wednesday": "Wednesday",
-    "Select": "Select"
+    "SelectLang": "Select language",
+    "SelectMosque": "Select mosque",
+    "Hint": "Search mosque or place"
 }

@@ -12,7 +12,7 @@ const Map<String, String> FLAG_MAP = {
   'Shqip': 'al',
 };
 
-const LANGUAGES = ['English', 'Deutsch', 'Shqip'];
+const LANGUAGES = ['Deutsch', 'English', 'Shqip'];
 
 // Settings
 const LANG_SETTINGS = 'lang';

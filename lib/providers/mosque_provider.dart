@@ -41,6 +41,7 @@ class FilteredMosqueList extends StateNotifier<List<MosqueData>> {
   FilteredMosqueList() : super([]);
 
   void updateList(List<MosqueData> data) {
+    data.sort((a, b) => a.ort.compareTo(b.ort));
     state = data;
   }
 }

@@ -14,7 +14,7 @@ class SelectedDate extends StateNotifier<DateTime> {
   DatabaseReference db = FirebaseDatabase.instance.reference();
 
   Future<DateBounds> getDateBounds() async {
-    final DataSnapshot ref = await db.child('dateBounds').once();
+    final DataSnapshot ref = await db.child('dataBounds').once();
     DateBounds bounds = DateBounds.fromFirebase(ref.value);
 
     return bounds;
@@ -24,16 +24,18 @@ class SelectedDate extends StateNotifier<DateTime> {
     state = date;
   }
 
-  void subsOneDay() {
+  void subsOneDay(DateTime first) {
     DateTime newDate = state.subtract(Duration(days: 1));
-    if (newDate.year == DateTime.now().year) {
+    if (newDate.isAfter(first) ||
+        (newDate.year == first.year && newDate.day == first.day)) {
       state = newDate;
     }
   }
 
-  void addOneDay() {
+  void addOneDay(DateTime last) {
     DateTime newDate = state.add(Duration(days: 1));
-    if (newDate.year == DateTime.now().year) {
+    if (newDate.isBefore(last) ||
+        (newDate.year == last.year && newDate.day == last.day)) {
       state = newDate;
     }
   }

@@ -6,8 +6,13 @@ import 'package:takvim/pages/lang_settings_page.dart';
 import 'package:takvim/pages/mosque_settings_page.dart';
 import 'pages/pages.dart';
 import 'package:flutter_riverpod/all.dart';
+import 'package:flutter/services.dart';
+import './common/styling.dart';
 
 void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  SystemChrome.setPreferredOrientations(
+      [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
   await Hive.initFlutter();
   await Hive.openBox('pref');
   await Firebase.initializeApp();
@@ -57,8 +62,9 @@ class _MyAppState extends State<MyApp> {
       debugShowCheckedModeBanner: false,
       title: 'Takvim',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
+          primaryColor: Colors.tealAccent[700],
+          primarySwatch: CustomColors.swatch,
+          colorScheme: ColorScheme.light(primary: Color(0xFF00bfa5))),
       initialRoute: _getInitialRoute(),
       routes: {
         '/home': (context) => HomePage(),
