@@ -7,6 +7,8 @@ import 'package:takvim/providers/language_provider.dart';
 import 'package:takvim/providers/mosque_provider.dart';
 import '../common/styling.dart';
 import '../widgets/mosque_page/mosque_page_widgets.dart';
+import '../providers/date_provider.dart';
+import 'package:firebase_database/firebase_database.dart';
 
 class MosqueSettingsPage extends ConsumerWidget {
   @override
@@ -23,7 +25,9 @@ class MosqueSettingsPage extends ConsumerWidget {
     final MosqueController _mosqueController = watch(
       mosqueController,
     );
-    _mosqueController.getListOfMosques();
+    final SelectedDate _selectedDateController = watch(
+      selectedDate,
+    );
 
     return Scaffold(
       appBar: AppBar(
@@ -44,41 +48,53 @@ class MosqueSettingsPage extends ConsumerWidget {
         onPressed: () {
           final prefBox = Hive.box('pref');
           prefBox.put('mosque', _selectedMosque.getSelectedMosqueId());
+
+          FirebaseDatabase.instance
+              .reference()
+              .child('prayerTimes')
+              .child(_selectedMosque.getSelectedMosqueId())
+              .keepSynced(true);
+
           if (prefBox.get('firstOpen')) {
             prefBox.put('firstOpen', false);
+            Navigator.pushNamed(context, '/home');
+          } else {
+            _selectedDateController.updateSelectedDate(DateTime.now());
+            Navigator.pop(context);
           }
-          Navigator.pushNamed(context, '/home');
         },
       ),
       body: Flex(
         direction: Axis.vertical,
         children: [
-          FutureBuilder<bool>(
-            future: _langPackController.getPacks(),
-            builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
-              if (snapshot.hasData) {
-                return Expanded(
-                  child: Container(
-                    padding: EdgeInsets.symmetric(vertical: 4, horizontal: 3),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        SizedBox(
-                          height: 10,
-                        ),
-                        SelectedMosqueView(mosqueController: _mosqueController),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        FilterMosqueInput(
-                            appLang: _appLang,
-                            mosqueController: _mosqueController),
-                        SizedBox(
-                          height: 5,
-                        ),
-                        Consumer(
+          Expanded(
+            child: Container(
+              padding: EdgeInsets.symmetric(vertical: 4, horizontal: 3),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  SizedBox(
+                    height: 10,
+                  ),
+                  SelectedMosqueView(mosqueController: _mosqueController),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  FilterMosqueInput(
+                      appLang: _appLang, mosqueController: _mosqueController),
+                  SizedBox(
+                    height: 5,
+                  ),
+                  FutureBuilder(
+                    future: _mosqueController.getListOfMosques(),
+                    initialData: [],
+                    builder: (BuildContext context, AsyncSnapshot snapshot) {
+                      if (snapshot.hasData) {
+                        return Consumer(
                           builder: (context, watch, child) {
+                            watch(selectedMosque.state);
+
                             List<MosqueData> filteredList =
                                 watch(filteredMosqueList.state);
                             return Expanded(
@@ -89,20 +105,26 @@ class MosqueSettingsPage extends ConsumerWidget {
                                 itemBuilder: (context, index) {
                                   MosqueData data = filteredList[index];
 
-                                  return MosqueItem(data: data);
+                                  bool isSelected = (data.mosqueId ==
+                                      _selectedMosque.getSelectedMosqueId());
+
+                                  return MosqueItem(
+                                    data: data,
+                                    isSelected: isSelected,
+                                  );
                                 },
                               ),
                             );
                           },
-                        ),
-                      ],
-                    ),
+                        );
+                      } else {
+                        return CircularProgressIndicator();
+                      }
+                    },
                   ),
-                );
-              } else {
-                return CircularProgressIndicator();
-              }
-            },
+                ],
+              ),
+            ),
           ),
         ],
       ),

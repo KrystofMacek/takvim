@@ -3,8 +3,6 @@ import 'package:flutter_riverpod/all.dart';
 import 'package:hive/hive.dart';
 import 'package:takvim/data/models/language_pack.dart';
 import 'package:takvim/providers/language_provider.dart';
-import 'package:takvim/providers/mosque_provider.dart';
-import '../common/constants.dart';
 import '../common/styling.dart';
 import '../widgets/language_page/language_page_widgets.dart';
 
@@ -16,8 +14,6 @@ class LangSettingsPage extends ConsumerWidget {
     final LanguagePackController _langPackController = watch(
       languagePackController,
     );
-
-    final String _mosq = watch(selectedMosque.state);
 
     if (_appLang == null) {
       _langPackController.updateAppLanguage();
@@ -32,7 +28,7 @@ class LangSettingsPage extends ConsumerWidget {
         automaticallyImplyLeading: false,
         title: Center(
             child: Text(
-          '${_appLang.selectLang}',
+          '${_appLang.selectLanguage}',
           style: CustomTextFonts.appBarTextNormal,
         )),
       ),
@@ -45,23 +41,24 @@ class LangSettingsPage extends ConsumerWidget {
         onPressed: () {
           final prefBox = Hive.box('pref');
 
-          String code = LANG_MAP[_appLang.name];
-          prefBox.put('appLang', code);
+          prefBox.put('appLang', _appLang.languageId);
 
           bool firstOpen = prefBox.get('firstOpen');
           print('firstopen lang : $firstOpen');
           if (firstOpen) {
             Navigator.pushNamed(context, '/mosque');
           } else {
-            Navigator.pushNamed(context, '/home');
+            Navigator.pop(context);
           }
         },
       ),
       body: Center(
-        child: FutureBuilder<bool>(
-          future: _langPackController.getPacks(),
-          builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
+        child: FutureBuilder<List<LanguagePack>>(
+          future: _langPackController.getLanguages(),
+          builder: (BuildContext context,
+              AsyncSnapshot<List<LanguagePack>> snapshot) {
             if (snapshot.hasData) {
+              final languageList = snapshot.data;
               return Container(
                 padding: EdgeInsets.symmetric(vertical: 4, horizontal: 3),
                 child: Column(
@@ -69,17 +66,18 @@ class LangSettingsPage extends ConsumerWidget {
                   children: [
                     Expanded(
                       child: ListView.builder(
-                        itemCount: LANGUAGES.length,
+                        itemCount: languageList.length,
                         itemBuilder: (context, index) {
                           bool isSelected = false;
-                          if (_appLang.name == LANGUAGES[index]) {
+                          if (languageList[index].languageId ==
+                              _appLang.languageId) {
                             isSelected = true;
                           }
-                          String flag = FLAG_MAP[LANGUAGES[index]];
+                          String flag = languageList[index].flagName;
                           return LanguageItem(
                             langPackController: _langPackController,
                             flag: flag,
-                            index: index,
+                            pack: languageList[index],
                             isSelected: isSelected,
                           );
                         },

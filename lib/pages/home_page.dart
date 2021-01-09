@@ -1,105 +1,121 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/all.dart';
+import 'package:hooks_riverpod/all.dart';
 import 'package:takvim/data/models/language_pack.dart';
 import 'package:takvim/providers/date_provider.dart';
 import 'package:takvim/providers/language_provider.dart';
 import 'package:takvim/providers/mosque_provider.dart';
 import '../common/styling.dart';
 import '../widgets/home_page/home_page_widgets.dart';
+import '../providers/date_provider.dart';
+import 'package:cross_connectivity/cross_connectivity.dart';
+import 'package:firebase_database/firebase_database.dart';
 
-class HomePage extends ConsumerWidget {
+class HomePage extends StatelessWidget {
   @override
-  Widget build(BuildContext context, ScopedReader watch) {
-    final LanguagePack _appLang = watch(appLanguagePackProvider.state);
-    // final LanguagePack _prayerLang = watch(prayerLanguagePackProvider.state);
-    final String _selectedMosque = watch(selectedMosque.state);
-    final LanguagePackController _langPackController = watch(
-      languagePackController,
-    );
-    if (_appLang == null) {
-      _langPackController.updateAppLanguage();
-    }
-    // if (_prayerLang == null) {
-    //   _langPackController.updatePrayerLanguage();
-    // }
+  Widget build(BuildContext context) {
+    return Consumer(
+      builder: (context, watch, child) {
+        final LanguagePack _appLang = watch(appLanguagePackProvider.state);
+        // final LanguagePack _prayerLang = watch(prayerLanguagePackProvider.state);
+        final String _selectedMosque = watch(selectedMosque.state);
 
-    final SelectedDate _selectedDate = watch(selectedDate);
+        // FirebaseDatabase.instance
+        //     .reference()
+        //     .child('prayerTimes')
+        //     .child(_selectedMosque)
+        //     .keepSynced(true);
 
-    final MosqueController _mosqueController = watch(
-      mosqueController,
-    );
+        final LanguagePackController _langPackController = watch(
+          languagePackController,
+        );
+        if (_appLang == null) {
+          _langPackController.updateAppLanguage();
+        }
+        // if (_prayerLang == null) {
+        //   _langPackController.updatePrayerLanguage();
+        // }
 
-    return Scaffold(
-      appBar: PreferredSize(
-        preferredSize: Size.fromHeight(70.0),
-        child: AppBar(
-          backgroundColor: CustomColors.mainColor,
-          automaticallyImplyLeading: false,
-          centerTitle: true,
-          flexibleSpace: Center(
-            child: Container(
-              padding: EdgeInsets.only(top: 10),
-              width: MediaQuery.of(context).size.width * .6,
-              child: SelectedMosqueView(
-                  mosqueController: _mosqueController,
-                  selectedMosque: _selectedMosque),
+        final SelectedDate _selectedDate = watch(selectedDate);
+        // if (_resumed) {
+        //   print('life $_resumed');
+        //   _selectedDate.updateSelectedDate(DateTime.now());
+        //   didUpdateWidget(this.widget);
+        //   _resumed = false;
+        // }
+
+        final MosqueController _mosqueController = watch(
+          mosqueController,
+        );
+
+        return Scaffold(
+          appBar: PreferredSize(
+            preferredSize: Size.fromHeight(70.0),
+            child: AppBar(
+              backgroundColor: CustomColors.mainColor,
+              automaticallyImplyLeading: false,
+              centerTitle: true,
+              flexibleSpace: Center(
+                child: Container(
+                  padding: EdgeInsets.only(top: 10),
+                  width: MediaQuery.of(context).size.width * .6,
+                  child: SelectedMosqueView(
+                      mosqueController: _mosqueController,
+                      selectedMosque: _selectedMosque),
+                ),
+              ),
+              actions: [
+                SettingBtnView(appLang: _appLang),
+              ],
             ),
           ),
-          actions: [
-            SettingBtnView(appLang: _appLang),
-          ],
-        ),
-      ),
-      body: Container(
-        padding: EdgeInsets.symmetric(vertical: 15, horizontal: 20),
-        child: Center(
-          child: FutureBuilder(
-            future: _langPackController.getPacks(),
-            builder: (BuildContext context, AsyncSnapshot snapshot) {
-              if (snapshot.hasData) {
-                return Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Consumer(
-                      builder: (context, watch, child) {
-                        watch(selectedDate.state);
-
-                        return Expanded(
-                          child: Column(
-                            children: [
-                              CalendarDayPicker(selectedDate: _selectedDate),
-                              DateSelectorRow(
-                                  selectedDate: _selectedDate,
-                                  appLang: _appLang),
-                              IconButton(
-                                icon: Icon(
-                                  Icons.refresh,
-                                  size: 35,
+          body: Container(
+            padding: EdgeInsets.symmetric(vertical: 15, horizontal: 20),
+            child: Center(
+              child: FutureBuilder(
+                future: _langPackController.getAppLangPack(),
+                builder: (BuildContext context, AsyncSnapshot snapshot) {
+                  if (snapshot.hasData) {
+                    return Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Consumer(
+                          builder: (context, watch, child) {
+                            watch(selectedDate.state);
+                            return Column(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                CalendarDayPicker(selectedDate: _selectedDate),
+                                SizedBox(
+                                  height: 10,
                                 ),
-                                color: CustomColors.mainColor,
-                                onPressed: () async {
-                                  _selectedDate
-                                      .updateSelectedDate(DateTime.now());
-                                },
-                              ),
-                              DailyDataView(
+                                DateSelectorRow(
+                                    selectedDate: _selectedDate,
+                                    appLang: _appLang),
+                                SizedBox(
+                                  height: 20,
+                                ),
+                                DailyDataView(
                                   mosqueController: _mosqueController,
                                   selectedDate: _selectedDate,
-                                  appLang: _appLang),
-                            ],
-                          ),
-                        );
-                      },
-                    ),
-                  ],
-                );
-              } else {
-                return CircularProgressIndicator();
-              }
-            },
+                                  appLang: _appLang,
+                                ),
+                              ],
+                            );
+                          },
+                        ),
+                      ],
+                    );
+                  } else {
+                    return CircularProgressIndicator();
+                  }
+                },
+              ),
+            ),
           ),
-        ),
-      ),
+        );
+      },
     );
   }
 }

@@ -21,7 +21,13 @@ class SelectedDate extends StateNotifier<DateTime> {
   }
 
   void updateSelectedDate(DateTime date) {
+    print('state = updateing date');
     state = date;
+  }
+
+  void onRefresh() async {
+    await Future.delayed(Duration(microseconds: 500));
+    state = DateTime.now();
   }
 
   void subsOneDay(DateTime first) {
@@ -55,25 +61,25 @@ class SelectedDate extends StateNotifier<DateTime> {
     String dayLan = '';
     switch (day) {
       case 'Monday':
-        dayLan = languagePack.monday;
+        dayLan = languagePack.mo;
         break;
       case 'Tuesday':
-        dayLan = languagePack.tuesday;
+        dayLan = languagePack.di;
         break;
       case 'Wednesday':
-        dayLan = languagePack.wednesday;
+        dayLan = languagePack.mi;
         break;
       case 'Thursday':
-        dayLan = languagePack.thursday;
+        dayLan = languagePack.languagePackDo;
         break;
       case 'Friday':
-        dayLan = languagePack.friday;
+        dayLan = languagePack.fr;
         break;
       case 'Saturday':
-        dayLan = languagePack.saturday;
+        dayLan = languagePack.sa;
         break;
       case 'Sunday':
-        dayLan = languagePack.sunday;
+        dayLan = languagePack.so;
         break;
       default:
         dayLan = '';

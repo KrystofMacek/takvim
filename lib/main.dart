@@ -8,6 +8,7 @@ import 'pages/pages.dart';
 import 'package:flutter_riverpod/all.dart';
 import 'package:flutter/services.dart';
 import './common/styling.dart';
+import 'package:firebase_database/firebase_database.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -16,6 +17,8 @@ void main() async {
   await Hive.initFlutter();
   await Hive.openBox('pref');
   await Firebase.initializeApp();
+  FirebaseDatabase.instance.setPersistenceEnabled(true);
+
   runApp(
     ProviderScope(
       child: MyApp(),

@@ -8,6 +8,8 @@ import 'package:takvim/data/models/language_pack.dart';
 import 'package:takvim/providers/date_provider.dart';
 import 'package:takvim/providers/mosque_provider.dart';
 import './prayer_time_item.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:cross_connectivity/cross_connectivity.dart';
 
 class DailyDataView extends StatelessWidget {
   const DailyDataView({
@@ -27,9 +29,7 @@ class DailyDataView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<Event>(
-      stream: _mosqueController.getPrayersForDate(
-        _selectedDate.getDateId(),
-      ),
+      stream: _mosqueController.getPrayersForDate(_selectedDate.getDateId()),
       builder: (BuildContext context, AsyncSnapshot<Event> snapshot) {
         if (snapshot.hasData &&
             !snapshot.hasError &&

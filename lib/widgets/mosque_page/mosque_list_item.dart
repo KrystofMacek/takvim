@@ -8,15 +8,16 @@ class MosqueItem extends ConsumerWidget {
   const MosqueItem({
     Key key,
     @required this.data,
+    @required this.isSelected,
   }) : super(key: key);
 
   final MosqueData data;
+  final bool isSelected;
 
   @override
   Widget build(BuildContext context, ScopedReader watch) {
-    String _selectedMosqueState = watch(selectedMosque.state);
     SelectedMosque _mosqueSelector = watch(selectedMosque);
-    if (_selectedMosqueState == data.mosqueId) {
+    if (isSelected) {
       return GestureDetector(
         onTap: () {
           _mosqueSelector.updateSelectedMosque(data.mosqueId);

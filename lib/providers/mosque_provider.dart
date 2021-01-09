@@ -1,9 +1,8 @@
-import 'dart:convert';
-
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter_riverpod/all.dart';
 import 'package:hive/hive.dart';
 import 'package:takvim/data/models/mosque_data.dart';
+import '../data/models/day_data.dart';
 
 final selectedMosque = StateNotifierProvider<SelectedMosque>((ref) {
   return SelectedMosque();
@@ -15,6 +14,12 @@ class SelectedMosque extends StateNotifier<String> {
   String getSelectedMosqueId() => state;
 
   void updateSelectedMosque(String id) {
+    final Box _prefBox = Hive.box('pref');
+    _prefBox.put('mosque', id);
+    state = id;
+  }
+
+  void selectedMosqueWasChanged(String id) {
     final Box _prefBox = Hive.box('pref');
     _prefBox.put('mosque', id);
     state = id;
@@ -97,15 +102,29 @@ class MosqueController extends StateNotifier<MosqueController> {
   void filterMosqueList(String key) {
     List<MosqueData> fullList = _mosqueList.state;
     _filteredMosqueList.updateList(
-      fullList
-          .where(
-            //check name
-            (mosque) =>
-                (mosque.name.toLowerCase().contains(key.toLowerCase()) ||
-                    mosque.kanton.toLowerCase().contains(key.toLowerCase()) ||
-                    mosque.ort.toLowerCase().contains(key.toLowerCase())),
-          )
-          .toList(),
+      fullList.where(
+        //check name
+        (mosque) {
+          List<String> queryVals = [
+            key.toLowerCase(),
+            mosque.name.toLowerCase(),
+            mosque.kanton.toLowerCase(),
+            mosque.ort.toLowerCase()
+          ];
+
+          queryVals.asMap().forEach((i, value) {
+            value = value.replaceAll(RegExp(r'ë'), 'e');
+            value = value.replaceAll(RegExp(r'ü'), 'u');
+            value = value.replaceAll(RegExp(r'ö'), 'ö');
+
+            queryVals[i] = value;
+          });
+
+          return (queryVals[3].contains(queryVals[0]) ||
+              queryVals[2].contains(queryVals[0]) ||
+              queryVals[1].contains(queryVals[0]));
+        },
+      ).toList(),
     );
   }
 
@@ -138,7 +157,16 @@ class MosqueController extends StateNotifier<MosqueController> {
         .child(_selectedMosque.state)
         .child(date)
         .onValue;
-
     return ref;
+  }
+
+  Future<DayData> getPrayersForDateF(String date) async {
+    final DataSnapshot ref = await _databaseReference
+        .child('prayerTimes')
+        .child(_selectedMosque.state)
+        .child(date)
+        .once();
+
+    return DayData.fromFirebase(ref.value);
   }
 }

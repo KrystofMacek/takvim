@@ -4,7 +4,7 @@ import 'package:takvim/common/styling.dart';
 class PrayerTimeItem extends StatelessWidget {
   const PrayerTimeItem({
     Key key,
-    bool this.minor,
+    this.minor,
     @required this.dataMap,
   }) : super(key: key);
 

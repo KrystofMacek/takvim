@@ -3,7 +3,6 @@
 //     final dateBounds = dateBoundsFromJson(jsonString);
 
 import 'package:meta/meta.dart';
-import 'dart:convert';
 
 class DateBounds {
   DateBounds({

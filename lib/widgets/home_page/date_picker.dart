@@ -14,25 +14,31 @@ class CalendarDayPicker extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return IconButton(
-      icon: Icon(
-        Icons.calendar_today,
-        color: CustomColors.mainColor,
-        size: 35,
-      ),
-      onPressed: () async {
-        DateBounds bounds = await _selectedDate.getDateBounds();
+    return Material(
+      elevation: 5,
+      shadowColor: CustomColors.mainColor,
+      borderRadius: BorderRadius.circular(10),
+      child: IconButton(
+        padding: EdgeInsets.zero,
+        icon: Icon(
+          Icons.calendar_today,
+          color: CustomColors.mainColor,
+          size: 40,
+        ),
+        onPressed: () async {
+          DateBounds bounds = await _selectedDate.getDateBounds();
 
-        final DateTime picked = await showDatePicker(
-          context: context,
-          initialDate: DateTime.now(),
-          firstDate: bounds.firstDate,
-          lastDate: bounds.lastDate,
-        );
-        if (picked != null) {
-          _selectedDate.updateSelectedDate(picked);
-        }
-      },
+          final DateTime picked = await showDatePicker(
+            context: context,
+            initialDate: DateTime.now(),
+            firstDate: bounds.firstDate,
+            lastDate: bounds.lastDate,
+          );
+          if (picked != null) {
+            _selectedDate.updateSelectedDate(picked);
+          }
+        },
+      ),
     );
   }
 }

@@ -32,7 +32,7 @@ class FilterMosqueInput extends StatelessWidget {
                 color: CustomColors.mainColor,
               )),
               filled: true,
-              hintText: '${_appLang.hint}...',
+              hintText: '${_appLang.search}...',
             ),
             onChanged: (value) {
               _mosqueController.filterMosqueList(value);
