@@ -30,113 +30,115 @@ class MosqueSettingsPage extends ConsumerWidget {
       selectedDate,
     );
 
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: CustomColors.mainColor,
-        automaticallyImplyLeading: false,
-        title: Center(
-            child: Text(
-          '${_appLang.selectMosque}',
-          style: CustomTextFonts.appBarTextNormal,
-        )),
-      ),
-      floatingActionButton: FloatingActionButton(
-        child: Icon(
-          Icons.check,
-          color: Colors.white,
+    return SafeArea(
+      child: Scaffold(
+        appBar: AppBar(
+          backgroundColor: CustomColors.mainColor,
+          automaticallyImplyLeading: false,
+          title: Center(
+              child: Text(
+            '${_appLang.selectMosque}',
+            style: CustomTextFonts.appBarTextNormal,
+          )),
         ),
-        backgroundColor: CustomColors.mainColor,
-        onPressed: () {
-          final prefBox = Hive.box('pref');
-          prefBox.put('mosque', _selectedMosque.getSelectedMosqueId());
+        floatingActionButton: FloatingActionButton(
+          child: Icon(
+            Icons.check,
+            color: Colors.white,
+          ),
+          backgroundColor: CustomColors.mainColor,
+          onPressed: () {
+            final prefBox = Hive.box('pref');
+            prefBox.put('mosque', _selectedMosque.getSelectedMosqueId());
 
-          FirebaseDatabase.instance
-              .reference()
-              .child('prayerTimes')
-              .child(_selectedMosque.getSelectedMosqueId())
-              .keepSynced(true);
+            FirebaseDatabase.instance
+                .reference()
+                .child('prayerTimes')
+                .child(_selectedMosque.getSelectedMosqueId())
+                .keepSynced(true);
 
-          if (prefBox.get('firstOpen')) {
-            prefBox.put('firstOpen', false);
-            Navigator.pushNamed(context, '/home');
-          } else {
-            _selectedDateController.updateSelectedDate(DateTime.now());
-            Navigator.pop(context);
-          }
-        },
-      ),
-      body: Flex(
-        direction: Axis.vertical,
-        children: [
-          Expanded(
-            child: Container(
-              padding: EdgeInsets.symmetric(vertical: 4, horizontal: 3),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  SizedBox(
-                    height: 10,
-                  ),
-                  Consumer(
-                    builder: (context, watch, child) {
-                      String selectedMosqueId = watch(selectedMosque.state);
-                      return SelectedMosqueView(
-                        mosqueController: _mosqueController,
-                        selectedMosqueController: selectedMosqueId,
-                      );
-                    },
-                  ),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  FilterMosqueInput(
-                      appLang: _appLang, mosqueController: _mosqueController),
-                  SizedBox(
-                    height: 5,
-                  ),
-                  StreamBuilder<List<MosqueData>>(
-                    stream: _mosqueController.watchMosques(),
-                    builder: (BuildContext context,
-                        AsyncSnapshot<List<MosqueData>> snapshot) {
-                      print('has data${snapshot.hasData}');
-                      if (snapshot.hasData) {
-                        return Consumer(
-                          builder: (context, watch, child) {
-                            List<MosqueData> filteredList =
-                                watch(filteredMosqueList.state);
-                            String selectedId = watch(selectedMosque.state);
-
-                            return Expanded(
-                              child: ListView.separated(
-                                itemCount: filteredList.length,
-                                separatorBuilder: (context, index) =>
-                                    SizedBox(),
-                                itemBuilder: (context, index) {
-                                  MosqueData data = filteredList[index];
-
-                                  bool isSelected =
-                                      (data.mosqueId == selectedId);
-
-                                  return MosqueItem(
-                                    data: data,
-                                    isSelected: isSelected,
-                                  );
-                                },
-                              ),
-                            );
-                          },
+            if (prefBox.get('firstOpen')) {
+              prefBox.put('firstOpen', false);
+              Navigator.pushNamed(context, '/home');
+            } else {
+              _selectedDateController.updateSelectedDate(DateTime.now());
+              Navigator.pop(context);
+            }
+          },
+        ),
+        body: Flex(
+          direction: Axis.vertical,
+          children: [
+            Expanded(
+              child: Container(
+                padding: EdgeInsets.symmetric(vertical: 4, horizontal: 3),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Consumer(
+                      builder: (context, watch, child) {
+                        String selectedMosqueId = watch(selectedMosque.state);
+                        return SelectedMosqueView(
+                          mosqueController: _mosqueController,
+                          selectedMosqueController: selectedMosqueId,
                         );
-                      } else {
-                        return CircularProgressIndicator();
-                      }
-                    },
-                  ),
-                ],
+                      },
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    FilterMosqueInput(
+                        appLang: _appLang, mosqueController: _mosqueController),
+                    SizedBox(
+                      height: 5,
+                    ),
+                    StreamBuilder<List<MosqueData>>(
+                      stream: _mosqueController.watchMosques(),
+                      builder: (BuildContext context,
+                          AsyncSnapshot<List<MosqueData>> snapshot) {
+                        print('has data${snapshot.hasData}');
+                        if (snapshot.hasData) {
+                          return Consumer(
+                            builder: (context, watch, child) {
+                              List<MosqueData> filteredList =
+                                  watch(filteredMosqueList.state);
+                              String selectedId = watch(selectedMosque.state);
+
+                              return Expanded(
+                                child: ListView.separated(
+                                  itemCount: filteredList.length,
+                                  separatorBuilder: (context, index) =>
+                                      SizedBox(),
+                                  itemBuilder: (context, index) {
+                                    MosqueData data = filteredList[index];
+
+                                    bool isSelected =
+                                        (data.mosqueId == selectedId);
+
+                                    return MosqueItem(
+                                      data: data,
+                                      isSelected: isSelected,
+                                    );
+                                  },
+                                ),
+                              );
+                            },
+                          );
+                        } else {
+                          return CircularProgressIndicator();
+                        }
+                      },
+                    ),
+                  ],
+                ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

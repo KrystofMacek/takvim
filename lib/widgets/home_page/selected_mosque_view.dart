@@ -31,11 +31,15 @@ class SelectedMosqueView extends StatelessWidget {
           return Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Text('${selectedMosqueData.ort} ${selectedMosqueData.kanton}',
-                  style: CustomTextFonts.appBarTextNormal),
+              Text(
+                '${selectedMosqueData.ort} ${selectedMosqueData.kanton}',
+                style: CustomTextFonts.appBarTextNormal,
+                textAlign: TextAlign.center,
+              ),
               Text(
                 '${selectedMosqueData.name}',
                 style: CustomTextFonts.appBarTextItalic,
+                textAlign: TextAlign.center,
               ),
             ],
           );

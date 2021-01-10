@@ -33,7 +33,7 @@ class LanguageItem extends ConsumerWidget {
               _langPackController.updateAppLanguage();
             },
             child: Card(
-              color: Colors.blue[100],
+              color: CustomColors.highlightColor,
               child: Container(
                 padding: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
                 child: Row(

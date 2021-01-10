@@ -39,18 +39,13 @@ class _MyAppState extends State<MyApp> {
     final prefBox = Hive.box('pref');
 
     String appLang = prefBox.get('appLang');
-    // String prayerLang = prefBox.get('prayerLang');
     String mosque = prefBox.get('mosque');
 
-    print('BOX main: $appLang $mosque');
-
     if (appLang == null && mosque == null) {
-      print('BOX main default: $appLang $mosque');
       prefBox.put('mosque', '1001');
       prefBox.put('appLang', '101');
       firstOpen = true;
     }
-    print('BOX main: $firstOpen');
     prefBox.put('firstOpen', firstOpen);
   }
 
@@ -65,6 +60,12 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      builder: (context, child) {
+        return ScrollConfiguration(
+          behavior: MyBehavior(),
+          child: child,
+        );
+      },
       debugShowCheckedModeBanner: false,
       title: 'Takvim',
       theme: ThemeData(
@@ -77,7 +78,7 @@ class _MyAppState extends State<MyApp> {
         '/lang': (context) => LangSettingsPage(),
         '/mosque': (context) => MosqueSettingsPage(),
       },
-      home: SafeArea(child: HomePage()),
+      home: HomePage(),
     );
   }
 
@@ -85,5 +86,13 @@ class _MyAppState extends State<MyApp> {
   void dispose() {
     Hive.close();
     super.dispose();
+  }
+}
+
+class MyBehavior extends ScrollBehavior {
+  @override
+  Widget buildViewportChrome(
+      BuildContext context, Widget child, AxisDirection axisDirection) {
+    return child;
   }
 }

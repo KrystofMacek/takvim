@@ -29,7 +29,6 @@ class SettingBtnView extends StatelessWidget {
     }
 
     return Container(
-      padding: EdgeInsets.only(top: 10),
       child: StreamBuilder<bool>(
         stream: _connectivity.isConnected,
         builder: (context, snapshot) {

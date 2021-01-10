@@ -7,9 +7,10 @@ import 'package:takvim/data/models/day_data.dart';
 import 'package:takvim/data/models/language_pack.dart';
 import 'package:takvim/providers/date_provider.dart';
 import 'package:takvim/providers/mosque_provider.dart';
-import './prayer_time_item.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:cross_connectivity/cross_connectivity.dart';
+import './prayer_time_item.dart';
+import '../../common/utils.dart';
+import '../../providers/time_provider.dart';
 
 class DailyDataView extends StatelessWidget {
   const DailyDataView({
@@ -38,73 +39,134 @@ class DailyDataView extends StatelessWidget {
 
           String isha = data.isha.replaceFirst(":", "");
           String ishaTime = data.ishaTime.replaceFirst(":", "");
-          print('replacing : $isha $ishaTime');
 
           bool skipIshaTime = false;
 
           if (int.tryParse(ishaTime) >= int.tryParse(isha)) {
-            print('swap = true');
             skipIshaTime = true;
           }
 
-          return Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              ListView.separated(
-                shrinkWrap: true,
-                itemCount: PRAYER_TIMES.length,
-                itemBuilder: (context, index) {
-                  Map<String, String> dataMap =
-                      _getTimeName(index, _appLang, data);
+          return Consumer(
+            builder: (context, watch, child) {
+              int upcoming = _findUpcoming(data);
+              if (_selectedDate.getDateId() != formatDateToID(DateTime.now())) {
+                upcoming = 8;
+              }
+              return watch(timeProvider).when(
+                  data: (timeData) {
+                    return Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        ListView.separated(
+                          shrinkWrap: true,
+                          itemCount: PRAYER_TIMES.length,
+                          itemBuilder: (context, index) {
+                            Map<String, String> dataMap =
+                                _getTimeName(index, _appLang, data);
 
-                  bool minor = false;
+                            bool isUpcoming = upcoming == index;
 
-                  if (index == 0 || index == 2 || index == 6) {
-                    minor = true;
-                  }
+                            bool minor = false;
 
-                  if (index == 6 && skipIshaTime) {
-                    print('skip = true');
-                    return SizedBox();
-                  }
-                  return PrayerTimeItem(
-                    dataMap: dataMap,
-                    minor: minor,
-                  );
-                },
-                separatorBuilder: (context, index) {
-                  switch (index) {
-                    case 2:
-                    case 4:
-                      return SizedBox(
-                        height: 10,
-                      );
-                    default:
-                      return SizedBox(
-                        height: 0,
-                      );
-                  }
-                },
-              ),
-              SizedBox(
-                height: 20,
-              ),
-              Container(
-                width: double.infinity,
-                child: Text(
-                  '${data.notes}',
-                  style: CustomTextFonts.notesFont,
-                  textAlign: TextAlign.center,
-                  maxLines: 5,
-                ),
-              ),
-            ],
+                            if (index == 0 || index == 2 || index == 6) {
+                              if (isUpcoming) {
+                                isUpcoming = false;
+                                upcoming += 1;
+                              }
+                              minor = true;
+                            }
+
+                            if (index == 6 && skipIshaTime) {
+                              return SizedBox();
+                            }
+                            return PrayerTimeItem(
+                                dataMap: dataMap,
+                                minor: minor,
+                                isUpcoming: isUpcoming,
+                                timeData: timeData);
+                          },
+                          separatorBuilder: (context, index) {
+                            return SizedBox(
+                              height: 2,
+                            );
+                            // switch (index) {
+                            //   case 2:
+                            //   case 4:
+                            //     return SizedBox(
+                            //       height: 10,
+                            //     );
+                            //   default:
+                            //     return SizedBox(
+                            //       height: 0,
+                            //     );
+                            // }
+                          },
+                        ),
+                        SizedBox(
+                          height: 20,
+                        ),
+                        Center(
+                          child: Container(
+                            decoration: BoxDecoration(
+                              color: data.notes.isNotEmpty
+                                  ? Colors.amber[100]
+                                  : Colors.transparent,
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            padding: EdgeInsets.symmetric(
+                                vertical: 5, horizontal: 10),
+                            child: Text(
+                              '${data.notes}',
+                              style: CustomTextFonts.notesFont,
+                              textAlign: TextAlign.center,
+                              maxLines: 5,
+                            ),
+                          ),
+                        ),
+                      ],
+                    );
+                  },
+                  loading: () => Center(
+                        child: CircularProgressIndicator(),
+                      ),
+                  error: (_, __) => Text('Timer Error'));
+            },
           );
         } else {
           return CircularProgressIndicator();
         }
       },
     );
+  }
+
+  int _findUpcoming(DayData data) {
+    List<int> times = [];
+    List<String> values = [
+      data.fajr,
+      data.sabah,
+      data.sunrise,
+      data.dhuhr,
+      data.asr,
+      data.maghrib,
+      data.ishaTime,
+      data.isha
+    ];
+
+    String hour = DateTime.now().hour.toString();
+    String minute = getTwoDigitTime(DateTime.now().minute);
+
+    String hourMin = '$hour$minute' + '01';
+    times.add(int.parse(hourMin));
+
+    values.forEach((value) {
+      int timeValue = getStringTimeAsComparableInt(value + '00');
+      times.add(timeValue);
+    });
+    times.sort();
+    print('sorted times${times.toString()}');
+    int index = times.indexWhere(
+        (element) => (element == getStringTimeAsComparableInt(hourMin)));
+    return index;
   }
 
   Map<String, String> _getTimeName(int index, LanguagePack lang, DayData data) {

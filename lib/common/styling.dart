@@ -13,23 +13,27 @@ class CustomTextFonts {
   static final TextStyle mosqueListOther =
       TextStyle(fontSize: 16, fontStyle: FontStyle.normal);
 
-  static final TextStyle prayerTimesMain = TextStyle(
-      fontSize: 20, fontStyle: FontStyle.normal, color: Colors.teal[700]);
+  static final TextStyle prayerTimesMain =
+      TextStyle(fontSize: 18, fontStyle: FontStyle.normal);
   static final TextStyle prayerTimesMinor = TextStyle(
-      fontSize: 16, fontStyle: FontStyle.italic, color: Colors.teal[200]);
+      fontSize: 16, fontStyle: FontStyle.italic, color: CustomColors.mainColor);
 
   static final TextStyle notesFont = TextStyle(
       fontSize: 16, fontStyle: FontStyle.normal, color: Colors.amber[700]);
 
   static final TextStyle appBarTextItalic =
-      TextStyle(fontSize: 18, fontStyle: FontStyle.italic, color: Colors.white);
+      TextStyle(fontSize: 16, fontStyle: FontStyle.italic, color: Colors.white);
   static final TextStyle appBarTextNormal =
       TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white);
+
+  static final TextStyle countDownNumbers = TextStyle(
+      fontSize: 16, fontStyle: FontStyle.italic, color: CustomColors.mainColor);
 }
 
 class CustomColors {
   static final Color mainColor = Colors.tealAccent[700];
   static final Color cityNameColor = Colors.teal[700];
+  static final Color highlightColor = Color(0xffb2dfdb);
 
   static final MaterialColor swatch = MaterialColor(
     0xFF00bfa5,

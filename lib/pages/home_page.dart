@@ -32,69 +32,93 @@ class HomePage extends StatelessWidget {
           mosqueController,
         );
 
-        return Scaffold(
-          appBar: PreferredSize(
-            preferredSize: Size.fromHeight(70.0),
-            child: AppBar(
-              backgroundColor: CustomColors.mainColor,
-              automaticallyImplyLeading: false,
-              centerTitle: true,
-              flexibleSpace: Center(
-                child: Container(
-                  padding: EdgeInsets.only(top: 10),
-                  width: MediaQuery.of(context).size.width * .6,
-                  child: SelectedMosqueView(
+// AppBar(
+//               shadowColor: CustomColors.mainColor,
+//               elevation: 20,
+//               backgroundColor: CustomColors.mainColor,
+//               automaticallyImplyLeading: false,
+//               centerTitle: true,
+//               flexibleSpace: Container(
+//                 child: SelectedMosqueView(
+//                     mosqueController: _mosqueController,
+//                     selectedMosque: _selectedMosque),
+//               ),
+//               actions: [
+//                 SettingBtnView(appLang: _appLang),
+//               ],
+//             ),
+        return SafeArea(
+          child: Scaffold(
+            appBar: CustomAppBar(
+              height: 70,
+              child: Row(
+                mainAxisSize: MainAxisSize.max,
+                children: [
+                  Flexible(
+                    flex: 1,
+                    fit: FlexFit.tight,
+                    child: SizedBox(),
+                  ),
+                  Flexible(
+                    flex: 4,
+                    fit: FlexFit.tight,
+                    child: SelectedMosqueView(
                       mosqueController: _mosqueController,
-                      selectedMosque: _selectedMosque),
-                ),
+                      selectedMosque: _selectedMosque,
+                    ),
+                  ),
+                  Flexible(
+                    flex: 1,
+                    fit: FlexFit.tight,
+                    child: SettingBtnView(appLang: _appLang),
+                  ),
+                ],
               ),
-              actions: [
-                SettingBtnView(appLang: _appLang),
-              ],
             ),
-          ),
-          body: Container(
-            padding: EdgeInsets.symmetric(vertical: 15, horizontal: 20),
-            child: Center(
-              child: FutureBuilder(
-                future: _langPackController.getAppLangPack(),
-                builder: (BuildContext context, AsyncSnapshot snapshot) {
-                  if (snapshot.hasData) {
-                    return Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Consumer(
-                          builder: (context, watch, child) {
-                            watch(selectedDate.state);
-                            return Column(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                CalendarDayPicker(selectedDate: _selectedDate),
-                                SizedBox(
-                                  height: 10,
-                                ),
-                                DateSelectorRow(
+            body: Container(
+              padding: EdgeInsets.symmetric(vertical: 15, horizontal: 20),
+              child: Center(
+                child: FutureBuilder(
+                  future: _langPackController.getAppLangPack(),
+                  builder: (BuildContext context, AsyncSnapshot snapshot) {
+                    if (snapshot.hasData) {
+                      return Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Consumer(
+                            builder: (context, watch, child) {
+                              watch(selectedDate.state);
+                              return Column(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  CalendarDayPicker(
+                                      selectedDate: _selectedDate),
+                                  SizedBox(
+                                    height: 12,
+                                  ),
+                                  DateSelectorRow(
+                                      selectedDate: _selectedDate,
+                                      appLang: _appLang),
+                                  SizedBox(
+                                    height: 15,
+                                  ),
+                                  DailyDataView(
+                                    mosqueController: _mosqueController,
                                     selectedDate: _selectedDate,
-                                    appLang: _appLang),
-                                SizedBox(
-                                  height: 20,
-                                ),
-                                DailyDataView(
-                                  mosqueController: _mosqueController,
-                                  selectedDate: _selectedDate,
-                                  appLang: _appLang,
-                                ),
-                              ],
-                            );
-                          },
-                        ),
-                      ],
-                    );
-                  } else {
-                    return CircularProgressIndicator();
-                  }
-                },
+                                    appLang: _appLang,
+                                  ),
+                                ],
+                              );
+                            },
+                          ),
+                        ],
+                      );
+                    } else {
+                      return CircularProgressIndicator();
+                    }
+                  },
+                ),
               ),
             ),
           ),

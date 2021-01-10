@@ -23,7 +23,7 @@ class MosqueItem extends ConsumerWidget {
           _mosqueSelector.updateSelectedMosque(data.mosqueId);
         },
         child: Card(
-          color: Colors.blue[100],
+          color: CustomColors.highlightColor,
           child: Container(
             padding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
             child: Column(

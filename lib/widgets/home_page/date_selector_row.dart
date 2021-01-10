@@ -60,7 +60,8 @@ class _DateSelectorRowState extends State<DateSelectorRow>
             children: [
               Material(
                 borderRadius: BorderRadius.circular(50),
-                elevation: 2,
+                elevation: 5,
+                shadowColor: CustomColors.mainColor,
                 color: CustomColors.mainColor,
                 child: IconButton(
                   icon: Icon(
@@ -86,7 +87,8 @@ class _DateSelectorRowState extends State<DateSelectorRow>
                 ],
               ),
               Material(
-                elevation: 2,
+                elevation: 5,
+                shadowColor: CustomColors.mainColor,
                 borderRadius: BorderRadius.circular(50),
                 color: CustomColors.mainColor,
                 child: IconButton(
