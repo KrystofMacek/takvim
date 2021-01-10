@@ -45,6 +45,9 @@ class _MyAppState extends State<MyApp> {
     print('BOX main: $appLang $mosque');
 
     if (appLang == null && mosque == null) {
+      print('BOX main default: $appLang $mosque');
+      prefBox.put('mosque', '1001');
+      prefBox.put('appLang', '101');
       firstOpen = true;
     }
     print('BOX main: $firstOpen');

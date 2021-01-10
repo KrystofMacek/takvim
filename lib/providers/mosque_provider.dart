@@ -78,11 +78,34 @@ class MosqueController extends StateNotifier<MosqueController> {
 
   final Box _prefBox = Hive.box('pref');
 
+  Stream<List<MosqueData>> watchMosques() {
+    print('data? ');
+    List<MosqueData> mosqueList = [];
+    _databaseReference.child('mosques').onValue.listen((event) {
+      print('data? event $event');
+      if (event.snapshot.value != null) {
+        mosqueList = [];
+        event.snapshot.value.forEach((key, value) {
+          print('data? value added ${value.toString()}');
+          mosqueList.add(
+            MosqueData.fromFirebase(value),
+          );
+        });
+        mosqueList.sort((a, b) => a.ort.compareTo(b.ort));
+        _mosqueList.updateList(mosqueList);
+        _filteredMosqueList.updateList(mosqueList);
+      }
+    });
+
+    return Stream.value(mosqueList);
+  }
+
   Future<List<MosqueData>> getListOfMosques() async {
     print('getListOFMosques');
     List<MosqueData> mosques = [];
     final DataSnapshot ref =
         await _databaseReference.child('mosques').orderByChild('Name').once();
+
     if (ref.value != null) {
       ref.value.forEach(
         (key, mosque) => {
@@ -115,7 +138,8 @@ class MosqueController extends StateNotifier<MosqueController> {
           queryVals.asMap().forEach((i, value) {
             value = value.replaceAll(RegExp(r'ë'), 'e');
             value = value.replaceAll(RegExp(r'ü'), 'u');
-            value = value.replaceAll(RegExp(r'ö'), 'ö');
+            value = value.replaceAll(RegExp(r'ö'), 'o');
+            value = value.replaceAll(RegExp(r'ä'), 'a');
 
             queryVals[i] = value;
           });
@@ -126,6 +150,18 @@ class MosqueController extends StateNotifier<MosqueController> {
         },
       ).toList(),
     );
+  }
+
+  Stream<Event> watchMosque(String id) {
+    String savedId = Hive.box('pref').get('mosque');
+    if (id == null) {
+      if (savedId == null) {
+        id = '1001';
+      } else {
+        id = savedId;
+      }
+    }
+    return _databaseReference.child('mosques').child(id).onValue;
   }
 
   Future<MosqueData> getSelectedMosque(String selectedMosque) async {
@@ -152,11 +188,19 @@ class MosqueController extends StateNotifier<MosqueController> {
   }
 
   Stream<Event> getPrayersForDate(String date) {
-    final Stream<Event> ref = _databaseReference
-        .child('prayerTimes')
-        .child(_selectedMosque.state)
-        .child(date)
-        .onValue;
+    Stream<Event> ref;
+    if (_selectedMosque.state == null) {
+      String id = Hive.box('pref').get('mosque');
+      ref =
+          _databaseReference.child('prayerTimes').child(id).child(date).onValue;
+    } else {
+      ref = _databaseReference
+          .child('prayerTimes')
+          .child(_selectedMosque.state)
+          .child(date)
+          .onValue;
+    }
+
     return ref;
   }
 

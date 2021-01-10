@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:takvim/common/styling.dart';
 import 'package:takvim/data/models/mosque_data.dart';
 import 'package:takvim/providers/mosque_provider.dart';
+import 'package:firebase_database/firebase_database.dart';
 
 class SelectedMosqueView extends StatelessWidget {
   const SelectedMosqueView({
@@ -18,28 +19,23 @@ class SelectedMosqueView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<MosqueData>(
-      future: _mosqueController.getSelectedMosque(_selectedMosque),
-      builder: (BuildContext context, AsyncSnapshot<MosqueData> snapshot) {
-        if (snapshot.hasData) {
+    return StreamBuilder<Event>(
+      stream: _mosqueController.watchMosque(_selectedMosque),
+      builder: (BuildContext context, AsyncSnapshot<Event> snapshot) {
+        if (snapshot.hasData &&
+            snapshot.data != null &&
+            snapshot.data.snapshot.value != null) {
+          MosqueData selectedMosqueData =
+              MosqueData.fromFirebase(snapshot.data.snapshot.value);
+
           return Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Container(
-                padding: EdgeInsets.only(top: 10),
-                child: Text(
-                  '${snapshot.data.ort} ${snapshot.data.kanton}',
-                  style: CustomTextFonts.appBarTextNormal,
-                ),
-              ),
-              RichText(
-                textAlign: TextAlign.center,
-                text: TextSpan(children: [
-                  TextSpan(
-                    text: '${snapshot.data.name}',
-                    style: CustomTextFonts.appBarTextItalic,
-                  ),
-                ]),
+              Text('${selectedMosqueData.ort} ${selectedMosqueData.kanton}',
+                  style: CustomTextFonts.appBarTextNormal),
+              Text(
+                '${selectedMosqueData.name}',
+                style: CustomTextFonts.appBarTextItalic,
               ),
             ],
           );
@@ -52,3 +48,36 @@ class SelectedMosqueView extends StatelessWidget {
     );
   }
 }
+
+// FutureBuilder<MosqueData>(
+//       future: _mosqueController.getSelectedMosque(_selectedMosque),
+//       builder: (BuildContext context, AsyncSnapshot<MosqueData> snapshot) {
+//         if (snapshot.hasData) {
+//           return Column(
+//             mainAxisAlignment: MainAxisAlignment.center,
+//             children: [
+//               Container(
+//                 padding: EdgeInsets.only(top: 10),
+//                 child: Text(
+//                   '${snapshot.data.ort} ${snapshot.data.kanton}',
+//                   style: CustomTextFonts.appBarTextNormal,
+//                 ),
+//               ),
+//               RichText(
+//                 textAlign: TextAlign.center,
+//                 text: TextSpan(children: [
+//                   TextSpan(
+//                     text: '${snapshot.data.name}',
+//                     style: CustomTextFonts.appBarTextItalic,
+//                   ),
+//                 ]),
+//               ),
+//             ],
+//           );
+//         } else {
+//           return Center(
+//             child: CircularProgressIndicator(),
+//           );
+//         }
+//       },
+//     );

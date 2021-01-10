@@ -22,6 +22,7 @@ class MosqueSettingsPage extends ConsumerWidget {
     }
 
     SelectedMosque _selectedMosque = watch(selectedMosque);
+    // String _selectedMosqueId = watch(selectedMosque.state);
     final MosqueController _mosqueController = watch(
       mosqueController,
     );
@@ -77,7 +78,15 @@ class MosqueSettingsPage extends ConsumerWidget {
                   SizedBox(
                     height: 10,
                   ),
-                  SelectedMosqueView(mosqueController: _mosqueController),
+                  Consumer(
+                    builder: (context, watch, child) {
+                      String selectedMosqueId = watch(selectedMosque.state);
+                      return SelectedMosqueView(
+                        mosqueController: _mosqueController,
+                        selectedMosqueController: selectedMosqueId,
+                      );
+                    },
+                  ),
                   SizedBox(
                     height: 10,
                   ),
@@ -86,17 +95,18 @@ class MosqueSettingsPage extends ConsumerWidget {
                   SizedBox(
                     height: 5,
                   ),
-                  FutureBuilder(
-                    future: _mosqueController.getListOfMosques(),
-                    initialData: [],
-                    builder: (BuildContext context, AsyncSnapshot snapshot) {
+                  StreamBuilder<List<MosqueData>>(
+                    stream: _mosqueController.watchMosques(),
+                    builder: (BuildContext context,
+                        AsyncSnapshot<List<MosqueData>> snapshot) {
+                      print('has data${snapshot.hasData}');
                       if (snapshot.hasData) {
                         return Consumer(
                           builder: (context, watch, child) {
-                            watch(selectedMosque.state);
-
                             List<MosqueData> filteredList =
                                 watch(filteredMosqueList.state);
+                            String selectedId = watch(selectedMosque.state);
+
                             return Expanded(
                               child: ListView.separated(
                                 itemCount: filteredList.length,
@@ -105,8 +115,8 @@ class MosqueSettingsPage extends ConsumerWidget {
                                 itemBuilder: (context, index) {
                                   MosqueData data = filteredList[index];
 
-                                  bool isSelected = (data.mosqueId ==
-                                      _selectedMosque.getSelectedMosqueId());
+                                  bool isSelected =
+                                      (data.mosqueId == selectedId);
 
                                   return MosqueItem(
                                     data: data,
@@ -131,3 +141,40 @@ class MosqueSettingsPage extends ConsumerWidget {
     );
   }
 }
+
+// FutureBuilder(
+//                     future: _mosqueController.getListOfMosques(),
+//                     initialData: [],
+//                     builder: (BuildContext context, AsyncSnapshot snapshot) {
+//                       if (snapshot.hasData) {
+//                         return Consumer(
+//                           builder: (context, watch, child) {
+//                             watch(selectedMosque.state);
+
+//                             List<MosqueData> filteredList =
+//                                 watch(filteredMosqueList.state);
+//                             return Expanded(
+//                               child: ListView.separated(
+//                                 itemCount: filteredList.length,
+//                                 separatorBuilder: (context, index) =>
+//                                     SizedBox(),
+//                                 itemBuilder: (context, index) {
+//                                   MosqueData data = filteredList[index];
+
+//                                   bool isSelected = (data.mosqueId ==
+//                                       _selectedMosque.getSelectedMosqueId());
+
+//                                   return MosqueItem(
+//                                     data: data,
+//                                     isSelected: isSelected,
+//                                   );
+//                                 },
+//                               ),
+//                             );
+//                           },
+//                         );
+//                       } else {
+//                         return CircularProgressIndicator();
+//                       }
+//                     },
+//                   ),

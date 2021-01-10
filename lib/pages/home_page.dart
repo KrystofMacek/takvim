@@ -17,32 +17,16 @@ class HomePage extends StatelessWidget {
     return Consumer(
       builder: (context, watch, child) {
         final LanguagePack _appLang = watch(appLanguagePackProvider.state);
-        // final LanguagePack _prayerLang = watch(prayerLanguagePackProvider.state);
         final String _selectedMosque = watch(selectedMosque.state);
-
-        // FirebaseDatabase.instance
-        //     .reference()
-        //     .child('prayerTimes')
-        //     .child(_selectedMosque)
-        //     .keepSynced(true);
-
         final LanguagePackController _langPackController = watch(
           languagePackController,
         );
         if (_appLang == null) {
           _langPackController.updateAppLanguage();
         }
-        // if (_prayerLang == null) {
-        //   _langPackController.updatePrayerLanguage();
-        // }
+        // _langPackController.updateAppLanguage();
 
         final SelectedDate _selectedDate = watch(selectedDate);
-        // if (_resumed) {
-        //   print('life $_resumed');
-        //   _selectedDate.updateSelectedDate(DateTime.now());
-        //   didUpdateWidget(this.widget);
-        //   _resumed = false;
-        // }
 
         final MosqueController _mosqueController = watch(
           mosqueController,

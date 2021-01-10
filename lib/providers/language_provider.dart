@@ -43,16 +43,12 @@ class LanguagePackController extends StateNotifier<LanguagePackController> {
   Future<LanguagePack> getAppLangPack() async {
     String language = _prefBox.get('appLang');
     if (language == null) {
-      _prefBox.put('appLang', '100');
-      language = '100';
+      _prefBox.put('appLang', '101');
+      language = '101';
     }
 
     final DataSnapshot langSnap =
         await _firebaseDatabase.child('languages').child(language).once();
-
-    // String lang = await rootBundle.loadString(
-    //   'assets/data/languages/$language.json',
-    // );
 
     LanguagePack newLang = LanguagePack.fromFirebase(langSnap.value);
     if (_appLanguagePackProvider == null) {
@@ -61,9 +57,11 @@ class LanguagePackController extends StateNotifier<LanguagePackController> {
     return newLang;
   }
 
-  void updateAppLanguage() async {
+  Future<bool> updateAppLanguage() async {
     LanguagePack lang = await getAppLangPack();
     _appLanguagePackProvider.setLang(lang);
+
+    return true;
   }
 
   Future<List<LanguagePack>> getLanguages() async {
@@ -79,5 +77,9 @@ class LanguagePackController extends StateNotifier<LanguagePackController> {
     print('languages - ${languagePacks.toString()}');
 
     return languagePacks;
+  }
+
+  Stream<Event> watchLanguages() {
+    return _firebaseDatabase.child('languages').orderByKey().onValue;
   }
 }
