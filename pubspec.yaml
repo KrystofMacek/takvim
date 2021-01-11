@@ -25,6 +25,7 @@ dependencies:
   intl: ^0.16.1
   modal_progress_hud: ^0.1.3
   hooks_riverpod: ^0.12.1
+  
 
 dependency_overrides: 
   flutter_svg: 0.18.0
@@ -34,6 +35,12 @@ dev_dependencies:
     sdk: flutter
   build_runner: ^1.10.11
   hive_generator: ^0.8.2
+  flutter_launcher_icons: "^0.8.0"
+  
+flutter_icons:
+  android: "launcher_icon"
+  ios: true
+  image_path: "assets/icon/icon.png"
 
 flutter:
   uses-material-design: true

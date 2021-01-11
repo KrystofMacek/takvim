@@ -52,7 +52,6 @@ class LangSettingsPage extends ConsumerWidget {
             prefBox.put('appLang', _appLang.languageId);
 
             bool firstOpen = prefBox.get('firstOpen');
-            print('firstopen lang : $firstOpen');
             if (firstOpen) {
               Navigator.pushNamed(context, '/mosque');
             } else {

@@ -79,14 +79,14 @@ class MosqueController extends StateNotifier<MosqueController> {
   final Box _prefBox = Hive.box('pref');
 
   Stream<List<MosqueData>> watchMosques() {
-    print('data? ');
+
     List<MosqueData> mosqueList = [];
     _databaseReference.child('mosques').onValue.listen((event) {
-      print('data? event $event');
+
       if (event.snapshot.value != null) {
         mosqueList = [];
         event.snapshot.value.forEach((key, value) {
-          print('data? value added ${value.toString()}');
+
           mosqueList.add(
             MosqueData.fromFirebase(value),
           );
@@ -101,7 +101,7 @@ class MosqueController extends StateNotifier<MosqueController> {
   }
 
   Future<List<MosqueData>> getListOfMosques() async {
-    print('getListOFMosques');
+
     List<MosqueData> mosques = [];
     final DataSnapshot ref =
         await _databaseReference.child('mosques').orderByChild('Name').once();
@@ -167,7 +167,7 @@ class MosqueController extends StateNotifier<MosqueController> {
   Future<MosqueData> getSelectedMosque(String selectedMosque) async {
     String mosque = _prefBox.get('mosque');
 
-    print('loaded mosque $mosque');
+
     if (mosque == null) {
       _selectedMosque.updateSelectedMosque('1001');
       _prefBox.put('mosque', '1001');

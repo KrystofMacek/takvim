@@ -100,7 +100,7 @@ class MosqueSettingsPage extends ConsumerWidget {
                       stream: _mosqueController.watchMosques(),
                       builder: (BuildContext context,
                           AsyncSnapshot<List<MosqueData>> snapshot) {
-                        print('has data${snapshot.hasData}');
+
                         if (snapshot.hasData) {
                           return Consumer(
                             builder: (context, watch, child) {
