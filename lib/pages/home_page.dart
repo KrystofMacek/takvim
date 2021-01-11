@@ -5,11 +5,8 @@ import 'package:takvim/data/models/language_pack.dart';
 import 'package:takvim/providers/date_provider.dart';
 import 'package:takvim/providers/language_provider.dart';
 import 'package:takvim/providers/mosque_provider.dart';
-import '../common/styling.dart';
 import '../widgets/home_page/home_page_widgets.dart';
 import '../providers/date_provider.dart';
-import 'package:cross_connectivity/cross_connectivity.dart';
-import 'package:firebase_database/firebase_database.dart';
 
 class HomePage extends StatelessWidget {
   @override
@@ -32,21 +29,6 @@ class HomePage extends StatelessWidget {
           mosqueController,
         );
 
-// AppBar(
-//               shadowColor: CustomColors.mainColor,
-//               elevation: 20,
-//               backgroundColor: CustomColors.mainColor,
-//               automaticallyImplyLeading: false,
-//               centerTitle: true,
-//               flexibleSpace: Container(
-//                 child: SelectedMosqueView(
-//                     mosqueController: _mosqueController,
-//                     selectedMosque: _selectedMosque),
-//               ),
-//               actions: [
-//                 SettingBtnView(appLang: _appLang),
-//               ],
-//             ),
         return SafeArea(
           child: Scaffold(
             appBar: CustomAppBar(

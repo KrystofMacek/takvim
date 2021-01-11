@@ -163,7 +163,6 @@ class DailyDataView extends StatelessWidget {
       times.add(timeValue);
     });
     times.sort();
-    print('sorted times${times.toString()}');
     int index = times.indexWhere(
         (element) => (element == getStringTimeAsComparableInt(hourMin)));
     return index;
