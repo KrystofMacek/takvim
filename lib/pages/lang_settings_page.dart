@@ -15,6 +15,7 @@ class LangSettingsPage extends ConsumerWidget {
         watch(languagePackController);
 
     if (_appLang == null) {
+      print('is null');
       _langPackController.updateAppLanguage();
     }
     return SafeArea(
