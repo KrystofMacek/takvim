@@ -27,6 +27,10 @@
 	<key>UIMainStoryboardFile</key>
 	<string>Main</string>
 	<key>UISupportedInterfaceOrientations</key>
+	<key>NSLocationAlwaysInUseDescription</key>
+	<string>This app does NOT use or access users location. Or any other private-sensitive info.</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>This app does NOT use or access users location. Or any other private-sensitive info.</string>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
 		<string>UIInterfaceOrientationLandscapeLeft</string>
