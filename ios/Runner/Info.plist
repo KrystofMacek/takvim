@@ -2,6 +2,10 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>NSLocationAlwaysUsageDescription</key>
+    <string>This app does NOT use or access users location. Or any other private-sensitive info</string>
+    <key>NSLocationWhenInUseUsageDescription</key>
+    <string>This app does NOT use or access users location. Or any other private-sensitive info</string>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleExecutable</key>
@@ -27,10 +31,6 @@
 	<key>UIMainStoryboardFile</key>
 	<string>Main</string>
 	<key>UISupportedInterfaceOrientations</key>
-	<key>NSLocationAlwaysInUseDescription</key>
-	<string>This app does NOT use or access users location. Or any other private-sensitive info.</string>
-	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>This app does NOT use or access users location. Or any other private-sensitive info.</string>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
 		<string>UIInterfaceOrientationLandscapeLeft</string>
