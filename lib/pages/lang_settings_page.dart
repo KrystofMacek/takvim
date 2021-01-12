@@ -18,93 +18,97 @@ class LangSettingsPage extends ConsumerWidget {
       print('is null');
       _langPackController.updateAppLanguage();
     }
-    return SafeArea(
-      child: Scaffold(
-        appBar: AppBar(
-          backgroundColor: CustomColors.mainColor,
-          automaticallyImplyLeading: false,
-          title: Center(
-            child: Consumer(
-              builder: (context, watch, child) {
-                if (_appLang != null) {
-                  return Text(
-                    '${_appLang.selectLanguage}',
-                    style: CustomTextFonts.appBarTextNormal,
+    return Container(
+      color: Theme.of(context).scaffoldBackgroundColor,
+      child: SafeArea(
+        top: false,
+        child: Scaffold(
+          appBar: AppBar(
+            backgroundColor: CustomColors.mainColor,
+            automaticallyImplyLeading: false,
+            title: Center(
+              child: Consumer(
+                builder: (context, watch, child) {
+                  if (_appLang != null) {
+                    return Text(
+                      '${_appLang.selectLanguage}',
+                      style: CustomTextFonts.appBarTextNormal,
+                    );
+                  } else {
+                    return Text(
+                      '',
+                      style: CustomTextFonts.appBarTextNormal,
+                    );
+                  }
+                },
+              ),
+            ),
+          ),
+          floatingActionButton: FloatingActionButton(
+            child: Icon(
+              Icons.check,
+              color: Colors.white,
+            ),
+            backgroundColor: CustomColors.mainColor,
+            onPressed: () {
+              final prefBox = Hive.box('pref');
+
+              prefBox.put('appLang', _appLang.languageId);
+
+              bool firstOpen = prefBox.get('firstOpen');
+              if (firstOpen) {
+                Navigator.pushNamed(context, '/mosque');
+              } else {
+                Navigator.pop(context);
+              }
+            },
+          ),
+          body: Center(
+            child: StreamBuilder<Event>(
+              stream: _langPackController.watchLanguages(),
+              builder: (BuildContext context, AsyncSnapshot<Event> snapshot) {
+                if (snapshot.hasData &&
+                    snapshot.data != null &&
+                    snapshot.data.snapshot.value != null) {
+                  List<LanguagePack> languagePacks = [];
+                  snapshot.data.snapshot.value.forEach((key, value) {
+                    languagePacks.add(
+                      LanguagePack.fromFirebase(value),
+                    );
+                  });
+
+                  return Flex(
+                    direction: Axis.vertical,
+                    children: [
+                      Expanded(
+                        child: ListView.builder(
+                          itemCount: languagePacks.length,
+                          itemBuilder: (context, index) {
+                            bool isSelected = false;
+                            if (_appLang != null) {
+                              if (languagePacks[index].languageId ==
+                                  _appLang.languageId) {
+                                isSelected = true;
+                              }
+                            }
+
+                            String flag = languagePacks[index].flagName;
+                            return LanguageItem(
+                              langPackController: _langPackController,
+                              flag: flag,
+                              pack: languagePacks[index],
+                              isSelected: isSelected,
+                            );
+                          },
+                        ),
+                      ),
+                    ],
                   );
                 } else {
-                  return Text(
-                    '',
-                    style: CustomTextFonts.appBarTextNormal,
-                  );
+                  return CircularProgressIndicator();
                 }
               },
             ),
-          ),
-        ),
-        floatingActionButton: FloatingActionButton(
-          child: Icon(
-            Icons.check,
-            color: Colors.white,
-          ),
-          backgroundColor: CustomColors.mainColor,
-          onPressed: () {
-            final prefBox = Hive.box('pref');
-
-            prefBox.put('appLang', _appLang.languageId);
-
-            bool firstOpen = prefBox.get('firstOpen');
-            if (firstOpen) {
-              Navigator.pushNamed(context, '/mosque');
-            } else {
-              Navigator.pop(context);
-            }
-          },
-        ),
-        body: Center(
-          child: StreamBuilder<Event>(
-            stream: _langPackController.watchLanguages(),
-            builder: (BuildContext context, AsyncSnapshot<Event> snapshot) {
-              if (snapshot.hasData &&
-                  snapshot.data != null &&
-                  snapshot.data.snapshot.value != null) {
-                List<LanguagePack> languagePacks = [];
-                snapshot.data.snapshot.value.forEach((key, value) {
-                  languagePacks.add(
-                    LanguagePack.fromFirebase(value),
-                  );
-                });
-
-                return Flex(
-                  direction: Axis.vertical,
-                  children: [
-                    Expanded(
-                      child: ListView.builder(
-                        itemCount: languagePacks.length,
-                        itemBuilder: (context, index) {
-                          bool isSelected = false;
-                          if (_appLang != null) {
-                            if (languagePacks[index].languageId ==
-                                _appLang.languageId) {
-                              isSelected = true;
-                            }
-                          }
-
-                          String flag = languagePacks[index].flagName;
-                          return LanguageItem(
-                            langPackController: _langPackController,
-                            flag: flag,
-                            pack: languagePacks[index],
-                            isSelected: isSelected,
-                          );
-                        },
-                      ),
-                    ),
-                  ],
-                );
-              } else {
-                return CircularProgressIndicator();
-              }
-            },
           ),
         ),
       ),

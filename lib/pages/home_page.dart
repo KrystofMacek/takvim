@@ -5,6 +5,7 @@ import 'package:takvim/data/models/language_pack.dart';
 import 'package:takvim/providers/date_provider.dart';
 import 'package:takvim/providers/language_provider.dart';
 import 'package:takvim/providers/mosque_provider.dart';
+import '../common/styling.dart';
 import '../widgets/home_page/home_page_widgets.dart';
 import '../providers/date_provider.dart';
 
@@ -29,77 +30,81 @@ class HomePage extends StatelessWidget {
           mosqueController,
         );
 
-        return SafeArea(
-          child: Scaffold(
-            appBar: CustomAppBar(
-              height: 70,
-              child: Row(
-                mainAxisSize: MainAxisSize.max,
-                children: [
-                  Flexible(
-                    flex: 1,
-                    fit: FlexFit.tight,
-                    child: SizedBox(),
-                  ),
-                  Flexible(
-                    flex: 4,
-                    fit: FlexFit.tight,
-                    child: SelectedMosqueView(
-                      mosqueController: _mosqueController,
-                      selectedMosque: _selectedMosque,
+        return Container(
+          color: CustomColors.mainColor,
+          child: SafeArea(
+            bottom: false,
+            child: Scaffold(
+              appBar: CustomAppBar(
+                height: 70,
+                child: Row(
+                  mainAxisSize: MainAxisSize.max,
+                  children: [
+                    Flexible(
+                      flex: 1,
+                      fit: FlexFit.tight,
+                      child: SizedBox(),
                     ),
-                  ),
-                  Flexible(
-                    flex: 1,
-                    fit: FlexFit.tight,
-                    child: SettingBtnView(appLang: _appLang),
-                  ),
-                ],
+                    Flexible(
+                      flex: 4,
+                      fit: FlexFit.tight,
+                      child: SelectedMosqueView(
+                        mosqueController: _mosqueController,
+                        selectedMosque: _selectedMosque,
+                      ),
+                    ),
+                    Flexible(
+                      flex: 1,
+                      fit: FlexFit.tight,
+                      child: SettingBtnView(appLang: _appLang),
+                    ),
+                  ],
+                ),
               ),
-            ),
-            body: Container(
-              padding: EdgeInsets.symmetric(vertical: 15, horizontal: 20),
-              child: Center(
-                child: FutureBuilder(
-                  future: _langPackController.getAppLangPack(),
-                  builder: (BuildContext context, AsyncSnapshot snapshot) {
-                    if (snapshot.hasData) {
-                      return Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Consumer(
-                            builder: (context, watch, child) {
-                              watch(selectedDate.state);
-                              return Column(
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  CalendarDayPicker(
-                                      selectedDate: _selectedDate),
-                                  SizedBox(
-                                    height: 12,
-                                  ),
-                                  DateSelectorRow(
+              body: Container(
+                padding: EdgeInsets.symmetric(vertical: 15, horizontal: 20),
+                child: Center(
+                  child: FutureBuilder(
+                    future: _langPackController.getAppLangPack(),
+                    builder: (BuildContext context, AsyncSnapshot snapshot) {
+                      if (snapshot.hasData) {
+                        return Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Consumer(
+                              builder: (context, watch, child) {
+                                watch(selectedDate.state);
+                                return Column(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    CalendarDayPicker(
+                                        selectedDate: _selectedDate),
+                                    SizedBox(
+                                      height: 12,
+                                    ),
+                                    DateSelectorRow(
+                                        selectedDate: _selectedDate,
+                                        appLang: _appLang),
+                                    SizedBox(
+                                      height: 15,
+                                    ),
+                                    DailyDataView(
+                                      mosqueController: _mosqueController,
                                       selectedDate: _selectedDate,
-                                      appLang: _appLang),
-                                  SizedBox(
-                                    height: 15,
-                                  ),
-                                  DailyDataView(
-                                    mosqueController: _mosqueController,
-                                    selectedDate: _selectedDate,
-                                    appLang: _appLang,
-                                  ),
-                                ],
-                              );
-                            },
-                          ),
-                        ],
-                      );
-                    } else {
-                      return CircularProgressIndicator();
-                    }
-                  },
+                                      appLang: _appLang,
+                                    ),
+                                  ],
+                                );
+                              },
+                            ),
+                          ],
+                        );
+                      } else {
+                        return CircularProgressIndicator();
+                      }
+                    },
+                  ),
                 ),
               ),
             ),
