@@ -21,6 +21,7 @@ class LangSettingsPage extends ConsumerWidget {
     return Container(
       color: CustomColors.mainColor,
       child: SafeArea(
+        bottom: false,
         child: Scaffold(
           appBar: AppBar(
             backgroundColor: CustomColors.mainColor,
