@@ -44,7 +44,7 @@ class DailyDataView extends StatelessWidget {
             builder: (context, watch, child) {
               int upcoming = _findUpcoming(data);
               if (_selectedDate.getDateId() != formatDateToID(DateTime.now())) {
-                upcoming = 8;
+                upcoming = 20;
               }
               return watch(timeProvider).when(
                   data: (timeData) {
