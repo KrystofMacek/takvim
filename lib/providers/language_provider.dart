@@ -50,7 +50,7 @@ class LanguagePackController extends StateNotifier<LanguagePackController> {
     final DataSnapshot langSnap =
         await _firebaseDatabase.child('languages').child(language).once();
 
-    LanguagePack newLang = LanguagePack.fromFirebase(langSnap.value);
+    LanguagePack newLang = LanguagePack.fromFirebase(language, langSnap.value);
     if (_appLanguagePackProvider == null) {
       _appLanguagePackProvider.setLang(newLang);
     }
@@ -71,8 +71,8 @@ class LanguagePackController extends StateNotifier<LanguagePackController> {
 
     List<LanguagePack> languagePacks = [];
 
-    langSnap.value.forEach(
-        (key, value) => languagePacks.add(LanguagePack.fromFirebase(value)));
+    langSnap.value.forEach((key, value) =>
+        languagePacks.add(LanguagePack.fromFirebase(key, value)));
 
     print('languages - ${languagePacks.toString()}');
 

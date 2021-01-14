@@ -72,9 +72,14 @@ class LangSettingsPage extends ConsumerWidget {
                     snapshot.data.snapshot.value != null) {
                   List<LanguagePack> languagePacks = [];
                   snapshot.data.snapshot.value.forEach((key, value) {
+                    print('language key = $key');
                     languagePacks.add(
-                      LanguagePack.fromFirebase(value),
+                      LanguagePack.fromFirebase(key, value),
                     );
+                  });
+                  languagePacks.sort((a, b) => a.key.compareTo(b.key));
+                  languagePacks.forEach((element) {
+                    print(element.key);
                   });
 
                   return Flex(

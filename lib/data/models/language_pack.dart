@@ -5,13 +5,11 @@
 import 'package:meta/meta.dart';
 import 'dart:convert';
 
-LanguagePack languagePackFromJson(String str) =>
-    LanguagePack.fromJson(json.decode(str));
-
 String languagePackToJson(LanguagePack data) => json.encode(data.toJson());
 
 class LanguagePack {
   LanguagePack({
+    @required this.key,
     @required this.app,
     @required this.asr,
     @required this.dhuhr,
@@ -40,6 +38,7 @@ class LanguagePack {
     @required this.sunrise,
   });
 
+  final String key;
   final String app;
   final String asr;
   final String dhuhr;
@@ -68,6 +67,7 @@ class LanguagePack {
   final String sunrise;
 
   LanguagePack copyWith({
+    String key,
     String app,
     String asr,
     String dhuhr,
@@ -96,6 +96,7 @@ class LanguagePack {
     String sunrise,
   }) =>
       LanguagePack(
+        key: key ?? this.key,
         app: app ?? this.app,
         asr: asr ?? this.asr,
         dhuhr: dhuhr ?? this.dhuhr,
@@ -124,35 +125,9 @@ class LanguagePack {
         sunrise: sunrise ?? this.sunrise,
       );
 
-  factory LanguagePack.fromJson(Map<String, dynamic> json) => LanguagePack(
-        app: json["App"],
-        asr: json["Asr"],
-        dhuhr: json["Dhuhr"],
-        dhuhrTime: json["DhuhrTime"],
-        di: json["Di"],
-        languagePackDo: json["Do"],
-        fajr: json["Fajr"],
-        flagName: json["FlagName"],
-        fr: json["Fr"],
-        isha: json["Isha"],
-        ishaTime: json["IshaTime"],
-        language: json["Language"],
-        languageId: json["LanguageID"],
-        languageName: json["LanguageName"],
-        maghrib: json["Maghrib"],
-        mi: json["Mi"],
-        mo: json["Mo"],
-        mosque: json["Mosque"],
-        prayerTimes: json["PrayerTimes"],
-        sa: json["Sa"],
-        sabah: json["Sabah"],
-        search: json["Search"],
-        selectLanguage: json["SelectLanguage"],
-        selectMosque: json["SelectMosque"],
-        so: json["So"],
-        sunrise: json["Sunrise"],
-      );
-  factory LanguagePack.fromFirebase(Map<dynamic, dynamic> json) => LanguagePack(
+  factory LanguagePack.fromFirebase(dynamic key, Map<dynamic, dynamic> json) =>
+      LanguagePack(
+        key: key,
         app: json["App"],
         asr: json["Asr"],
         dhuhr: json["Dhuhr"],
