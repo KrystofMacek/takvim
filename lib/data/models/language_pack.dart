@@ -15,6 +15,7 @@ class LanguagePack {
     @required this.app,
     @required this.asr,
     @required this.dhuhr,
+    @required this.dhuhrTime,
     @required this.di,
     @required this.languagePackDo,
     @required this.fajr,
@@ -42,6 +43,7 @@ class LanguagePack {
   final String app;
   final String asr;
   final String dhuhr;
+  final String dhuhrTime;
   final String di;
   final String languagePackDo;
   final String fajr;
@@ -69,6 +71,7 @@ class LanguagePack {
     String app,
     String asr,
     String dhuhr,
+    String dhuhrTime,
     String di,
     String languagePackDo,
     String fajr,
@@ -96,6 +99,7 @@ class LanguagePack {
         app: app ?? this.app,
         asr: asr ?? this.asr,
         dhuhr: dhuhr ?? this.dhuhr,
+        dhuhrTime: dhuhrTime ?? this.dhuhrTime,
         di: di ?? this.di,
         languagePackDo: languagePackDo ?? this.languagePackDo,
         fajr: fajr ?? this.fajr,
@@ -124,6 +128,7 @@ class LanguagePack {
         app: json["App"],
         asr: json["Asr"],
         dhuhr: json["Dhuhr"],
+        dhuhrTime: json["DhuhrTime"],
         di: json["Di"],
         languagePackDo: json["Do"],
         fajr: json["Fajr"],
@@ -151,6 +156,7 @@ class LanguagePack {
         app: json["App"],
         asr: json["Asr"],
         dhuhr: json["Dhuhr"],
+        dhuhrTime: json["DhuhrTime"],
         di: json["Di"],
         languagePackDo: json["Do"],
         fajr: json["Fajr"],
@@ -179,6 +185,7 @@ class LanguagePack {
         "App": app,
         "Asr": asr,
         "Dhuhr": dhuhr,
+        "DhuhrTime": dhuhrTime,
         "Di": di,
         "Do": languagePackDo,
         "Fajr": fajr,

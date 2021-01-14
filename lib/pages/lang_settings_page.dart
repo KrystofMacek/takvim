@@ -19,9 +19,8 @@ class LangSettingsPage extends ConsumerWidget {
       _langPackController.updateAppLanguage();
     }
     return Container(
-      color: Theme.of(context).scaffoldBackgroundColor,
+      color: CustomColors.mainColor,
       child: SafeArea(
-        top: false,
         child: Scaffold(
           appBar: AppBar(
             backgroundColor: CustomColors.mainColor,

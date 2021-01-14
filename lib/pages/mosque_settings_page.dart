@@ -31,9 +31,8 @@ class MosqueSettingsPage extends ConsumerWidget {
     );
 
     return Container(
-      color: Theme.of(context).scaffoldBackgroundColor,
+      color: CustomColors.mainColor,
       child: SafeArea(
-        top: false,
         child: Scaffold(
           appBar: AppBar(
             backgroundColor: CustomColors.mainColor,

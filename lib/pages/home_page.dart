@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/all.dart';
-import 'package:hooks_riverpod/all.dart';
 import 'package:takvim/data/models/language_pack.dart';
 import 'package:takvim/providers/date_provider.dart';
 import 'package:takvim/providers/language_provider.dart';

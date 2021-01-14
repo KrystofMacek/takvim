@@ -18,6 +18,7 @@ class DayData {
     @required this.sabah,
     @required this.sunrise,
     @required this.dhuhr,
+    @required this.dhuhrTime,
     @required this.asr,
     @required this.maghrib,
     @required this.ishaTime,
@@ -31,6 +32,7 @@ class DayData {
   final String sabah;
   final String sunrise;
   final String dhuhr;
+  final String dhuhrTime;
   final String asr;
   final String maghrib;
   final String ishaTime;
@@ -44,6 +46,7 @@ class DayData {
     String sabah,
     String sunrise,
     String dhuhr,
+    String dhuhrTime,
     String asr,
     String maghrib,
     String ishaTime,
@@ -57,6 +60,7 @@ class DayData {
         sabah: sabah ?? this.sabah,
         sunrise: sunrise ?? this.sunrise,
         dhuhr: dhuhr ?? this.dhuhr,
+        dhuhrTime: dhuhrTime ?? this.dhuhrTime,
         asr: asr ?? this.asr,
         maghrib: maghrib ?? this.maghrib,
         ishaTime: ishaTime ?? this.ishaTime,
@@ -71,6 +75,7 @@ class DayData {
         sabah: json["Sabah"],
         sunrise: json["Sunrise"],
         dhuhr: json["Dhuhr"],
+        dhuhrTime: json["DhuhrTime"],
         asr: json["Asr"],
         maghrib: json["Maghrib"],
         ishaTime: json["IshaTime"],
@@ -85,6 +90,7 @@ class DayData {
         sabah: json["Sabah"],
         sunrise: json["Sunrise"],
         dhuhr: json["Dhuhr"],
+        dhuhrTime: json["DhuhrTime"],
         asr: json["Asr"],
         maghrib: json["Maghrib"],
         ishaTime: json["IshaTime"],
@@ -99,6 +105,7 @@ class DayData {
         "Sabah": sabah,
         "Sunrise": sunrise,
         "Dhuhr": dhuhr,
+        "DhuhrTime": dhuhrTime,
         "Asr": asr,
         "Maghrib": maghrib,
         "IshaTime": ishaTime,

@@ -22,6 +22,7 @@ const PRAYER_TIMES = [
   'Fajr',
   'Sabah',
   'Sunrise',
+  'DhuhrTime',
   'Dhuhr',
   'Asr',
   'Maghrib',

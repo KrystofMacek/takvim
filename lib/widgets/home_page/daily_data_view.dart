@@ -37,14 +37,8 @@ class DailyDataView extends StatelessWidget {
             snapshot.data.snapshot.value != null) {
           DayData data = DayData.fromFirebase(snapshot.data.snapshot.value);
 
-          String isha = data.isha.replaceFirst(":", "");
-          String ishaTime = data.ishaTime.replaceFirst(":", "");
-
-          bool skipIshaTime = false;
-
-          if (int.tryParse(ishaTime) >= int.tryParse(isha)) {
-            skipIshaTime = true;
-          }
+          bool skipIshaTime = _skipTime(data, PRAYER_TIMES[7]);
+          bool skipDhuhrTime = _skipTime(data, PRAYER_TIMES[3]);
 
           return Consumer(
             builder: (context, watch, child) {
@@ -68,7 +62,10 @@ class DailyDataView extends StatelessWidget {
 
                             bool minor = false;
 
-                            if (index == 0 || index == 2 || index == 6) {
+                            if (index == 0 ||
+                                index == 3 ||
+                                index == 2 ||
+                                index == 7) {
                               if (isUpcoming) {
                                 isUpcoming = false;
                                 upcoming += 1;
@@ -76,7 +73,10 @@ class DailyDataView extends StatelessWidget {
                               minor = true;
                             }
 
-                            if (index == 6 && skipIshaTime) {
+                            if (index == 7 && skipIshaTime) {
+                              return SizedBox();
+                            }
+                            if (index == 3 && skipDhuhrTime) {
                               return SizedBox();
                             }
                             return PrayerTimeItem(
@@ -89,17 +89,6 @@ class DailyDataView extends StatelessWidget {
                             return SizedBox(
                               height: 2,
                             );
-                            // switch (index) {
-                            //   case 2:
-                            //   case 4:
-                            //     return SizedBox(
-                            //       height: 10,
-                            //     );
-                            //   default:
-                            //     return SizedBox(
-                            //       height: 0,
-                            //     );
-                            // }
                           },
                         ),
                         SizedBox(
@@ -139,12 +128,38 @@ class DailyDataView extends StatelessWidget {
     );
   }
 
+  bool _skipTime(DayData data, String time) {
+    bool skip = false;
+    switch (time) {
+      case 'IshaTime':
+        String isha = data.isha.replaceFirst(":", "");
+        String ishaTime = data.ishaTime.replaceFirst(":", "");
+
+        if (int.tryParse(ishaTime) >= int.tryParse(isha)) {
+          skip = true;
+        }
+        break;
+      case 'DhuhrTime':
+        String dhuhr = data.dhuhr.replaceFirst(":", "");
+        String dhuhrTime = data.dhuhrTime.replaceFirst(":", "");
+
+        if (int.tryParse(dhuhrTime) >= int.tryParse(dhuhr)) {
+          skip = true;
+        }
+        break;
+      default:
+    }
+
+    return skip;
+  }
+
   int _findUpcoming(DayData data) {
     List<int> times = [];
     List<String> values = [
       data.fajr,
       data.sabah,
       data.sunrise,
+      data.dhuhrTime,
       data.dhuhr,
       data.asr,
       data.maghrib,
@@ -189,6 +204,10 @@ class DailyDataView extends StatelessWidget {
       case 'Dhuhr':
         timeName.update('name', (value) => lang.dhuhr);
         timeName.update('time', (value) => data.dhuhr);
+        break;
+      case 'DhuhrTime':
+        timeName.update('name', (value) => lang.dhuhrTime);
+        timeName.update('time', (value) => data.dhuhrTime);
         break;
       case 'Asr':
         timeName.update('name', (value) => lang.asr);
