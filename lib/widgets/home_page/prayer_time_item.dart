@@ -47,7 +47,7 @@ class PrayerTimeItem extends StatelessWidget {
         shadowColor: CustomColors.highlightColor,
         color: isUpcoming ? CustomColors.highlightColor : Colors.white,
         child: Container(
-          padding: EdgeInsets.symmetric(vertical: 8, horizontal: 10),
+          padding: EdgeInsets.symmetric(vertical: 7, horizontal: 10),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
