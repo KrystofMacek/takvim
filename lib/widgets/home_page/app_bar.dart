@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../common/styling.dart';
+import 'package:takvim/common/styling.dart';
 
 class CustomAppBar extends PreferredSize {
   final Widget child;
