@@ -21,7 +21,6 @@ class SelectedDate extends StateNotifier<DateTime> {
   }
 
   void updateSelectedDate(DateTime date) {
-    print('state = updateing date');
     state = date;
   }
 

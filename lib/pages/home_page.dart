@@ -21,7 +21,6 @@ class HomePage extends StatelessWidget {
         if (_appLang == null) {
           _langPackController.updateAppLanguage();
         }
-        // _langPackController.updateAppLanguage();
 
         final SelectedDate _selectedDate = watch(selectedDate);
 
