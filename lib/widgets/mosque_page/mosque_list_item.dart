@@ -47,7 +47,10 @@ class MosqueItem extends ConsumerWidget {
                           maxWidth: MediaQuery.of(context).size.width * 0.7),
                       child: AutoSizeText(
                         '${data.name}',
-                        style: Theme.of(context).textTheme.subtitle2,
+                        style: Theme.of(context)
+                            .textTheme
+                            .headline4
+                            .copyWith(color: Colors.black),
                         maxLines: 1,
                       ),
                     ),
@@ -104,7 +107,10 @@ class MosqueItem extends ConsumerWidget {
                           maxWidth: MediaQuery.of(context).size.width * 0.7),
                       child: AutoSizeText(
                         '${data.name}',
-                        style: Theme.of(context).textTheme.subtitle2,
+                        style: Theme.of(context)
+                            .textTheme
+                            .subtitle1
+                            .copyWith(fontStyle: FontStyle.italic),
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                       ),

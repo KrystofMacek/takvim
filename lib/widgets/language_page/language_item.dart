@@ -49,7 +49,8 @@ class LanguageItem extends ConsumerWidget {
                       children: [
                         Text(
                           '${pack.languageName}',
-                          style: Theme.of(context).textTheme.bodyText1,
+                          style: Theme.of(context).textTheme.headline4.copyWith(
+                              color: Colors.black, fontStyle: FontStyle.normal),
                         ),
                       ],
                     )
@@ -82,7 +83,10 @@ class LanguageItem extends ConsumerWidget {
                   children: [
                     Text(
                       '${pack.languageName}',
-                      style: Theme.of(context).textTheme.bodyText1,
+                      style: Theme.of(context)
+                          .textTheme
+                          .headline4
+                          .copyWith(fontStyle: FontStyle.normal),
                     ),
                   ],
                 )

@@ -117,6 +117,10 @@ class _MyAppState extends State<MyApp> {
                   fontSize: 20,
                   fontWeight: FontWeight.w400,
                   color: Colors.white),
+              headline4: TextStyle(
+                  fontSize: 16,
+                  fontStyle: FontStyle.italic,
+                  color: Colors.white),
               subtitle2: TextStyle(
                   fontSize: 16,
                   fontStyle: FontStyle.italic,
@@ -165,6 +169,10 @@ class _MyAppState extends State<MyApp> {
               headline3: TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.w400,
+                  color: Colors.black),
+              headline4: TextStyle(
+                  fontSize: 16,
+                  fontStyle: FontStyle.italic,
                   color: Colors.black),
               subtitle2: TextStyle(
                   fontSize: 16,

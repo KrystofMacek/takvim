@@ -22,6 +22,7 @@ class MosqueDetailPage extends ConsumerWidget {
     return Container(
       color: Theme.of(context).primaryColor,
       child: SafeArea(
+        bottom: false,
         child: Scaffold(
           appBar: CustomAppBar(
             height: 70,
@@ -41,7 +42,7 @@ class MosqueDetailPage extends ConsumerWidget {
           ),
           body: Center(
             child: Container(
-              padding: EdgeInsets.only(left: 30),
+              padding: EdgeInsets.symmetric(horizontal: 60, vertical: 30),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
@@ -66,239 +67,180 @@ class DetailsContent extends ConsumerWidget {
     final MosqueData data = watch(selectedMosqueDetail.state);
     var autoSizeGroup = AutoSizeGroup();
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        SizedBox(
-          height: 30,
-        ),
         Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  children: [
-                    FaIcon(
-                      FontAwesomeIcons.mosque,
-                      color: Theme.of(context).colorScheme.secondaryVariant,
-                      size: 18,
-                    ),
-                    SizedBox(
-                      width: 20,
-                    ),
-                    GestureDetector(
-                      onTap: () async {},
-                      child: ConstrainedBox(
-                        constraints: BoxConstraints(
-                            maxWidth: MediaQuery.of(context).size.width * .65),
-                        child: AutoSizeText(
-                          '${data.offiziellerName}',
-                          style: Theme.of(context).textTheme.headline3,
-                          group: autoSizeGroup,
-                          wrapWords: false,
-                          maxLines: 1,
-                        ),
-                      ),
-                    ),
-                  ],
+            GestureDetector(
+              onTap: () async {},
+              child: ConstrainedBox(
+                constraints: BoxConstraints(
+                    maxWidth: MediaQuery.of(context).size.width * .65),
+                child: AutoSizeText(
+                  '${data.offiziellerName}',
+                  style: Theme.of(context).textTheme.headline3,
+                  group: autoSizeGroup,
+                  wrapWords: false,
+                  maxLines: 1,
                 ),
-                SizedBox(
-                  height: 15,
-                ),
-                GestureDetector(
-                  onTap: () async {
-                    String url =
-                        'https://www.google.com/maps/search/?api=1&query=${data.strasse}+${data.plz}+${data.ort}+${data.kanton}';
-                    if (await canLaunch(url)) {
-                      await launch(url);
-                    } else {
-                      throw 'Could not launch $url';
-                    }
-                  },
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      FaIcon(
-                        FontAwesomeIcons.mapMarked,
-                        color: Theme.of(context).colorScheme.secondaryVariant,
-                        size: 18,
-                      ),
-                      SizedBox(
-                        width: 20,
-                      ),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          ConstrainedBox(
-                            constraints: BoxConstraints(
-                                maxWidth:
-                                    MediaQuery.of(context).size.width * .65),
-                            child: AutoSizeText(
-                              '${data.strasse}',
-                              group: autoSizeGroup,
-                              style: Theme.of(context).textTheme.headline3,
-                              maxLines: 1,
-                            ),
-                          ),
-                          ConstrainedBox(
-                            constraints: BoxConstraints(
-                                maxWidth:
-                                    MediaQuery.of(context).size.width * .65),
-                            child: AutoSizeText(
-                              '${data.plz} ${data.ort} ${data.kanton}',
-                              group: autoSizeGroup,
-                              style: Theme.of(context).textTheme.headline3,
-                              maxLines: 1,
-                            ),
-                          ),
-                        ],
-                      ),
-                      SizedBox(
-                        width: 20,
-                      ),
-                      FaIcon(
-                        FontAwesomeIcons.arrowCircleRight,
-                        color: Theme.of(context).colorScheme.secondaryVariant,
-                        size: 20,
-                      )
-                    ],
-                  ),
-                ),
-                SizedBox(
-                  height: 15,
-                ),
-                GestureDetector(
-                  onTap: () async {
-                    String url = 'tel:${data.telefon}';
-                    if (await canLaunch(url)) {
-                      await launch(url);
-                    } else {
-                      throw 'Could not launch $url';
-                    }
-                  },
-                  child: Row(
-                    children: [
-                      FaIcon(
-                        FontAwesomeIcons.phone,
-                        color: Theme.of(context).colorScheme.secondaryVariant,
-                        size: 18,
-                      ),
-                      SizedBox(
-                        width: 20,
-                      ),
-                      ConstrainedBox(
-                        constraints: BoxConstraints(
-                            maxWidth: MediaQuery.of(context).size.width * .65),
-                        child: AutoSizeText(
-                          '${data.telefon}',
-                          group: autoSizeGroup,
-                          style: Theme.of(context).textTheme.headline3,
-                          maxLines: 1,
-                        ),
-                      ),
-                      SizedBox(
-                        width: 20,
-                      ),
-                      FaIcon(
-                        FontAwesomeIcons.arrowCircleRight,
-                        color: Theme.of(context).colorScheme.secondaryVariant,
-                        size: 20,
-                      )
-                    ],
-                  ),
-                ),
-                SizedBox(
-                  height: 15,
-                ),
-                GestureDetector(
-                  onTap: () async {
-                    String url = 'http://${data.website}';
-                    if (await canLaunch(url)) {
-                      await launch(url);
-                    } else {
-                      throw 'Could not launch $url';
-                    }
-                  },
-                  child: Row(
-                    children: [
-                      FaIcon(
-                        FontAwesomeIcons.link,
-                        color: Theme.of(context).colorScheme.secondaryVariant,
-                        size: 18,
-                      ),
-                      SizedBox(
-                        width: 20,
-                      ),
-                      ConstrainedBox(
-                        constraints: BoxConstraints(
-                            maxWidth: MediaQuery.of(context).size.width * .65),
-                        child: AutoSizeText(
-                          '${data.website}',
-                          group: autoSizeGroup,
-                          style: Theme.of(context).textTheme.headline3,
-                          maxLines: 1,
-                        ),
-                      ),
-                      SizedBox(
-                        width: 20,
-                      ),
-                      FaIcon(
-                        FontAwesomeIcons.arrowCircleRight,
-                        color: Theme.of(context).colorScheme.secondaryVariant,
-                        size: 20,
-                      )
-                    ],
-                  ),
-                ),
-                SizedBox(
-                  height: 15,
-                ),
-                GestureDetector(
-                  onTap: () async {
-                    String url = 'mailto:${data.email}';
-                    if (await canLaunch(url)) {
-                      await launch(url);
-                    } else {
-                      throw 'Could not launch $url';
-                    }
-                  },
-                  child: Row(
-                    children: [
-                      FaIcon(
-                        FontAwesomeIcons.envelope,
-                        color: Theme.of(context).colorScheme.secondaryVariant,
-                        size: 18,
-                      ),
-                      SizedBox(
-                        width: 20,
-                      ),
-                      ConstrainedBox(
-                        constraints: BoxConstraints(
-                            maxWidth: MediaQuery.of(context).size.width * .65),
-                        child: AutoSizeText(
-                          '${data.email}',
-                          group: autoSizeGroup,
-                          style: Theme.of(context).textTheme.headline3,
-                          maxLines: 1,
-                        ),
-                      ),
-                      SizedBox(
-                        width: 20,
-                      ),
-                      FaIcon(
-                        FontAwesomeIcons.arrowCircleRight,
-                        color: Theme.of(context).colorScheme.secondaryVariant,
-                        size: 20,
-                      )
-                    ],
-                  ),
-                ),
-                SizedBox(
-                  height: 25,
-                ),
-              ],
-            )
+              ),
+            ),
           ],
+        ),
+        SizedBox(
+          height: 25,
+        ),
+        GestureDetector(
+          onTap: () async {
+            String url =
+                'https://www.google.com/maps/search/?api=1&query=${data.strasse}+${data.plz}+${data.ort}+${data.kanton}';
+
+            try {
+              await launch(url);
+            } catch (e) {
+              print(e);
+            }
+          },
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  ConstrainedBox(
+                    constraints: BoxConstraints(
+                        maxWidth: MediaQuery.of(context).size.width * .65),
+                    child: AutoSizeText(
+                      '${data.strasse}',
+                      group: autoSizeGroup,
+                      style: Theme.of(context).textTheme.headline3,
+                      maxLines: 1,
+                    ),
+                  ),
+                  ConstrainedBox(
+                    constraints: BoxConstraints(
+                        maxWidth: MediaQuery.of(context).size.width * .65),
+                    child: AutoSizeText(
+                      '${data.plz} ${data.ort} ${data.kanton}',
+                      group: autoSizeGroup,
+                      style: Theme.of(context).textTheme.headline3,
+                      maxLines: 1,
+                    ),
+                  ),
+                ],
+              ),
+              FaIcon(
+                FontAwesomeIcons.mapMarked,
+                color: Theme.of(context).colorScheme.secondaryVariant,
+                size: 22,
+              ),
+            ],
+          ),
+        ),
+        SizedBox(
+          height: 25,
+        ),
+        GestureDetector(
+          onTap: () async {
+            String url = 'tel:${data.telefon}';
+            if (await canLaunch(url)) {
+              await launch(url);
+            } else {
+              throw 'Could not launch $url';
+            }
+          },
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              ConstrainedBox(
+                constraints: BoxConstraints(
+                    maxWidth: MediaQuery.of(context).size.width * .65),
+                child: AutoSizeText(
+                  '${data.telefon}',
+                  group: autoSizeGroup,
+                  style: Theme.of(context).textTheme.headline3,
+                  maxLines: 1,
+                ),
+              ),
+              FaIcon(
+                FontAwesomeIcons.phone,
+                color: Theme.of(context).colorScheme.secondaryVariant,
+                size: 22,
+              ),
+            ],
+          ),
+        ),
+        SizedBox(
+          height: 25,
+        ),
+        GestureDetector(
+          onTap: () async {
+            String url = 'http://${data.website}';
+            if (await canLaunch(url)) {
+              await launch(url);
+            } else {
+              throw 'Could not launch $url';
+            }
+          },
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              ConstrainedBox(
+                constraints: BoxConstraints(
+                    maxWidth: MediaQuery.of(context).size.width * .65),
+                child: AutoSizeText(
+                  '${data.website}',
+                  group: autoSizeGroup,
+                  style: Theme.of(context).textTheme.headline3,
+                  maxLines: 1,
+                ),
+              ),
+              FaIcon(
+                FontAwesomeIcons.link,
+                color: Theme.of(context).colorScheme.secondaryVariant,
+                size: 22,
+              ),
+            ],
+          ),
+        ),
+        SizedBox(
+          height: 25,
+        ),
+        GestureDetector(
+          onTap: () async {
+            String url = 'mailto:${data.email}';
+            if (await canLaunch(url)) {
+              await launch(url);
+            } else {
+              throw 'Could not launch $url';
+            }
+          },
+          child: Row(
+            mainAxisSize: MainAxisSize.max,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              ConstrainedBox(
+                constraints: BoxConstraints(
+                    maxWidth: MediaQuery.of(context).size.width * .65),
+                child: AutoSizeText(
+                  '${data.email}',
+                  group: autoSizeGroup,
+                  style: Theme.of(context).textTheme.headline3,
+                  maxLines: 1,
+                ),
+              ),
+              FaIcon(
+                FontAwesomeIcons.envelope,
+                color: Theme.of(context).colorScheme.secondaryVariant,
+                size: 22,
+              ),
+            ],
+          ),
+        ),
+        SizedBox(
+          height: 25,
         ),
       ],
     );

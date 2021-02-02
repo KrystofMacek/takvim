@@ -36,7 +36,7 @@ class MosqueSettingsPage extends ConsumerWidget {
     return Container(
       color: Theme.of(context).primaryColor,
       child: SafeArea(
-        bottom: true,
+        bottom: false,
         child: Scaffold(
           appBar: CustomAppBar(
             height: 70,
