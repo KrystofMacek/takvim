@@ -2,7 +2,6 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:takvim/common/constants.dart';
-import 'package:takvim/common/styling.dart';
 import 'package:takvim/data/models/day_data.dart';
 import 'package:takvim/data/models/language_pack.dart';
 import 'package:takvim/providers/date_provider.dart';
@@ -98,7 +97,7 @@ class DailyDataView extends StatelessWidget {
                           child: Container(
                             decoration: BoxDecoration(
                               color: data.notes.isNotEmpty
-                                  ? Colors.amber[100]
+                                  ? Theme.of(context).colorScheme.primaryVariant
                                   : Colors.transparent,
                               borderRadius: BorderRadius.circular(10),
                             ),
@@ -106,7 +105,7 @@ class DailyDataView extends StatelessWidget {
                                 vertical: 5, horizontal: 10),
                             child: Text(
                               '${data.notes}',
-                              style: CustomTextFonts.notesFont,
+                              style: Theme.of(context).textTheme.headline3,
                               textAlign: TextAlign.center,
                               maxLines: 5,
                             ),

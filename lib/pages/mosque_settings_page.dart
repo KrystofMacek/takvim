@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/all.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:hive/hive.dart';
 import 'package:takvim/data/models/language_pack.dart';
 import 'package:takvim/data/models/mosque_data.dart';
 import 'package:takvim/providers/language_provider.dart';
 import 'package:takvim/providers/mosque_provider.dart';
+import 'package:takvim/widgets/home_page/app_bar.dart';
+import 'package:takvim/widgets/mosque_page/app_bar_content.dart';
 import '../common/styling.dart';
 import '../widgets/mosque_page/mosque_page_widgets.dart';
 import '../providers/date_provider.dart';
@@ -31,26 +34,22 @@ class MosqueSettingsPage extends ConsumerWidget {
     );
 
     return Container(
-      color: Theme.of(context).scaffoldBackgroundColor,
+      color: Theme.of(context).primaryColor,
       child: SafeArea(
-        top: false,
         bottom: true,
         child: Scaffold(
-          appBar: AppBar(
-            backgroundColor: CustomColors.mainColor,
-            automaticallyImplyLeading: false,
-            title: Center(
-                child: Text(
-              '${_appLang.selectMosque}',
-              style: CustomTextFonts.appBarTextNormal,
-            )),
+          appBar: CustomAppBar(
+            height: 70,
+            child: MosqueSettingsAppBarContent(appLang: _appLang),
+          ),
+          drawer: _DrawerMosqSettingPage(
+            languagePack: _appLang,
           ),
           floatingActionButton: FloatingActionButton(
-            child: Icon(
-              Icons.check,
-              color: Colors.white,
+            child: FaIcon(
+              FontAwesomeIcons.check,
             ),
-            backgroundColor: CustomColors.mainColor,
+            backgroundColor: Theme.of(context).primaryColor,
             onPressed: () {
               final prefBox = Hive.box('pref');
 
@@ -76,7 +75,7 @@ class MosqueSettingsPage extends ConsumerWidget {
                 Navigator.pushNamed(context, '/home');
               } else {
                 _selectedDateController.updateSelectedDate(DateTime.now());
-                Navigator.pop(context);
+                Navigator.popUntil(context, ModalRoute.withName('/home'));
               }
             },
           ),
@@ -124,10 +123,15 @@ class MosqueSettingsPage extends ConsumerWidget {
 
                                 return Expanded(
                                   child: ListView.separated(
-                                    itemCount: filteredList.length,
+                                    itemCount: filteredList.length + 1,
                                     separatorBuilder: (context, index) =>
                                         SizedBox(),
                                     itemBuilder: (context, index) {
+                                      if (index == filteredList.length) {
+                                        return SizedBox(
+                                          height: 80,
+                                        );
+                                      }
                                       MosqueData data = filteredList[index];
 
                                       bool isSelected =
@@ -159,39 +163,78 @@ class MosqueSettingsPage extends ConsumerWidget {
   }
 }
 
-// FutureBuilder(
-//                     future: _mosqueController.getListOfMosques(),
-//                     initialData: [],
-//                     builder: (BuildContext context, AsyncSnapshot snapshot) {
-//                       if (snapshot.hasData) {
-//                         return Consumer(
-//                           builder: (context, watch, child) {
-//                             watch(selectedMosque.state);
+class _DrawerMosqSettingPage extends StatelessWidget {
+  const _DrawerMosqSettingPage({
+    Key key,
+    LanguagePack languagePack,
+  })  : _languagePack = languagePack,
+        super(key: key);
 
-//                             List<MosqueData> filteredList =
-//                                 watch(filteredMosqueList.state);
-//                             return Expanded(
-//                               child: ListView.separated(
-//                                 itemCount: filteredList.length,
-//                                 separatorBuilder: (context, index) =>
-//                                     SizedBox(),
-//                                 itemBuilder: (context, index) {
-//                                   MosqueData data = filteredList[index];
+  final LanguagePack _languagePack;
 
-//                                   bool isSelected = (data.mosqueId ==
-//                                       _selectedMosque.getSelectedMosqueId());
-
-//                                   return MosqueItem(
-//                                     data: data,
-//                                     isSelected: isSelected,
-//                                   );
-//                                 },
-//                               ),
-//                             );
-//                           },
-//                         );
-//                       } else {
-//                         return CircularProgressIndicator();
-//                       }
-//                     },
-//                   ),
+  @override
+  Widget build(BuildContext context) {
+    return Drawer(
+      child: Flex(
+        direction: Axis.vertical,
+        children: [
+          Expanded(
+            child: ListView(
+              padding: EdgeInsets.zero,
+              children: <Widget>[
+                ListTile(
+                  contentPadding:
+                      EdgeInsets.symmetric(horizontal: 20, vertical: 8),
+                  leading: FaIcon(
+                    FontAwesomeIcons.bars,
+                    size: 24,
+                  ),
+                  onTap: () {
+                    Navigator.pop(context);
+                  },
+                ),
+                ListTile(
+                  contentPadding:
+                      EdgeInsets.symmetric(horizontal: 15, vertical: 8),
+                  leading: FaIcon(
+                    FontAwesomeIcons.mosque,
+                    size: 22,
+                  ),
+                  title: Text('${_languagePack.selectMosque}'),
+                  onTap: () {
+                    Navigator.popAndPushNamed(context, '/mosque');
+                  },
+                ),
+                ListTile(
+                  contentPadding:
+                      EdgeInsets.symmetric(horizontal: 15, vertical: 8),
+                  leading: FaIcon(
+                    FontAwesomeIcons.globe,
+                    size: 28,
+                  ),
+                  title: Text('${_languagePack.selectLanguage}'),
+                  onTap: () {
+                    Navigator.popAndPushNamed(context, '/lang');
+                  },
+                ),
+                ListTile(
+                  contentPadding:
+                      EdgeInsets.symmetric(horizontal: 15, vertical: 8),
+                  leading: Icon(
+                    Icons.wb_sunny,
+                    size: 28,
+                  ),
+                  title: Text('${_languagePack.appTheme}'),
+                  onTap: () {
+                    currentTheme.switchTheme(Hive.box('pref'));
+                    // Navigator.pop(context);
+                  },
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}

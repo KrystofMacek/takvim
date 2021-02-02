@@ -3,7 +3,7 @@ description: A new Flutter project.
 
 publish_to: "none" # Remove this line if you wish to publish to pub.dev
 
-version: 1.0.4+1
+version: 1.0.5+1
 
 environment:
   sdk: ">=2.7.0 <3.0.0"
@@ -21,6 +21,10 @@ dependencies:
   hive: ^1.4.4+1
   hive_flutter: ^0.3.1
   intl: ^0.16.1
+  font_awesome_flutter: ^8.11.0
+  responsive_framework: ^0.0.14
+  url_launcher: ^5.7.10
+  auto_size_text: ^2.1.0
 
 dependency_overrides:
   flutter_svg: 0.18.0
@@ -43,3 +47,10 @@ flutter:
   uses-material-design: true
   assets:
     - assets/data/languages/
+  fonts:
+    - family: Courier-Prime
+      fonts:
+        - asset: fonts/courier-prime-sans.regular.ttf
+    - family: Noto-Mono
+      fonts:
+        - asset: fonts/noto-mono.regular.ttf

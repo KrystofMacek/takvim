@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:takvim/common/styling.dart';
 
 class CustomAppBar extends PreferredSize {
   final Widget child;
@@ -14,10 +13,10 @@ class CustomAppBar extends PreferredSize {
   Widget build(BuildContext context) {
     return Material(
       elevation: 5,
-      shadowColor: CustomColors.mainColor,
+      shadowColor: Theme.of(context).primaryColor,
       child: Container(
         height: preferredSize.height,
-        color: CustomColors.mainColor,
+        color: Theme.of(context).primaryColor,
         child: child,
       ),
     );

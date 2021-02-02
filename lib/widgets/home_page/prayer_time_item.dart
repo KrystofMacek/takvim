@@ -25,27 +25,41 @@ class PrayerTimeItem extends StatelessWidget {
     String remainingDurText = remainingDur.toString().split('.')[0];
 
     if (minor) {
-      return Container(
-        padding: EdgeInsets.symmetric(vertical: 0, horizontal: 10),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text(
-              '${dataMap['name']}',
-              style: CustomTextFonts.prayerTimesMinor,
-            ),
-            Text(
-              '${dataMap['time']}',
-              style: CustomTextFonts.prayerTimesMinor,
-            ),
-          ],
+      return Card(
+        color: Colors.transparent,
+        elevation: 0,
+        child: Container(
+          padding: EdgeInsets.symmetric(vertical: 0, horizontal: 10),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                '${dataMap['name']}',
+                style: Theme.of(context)
+                    .textTheme
+                    .bodyText2
+                    .copyWith(color: CustomColors.mainColor, fontSize: 16),
+              ),
+              Text(
+                '${dataMap['time']}',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                        fontFamily: 'Courier-Prime',
+                        fontSize: 16,
+                        letterSpacing: .3,
+                        fontStyle: FontStyle.italic)
+                    .copyWith(color: CustomColors.mainColor),
+              ),
+            ],
+          ),
         ),
       );
     } else {
       return Card(
-        elevation: 2,
-        shadowColor: CustomColors.highlightColor,
-        color: isUpcoming ? CustomColors.highlightColor : Colors.white,
+        elevation: 1,
+        color: isUpcoming
+            ? Theme.of(context).colorScheme.primaryVariant
+            : Theme.of(context).cardColor,
         child: Container(
           padding: EdgeInsets.symmetric(vertical: 7, horizontal: 10),
           child: Row(
@@ -53,14 +67,27 @@ class PrayerTimeItem extends StatelessWidget {
             children: [
               Text(
                 '${dataMap['name']}',
-                style: CustomTextFonts.contentText,
+                style: Theme.of(context)
+                    .textTheme
+                    .bodyText1
+                    .copyWith(fontWeight: FontWeight.bold),
               ),
               Row(
                 children: [
                   isUpcoming
-                      ? Text(
-                          '$remainingDurText',
-                          style: CustomTextFonts.countDownNumbers,
+                      ? Container(
+                          padding: EdgeInsets.only(right: 15),
+                          child: Center(
+                            child: Text(
+                              '$remainingDurText',
+                              style: TextStyle(
+                                  fontFamily: 'Noto-Mono',
+                                  fontSize: 16,
+                                  letterSpacing: .3,
+                                  color: Colors.black,
+                                  fontStyle: FontStyle.normal),
+                            ),
+                          ),
                         )
                       : SizedBox(),
                   SizedBox(
@@ -68,7 +95,14 @@ class PrayerTimeItem extends StatelessWidget {
                   ),
                   Text(
                     '${dataMap['time']}',
-                    style: CustomTextFonts.prayerTimesMain,
+                    textAlign: TextAlign.center,
+                    // style: Theme.of(context).textTheme.bodyText1,
+                    style: TextStyle(
+                        fontFamily: 'Noto-Mono',
+                        fontSize: 16,
+                        letterSpacing: .3,
+                        fontWeight: FontWeight.bold,
+                        fontStyle: FontStyle.normal),
                   ),
                 ],
               ),

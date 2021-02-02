@@ -60,42 +60,41 @@ class _DateSelectorRowState extends State<DateSelectorRow>
             children: [
               Material(
                 borderRadius: BorderRadius.circular(50),
-                elevation: 5,
-                shadowColor: CustomColors.mainColor,
-                color: CustomColors.mainColor,
+                elevation: 2,
+                color: Theme.of(context).primaryColor,
                 child: IconButton(
                   icon: Icon(
                     Icons.arrow_back,
                     size: 30,
-                    color: Colors.white,
                   ),
                   onPressed: () {
                     widget._selectedDate.subsOneDay(snapshot.data.firstDate);
                   },
                 ),
               ),
-              Column(
-                children: [
-                  Text(
-                    '${widget._selectedDate.getDateFormatted()}',
-                    style: CustomTextFonts.contentText,
-                  ),
-                  Text(
-                    '${widget._selectedDate.getDayOfTheWeek(widget._appLang)}',
-                    style: CustomTextFonts.contentText,
-                  ),
-                ],
+              ConstrainedBox(
+                constraints: BoxConstraints(minWidth: 120),
+                child: Column(
+                  children: [
+                    Text(
+                      '${widget._selectedDate.getDateFormatted()}',
+                      style: Theme.of(context).textTheme.bodyText1,
+                    ),
+                    Text(
+                      '${widget._selectedDate.getDayOfTheWeek(widget._appLang)}',
+                      style: Theme.of(context).textTheme.bodyText1,
+                    ),
+                  ],
+                ),
               ),
               Material(
-                elevation: 5,
-                shadowColor: CustomColors.mainColor,
+                elevation: 2,
                 borderRadius: BorderRadius.circular(50),
-                color: CustomColors.mainColor,
+                color: Theme.of(context).primaryColor,
                 child: IconButton(
                   icon: Icon(
                     Icons.arrow_forward,
                     size: 30,
-                    color: Colors.white,
                   ),
                   onPressed: () {
                     widget._selectedDate.addOneDay(snapshot.data.lastDate);
