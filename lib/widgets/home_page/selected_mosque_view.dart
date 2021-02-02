@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:takvim/common/styling.dart';
 import 'package:takvim/data/models/mosque_data.dart';
 import 'package:takvim/providers/mosque_provider.dart';
 import 'package:firebase_database/firebase_database.dart';
@@ -33,12 +32,12 @@ class SelectedMosqueView extends StatelessWidget {
             children: [
               Text(
                 '${selectedMosqueData.ort} ${selectedMosqueData.kanton}',
-                style: CustomTextFonts.appBarTextNormal,
+                style: Theme.of(context).textTheme.headline1,
                 textAlign: TextAlign.center,
               ),
               Text(
                 '${selectedMosqueData.name}',
-                style: CustomTextFonts.appBarTextItalic,
+                style: Theme.of(context).textTheme.headline2,
                 textAlign: TextAlign.center,
               ),
             ],

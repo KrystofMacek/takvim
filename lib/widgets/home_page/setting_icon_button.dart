@@ -37,7 +37,6 @@ class SettingBtnView extends StatelessWidget {
               onSelected: _settingsMenuItemSelected,
               icon: Icon(
                 Icons.settings,
-                color: Colors.white,
               ),
               itemBuilder: (context) {
                 return [LANG_SETTINGS, MOSQUE_SETTINGS].map(

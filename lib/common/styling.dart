@@ -1,32 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
 
 class CustomTextFonts {
-  static final TextStyle title = TextStyle(fontSize: 20);
-  static final TextStyle contentText = TextStyle(fontSize: 18);
-  static final TextStyle contentTextItalic =
+  static TextStyle title = TextStyle(fontSize: 20);
+  static TextStyle contentText = TextStyle(fontSize: 18);
+  static TextStyle contentTextItalic =
       TextStyle(fontSize: 18, fontStyle: FontStyle.italic);
-  static final TextStyle contentTextBold =
+  static TextStyle contentTextBold =
       TextStyle(fontSize: 18, fontWeight: FontWeight.bold);
 
-  static final TextStyle mosqueListName =
+  static TextStyle mosqueListName =
       TextStyle(fontSize: 16, fontStyle: FontStyle.italic);
-  static final TextStyle mosqueListOther =
+  static TextStyle mosqueListOther =
       TextStyle(fontSize: 16, fontStyle: FontStyle.normal);
 
-  static final TextStyle prayerTimesMain =
+  static TextStyle prayerTimesMain =
       TextStyle(fontSize: 18, fontStyle: FontStyle.normal);
-  static final TextStyle prayerTimesMinor = TextStyle(
-      fontSize: 16, fontStyle: FontStyle.italic, color: CustomColors.mainColor);
-
-  static final TextStyle notesFont = TextStyle(
-      fontSize: 16, fontStyle: FontStyle.normal, color: Colors.amber[700]);
-
-  static final TextStyle appBarTextItalic =
-      TextStyle(fontSize: 16, fontStyle: FontStyle.italic, color: Colors.white);
-  static final TextStyle appBarTextNormal =
-      TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white);
-
-  static final TextStyle countDownNumbers = TextStyle(
+  static TextStyle prayerTimesMinor = TextStyle(
       fontSize: 16, fontStyle: FontStyle.italic, color: CustomColors.mainColor);
 }
 
@@ -50,4 +40,24 @@ class CustomColors {
       900: Color(0xFF00bfa5),
     },
   );
+}
+
+ThemeNotifier currentTheme = ThemeNotifier();
+
+class ThemeNotifier with ChangeNotifier {
+  static bool _isDark = false;
+
+  void setThemeDark() {
+    _isDark = true;
+  }
+
+  ThemeMode currentTheme() {
+    return _isDark ? ThemeMode.dark : ThemeMode.light;
+  }
+
+  void switchTheme(Box pref) {
+    _isDark = !_isDark;
+    pref.put('theme', _isDark);
+    notifyListeners();
+  }
 }

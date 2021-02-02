@@ -5,17 +5,23 @@
 import 'package:meta/meta.dart';
 import 'dart:convert';
 
+LanguagePack languagePackFromJson(String str) =>
+    LanguagePack.fromJson(json.decode(str));
+
 String languagePackToJson(LanguagePack data) => json.encode(data.toJson());
 
 class LanguagePack {
   LanguagePack({
-    @required this.key,
+    @required this.address,
     @required this.app,
+    @required this.appTheme,
     @required this.asr,
+    @required this.contact,
     @required this.dhuhr,
     @required this.dhuhrTime,
     @required this.di,
     @required this.languagePackDo,
+    @required this.email,
     @required this.fajr,
     @required this.flagName,
     @required this.fr,
@@ -28,6 +34,7 @@ class LanguagePack {
     @required this.mi,
     @required this.mo,
     @required this.mosque,
+    @required this.name,
     @required this.prayerTimes,
     @required this.sa,
     @required this.sabah,
@@ -36,15 +43,20 @@ class LanguagePack {
     @required this.selectMosque,
     @required this.so,
     @required this.sunrise,
+    @required this.telefon,
+    @required this.website,
   });
 
-  final String key;
+  final String address;
   final String app;
+  final String appTheme;
   final String asr;
+  final String contact;
   final String dhuhr;
   final String dhuhrTime;
   final String di;
   final String languagePackDo;
+  final String email;
   final String fajr;
   final String flagName;
   final String fr;
@@ -57,6 +69,7 @@ class LanguagePack {
   final String mi;
   final String mo;
   final String mosque;
+  final String name;
   final String prayerTimes;
   final String sa;
   final String sabah;
@@ -65,15 +78,20 @@ class LanguagePack {
   final String selectMosque;
   final String so;
   final String sunrise;
+  final String telefon;
+  final String website;
 
   LanguagePack copyWith({
-    String key,
+    String address,
     String app,
+    String appTheme,
     String asr,
+    String contact,
     String dhuhr,
     String dhuhrTime,
     String di,
     String languagePackDo,
+    String email,
     String fajr,
     String flagName,
     String fr,
@@ -86,6 +104,7 @@ class LanguagePack {
     String mi,
     String mo,
     String mosque,
+    String name,
     String prayerTimes,
     String sa,
     String sabah,
@@ -94,15 +113,20 @@ class LanguagePack {
     String selectMosque,
     String so,
     String sunrise,
+    String telefon,
+    String website,
   }) =>
       LanguagePack(
-        key: key ?? this.key,
+        address: address ?? this.address,
         app: app ?? this.app,
+        appTheme: appTheme ?? this.appTheme,
         asr: asr ?? this.asr,
+        contact: contact ?? this.contact,
         dhuhr: dhuhr ?? this.dhuhr,
         dhuhrTime: dhuhrTime ?? this.dhuhrTime,
         di: di ?? this.di,
         languagePackDo: languagePackDo ?? this.languagePackDo,
+        email: email ?? this.email,
         fajr: fajr ?? this.fajr,
         flagName: flagName ?? this.flagName,
         fr: fr ?? this.fr,
@@ -115,6 +139,7 @@ class LanguagePack {
         mi: mi ?? this.mi,
         mo: mo ?? this.mo,
         mosque: mosque ?? this.mosque,
+        name: name ?? this.name,
         prayerTimes: prayerTimes ?? this.prayerTimes,
         sa: sa ?? this.sa,
         sabah: sabah ?? this.sabah,
@@ -123,17 +148,21 @@ class LanguagePack {
         selectMosque: selectMosque ?? this.selectMosque,
         so: so ?? this.so,
         sunrise: sunrise ?? this.sunrise,
+        telefon: telefon ?? this.telefon,
+        website: website ?? this.website,
       );
 
-  factory LanguagePack.fromFirebase(dynamic key, Map<dynamic, dynamic> json) =>
-      LanguagePack(
-        key: key,
+  factory LanguagePack.fromJson(Map<String, dynamic> json) => LanguagePack(
+        address: json["Address"],
         app: json["App"],
+        appTheme: json["AppTheme"],
         asr: json["Asr"],
+        contact: json["Contact"],
         dhuhr: json["Dhuhr"],
         dhuhrTime: json["DhuhrTime"],
         di: json["Di"],
         languagePackDo: json["Do"],
+        email: json["Email"],
         fajr: json["Fajr"],
         flagName: json["FlagName"],
         fr: json["Fr"],
@@ -146,6 +175,7 @@ class LanguagePack {
         mi: json["Mi"],
         mo: json["Mo"],
         mosque: json["Mosque"],
+        name: json["Name"],
         prayerTimes: json["PrayerTimes"],
         sa: json["Sa"],
         sabah: json["Sabah"],
@@ -154,15 +184,57 @@ class LanguagePack {
         selectMosque: json["SelectMosque"],
         so: json["So"],
         sunrise: json["Sunrise"],
+        telefon: json["Telefon"],
+        website: json["Website"],
+      );
+
+  factory LanguagePack.fromFirebase(Map<dynamic, dynamic> json) => LanguagePack(
+        address: json["Address"],
+        app: json["App"],
+        appTheme: json["AppTheme"],
+        asr: json["Asr"],
+        contact: json["Contact"],
+        dhuhr: json["Dhuhr"],
+        dhuhrTime: json["DhuhrTime"],
+        di: json["Di"],
+        languagePackDo: json["Do"],
+        email: json["Email"],
+        fajr: json["Fajr"],
+        flagName: json["FlagName"],
+        fr: json["Fr"],
+        isha: json["Isha"],
+        ishaTime: json["IshaTime"],
+        language: json["Language"],
+        languageId: json["LanguageID"],
+        languageName: json["LanguageName"],
+        maghrib: json["Maghrib"],
+        mi: json["Mi"],
+        mo: json["Mo"],
+        mosque: json["Mosque"],
+        name: json["Name"],
+        prayerTimes: json["PrayerTimes"],
+        sa: json["Sa"],
+        sabah: json["Sabah"],
+        search: json["Search"],
+        selectLanguage: json["SelectLanguage"],
+        selectMosque: json["SelectMosque"],
+        so: json["So"],
+        sunrise: json["Sunrise"],
+        telefon: json["Telefon"],
+        website: json["Website"],
       );
 
   Map<String, dynamic> toJson() => {
+        "Address": address,
         "App": app,
+        "AppTheme": appTheme,
         "Asr": asr,
+        "Contact": contact,
         "Dhuhr": dhuhr,
         "DhuhrTime": dhuhrTime,
         "Di": di,
         "Do": languagePackDo,
+        "Email": email,
         "Fajr": fajr,
         "FlagName": flagName,
         "Fr": fr,
@@ -175,6 +247,7 @@ class LanguagePack {
         "Mi": mi,
         "Mo": mo,
         "Mosque": mosque,
+        "Name": name,
         "PrayerTimes": prayerTimes,
         "Sa": sa,
         "Sabah": sabah,
@@ -183,5 +256,7 @@ class LanguagePack {
         "SelectMosque": selectMosque,
         "So": so,
         "Sunrise": sunrise,
+        "Telefon": telefon,
+        "Website": website,
       };
 }

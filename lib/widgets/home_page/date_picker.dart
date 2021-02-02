@@ -15,8 +15,7 @@ class CalendarDayPicker extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Material(
-      elevation: 5,
-      shadowColor: CustomColors.mainColor,
+      elevation: 2,
       borderRadius: BorderRadius.circular(10),
       child: IconButton(
         padding: EdgeInsets.zero,

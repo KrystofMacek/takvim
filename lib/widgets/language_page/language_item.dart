@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import '../../providers/language_provider.dart';
-import '../../common/styling.dart';
 import 'package:hive/hive.dart';
 import 'package:flag/flag.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -33,7 +32,7 @@ class LanguageItem extends ConsumerWidget {
               _langPackController.updateAppLanguage();
             },
             child: Card(
-              color: CustomColors.highlightColor,
+              color: Theme.of(context).colorScheme.primaryVariant,
               child: Container(
                 padding: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
                 child: Row(
@@ -50,7 +49,7 @@ class LanguageItem extends ConsumerWidget {
                       children: [
                         Text(
                           '${pack.languageName}',
-                          style: CustomTextFonts.contentText,
+                          style: Theme.of(context).textTheme.bodyText1,
                         ),
                       ],
                     )
@@ -83,7 +82,7 @@ class LanguageItem extends ConsumerWidget {
                   children: [
                     Text(
                       '${pack.languageName}',
-                      style: CustomTextFonts.contentText,
+                      style: Theme.of(context).textTheme.bodyText1,
                     ),
                   ],
                 )
