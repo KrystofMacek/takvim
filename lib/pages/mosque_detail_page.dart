@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:takvim/data/models/language_pack.dart';
@@ -84,162 +86,199 @@ class DetailsContent extends ConsumerWidget {
         SizedBox(
           height: 25,
         ),
-        GestureDetector(
-          onTap: () async {
-            String url =
-                'https://www.google.com/maps/search/?api=1&query=${data.strasse}+${data.plz}+${data.ort}+${data.kanton}';
-
-            try {
-              await launch(url);
-            } catch (e) {
-              print(e);
-            }
-          },
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Flexible(
-                flex: 6,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    AutoSizeText(
-                      '${data.strasse}',
-                      group: autoSizeGroup,
-                      style: Theme.of(context).textTheme.headline3,
-                      minFontSize: 0,
-                      maxLines: 1,
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Flexible(
+              flex: 6,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  AutoSizeText(
+                    '${data.strasse}',
+                    group: autoSizeGroup,
+                    style: Theme.of(context).textTheme.headline3,
+                    minFontSize: 0,
+                    maxLines: 1,
+                  ),
+                  AutoSizeText(
+                    '${data.plz} ${data.ort} ${data.kanton}',
+                    group: autoSizeGroup,
+                    minFontSize: 0,
+                    style: Theme.of(context).textTheme.headline3,
+                    maxLines: 1,
+                  ),
+                ],
+              ),
+            ),
+            Flexible(
+              flex: 1,
+              child: GestureDetector(
+                onTap: () async {
+                  String road =
+                      data.strasse.replaceAll(RegExp(r"\s+\b|\b\s"), "+");
+                  String url =
+                      'https://www.google.com/maps/search/?api=1&query=${data.strasse}+${data.plz}+${data.ort}+${data.kanton}';
+                  if (Platform.isIOS) {
+                    url =
+                        'http://maps.apple.com/?address=${data.ort}+${data.kanton}+$road';
+                  }
+                  try {
+                    await launch(url);
+                  } catch (e) {
+                    print(e);
+                  }
+                },
+                child: Material(
+                  borderRadius: BorderRadius.circular(50),
+                  elevation: 1,
+                  color: Theme.of(context).primaryColor,
+                  child: Container(
+                    padding: EdgeInsets.all(8),
+                    child: FaIcon(
+                      FontAwesomeIcons.mapMarked,
+                      color: Colors.white,
+                      size: 22,
                     ),
-                    AutoSizeText(
-                      '${data.plz} ${data.ort} ${data.kanton}',
-                      group: autoSizeGroup,
-                      minFontSize: 0,
-                      style: Theme.of(context).textTheme.headline3,
-                      maxLines: 1,
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+        SizedBox(
+          height: 25,
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Flexible(
+              flex: 6,
+              child: AutoSizeText(
+                '${data.telefon}',
+                group: autoSizeGroup,
+                style: Theme.of(context).textTheme.headline3,
+                maxLines: 1,
+                minFontSize: 0,
+              ),
+            ),
+            Flexible(
+              flex: 1,
+              child: GestureDetector(
+                onTap: () async {
+                  String url = 'tel:${data.telefon}';
+                  if (await canLaunch(url)) {
+                    await launch(url);
+                  } else {
+                    throw 'Could not launch $url';
+                  }
+                },
+                child: Material(
+                  borderRadius: BorderRadius.circular(50),
+                  elevation: 1,
+                  color: Theme.of(context).primaryColor,
+                  child: Container(
+                    padding: EdgeInsets.all(8),
+                    child: FaIcon(
+                      FontAwesomeIcons.phone,
+                      color: Colors.white,
+                      size: 22,
                     ),
-                  ],
+                  ),
                 ),
               ),
-              Flexible(
-                flex: 1,
-                child: FaIcon(
-                  FontAwesomeIcons.mapMarked,
-                  color: Theme.of(context).colorScheme.secondaryVariant,
-                  size: 22,
-                ),
-              ),
-            ],
-          ),
+            ),
+          ],
         ),
         SizedBox(
-          height: 25,
+          height: 35,
         ),
-        GestureDetector(
-          onTap: () async {
-            String url = 'tel:${data.telefon}';
-            if (await canLaunch(url)) {
-              await launch(url);
-            } else {
-              throw 'Could not launch $url';
-            }
-          },
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Flexible(
-                flex: 6,
-                child: AutoSizeText(
-                  '${data.telefon}',
-                  group: autoSizeGroup,
-                  style: Theme.of(context).textTheme.headline3,
-                  maxLines: 1,
-                  minFontSize: 0,
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Flexible(
+              flex: 6,
+              child: AutoSizeText(
+                '${data.website}',
+                group: autoSizeGroup,
+                style: Theme.of(context).textTheme.headline3,
+                wrapWords: false,
+                minFontSize: 0,
+                maxLines: 1,
+              ),
+            ),
+            Flexible(
+              flex: 1,
+              child: GestureDetector(
+                onTap: () async {
+                  String url = 'http://${data.website}';
+                  if (await canLaunch(url)) {
+                    await launch(url);
+                  } else {
+                    throw 'Could not launch $url';
+                  }
+                },
+                child: Material(
+                  borderRadius: BorderRadius.circular(50),
+                  elevation: 1,
+                  color: Theme.of(context).primaryColor,
+                  child: Container(
+                    padding: EdgeInsets.all(8),
+                    child: FaIcon(
+                      FontAwesomeIcons.link,
+                      color: Colors.white,
+                      size: 22,
+                    ),
+                  ),
                 ),
               ),
-              Flexible(
-                flex: 1,
-                child: FaIcon(
-                  FontAwesomeIcons.phone,
-                  color: Theme.of(context).colorScheme.secondaryVariant,
-                  size: 22,
-                ),
-              ),
-            ],
-          ),
-        ),
-        SizedBox(
-          height: 25,
-        ),
-        GestureDetector(
-          onTap: () async {
-            String url = 'http://${data.website}';
-            if (await canLaunch(url)) {
-              await launch(url);
-            } else {
-              throw 'Could not launch $url';
-            }
-          },
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Flexible(
-                flex: 6,
-                child: AutoSizeText(
-                  '${data.website}',
-                  group: autoSizeGroup,
-                  style: Theme.of(context).textTheme.headline3,
-                  wrapWords: false,
-                  minFontSize: 0,
-                  maxLines: 1,
-                ),
-              ),
-              Flexible(
-                flex: 1,
-                child: FaIcon(
-                  FontAwesomeIcons.link,
-                  color: Theme.of(context).colorScheme.secondaryVariant,
-                  size: 22,
-                ),
-              )
-            ],
-          ),
+            )
+          ],
         ),
         SizedBox(
-          height: 25,
+          height: 35,
         ),
-        GestureDetector(
-          onTap: () async {
-            String url = 'mailto:${data.email}';
-            if (await canLaunch(url)) {
-              await launch(url);
-            } else {
-              throw 'Could not launch $url';
-            }
-          },
-          child: Row(
-            mainAxisSize: MainAxisSize.max,
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Flexible(
-                flex: 6,
-                child: AutoSizeText(
-                  '${data.email}',
-                  group: autoSizeGroup,
-                  style: Theme.of(context).textTheme.headline3,
-                  minFontSize: 0,
-                  maxLines: 1,
+        Row(
+          mainAxisSize: MainAxisSize.max,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Flexible(
+              flex: 6,
+              child: AutoSizeText(
+                '${data.email}',
+                group: autoSizeGroup,
+                style: Theme.of(context).textTheme.headline3,
+                minFontSize: 0,
+                maxLines: 1,
+              ),
+            ),
+            Flexible(
+              flex: 1,
+              child: GestureDetector(
+                onTap: () async {
+                  String url = 'mailto:${data.email}';
+                  if (await canLaunch(url)) {
+                    await launch(url);
+                  } else {
+                    throw 'Could not launch $url';
+                  }
+                },
+                child: Material(
+                  borderRadius: BorderRadius.circular(50),
+                  elevation: 1,
+                  color: Theme.of(context).primaryColor,
+                  child: Container(
+                    padding: EdgeInsets.all(8),
+                    child: FaIcon(
+                      FontAwesomeIcons.envelope,
+                      color: Colors.white,
+                      size: 22,
+                    ),
+                  ),
                 ),
               ),
-              Flexible(
-                flex: 1,
-                child: FaIcon(
-                  FontAwesomeIcons.envelope,
-                  color: Theme.of(context).colorScheme.secondaryVariant,
-                  size: 22,
-                ),
-              ),
-            ],
-          ),
+            ),
+          ],
         ),
         SizedBox(
           height: 25,
