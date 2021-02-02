@@ -42,7 +42,7 @@ class MosqueDetailPage extends ConsumerWidget {
           ),
           body: Center(
             child: Container(
-              padding: EdgeInsets.symmetric(horizontal: 60, vertical: 30),
+              padding: EdgeInsets.symmetric(horizontal: 40, vertical: 30),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
@@ -72,19 +72,12 @@ class DetailsContent extends ConsumerWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            GestureDetector(
-              onTap: () async {},
-              child: ConstrainedBox(
-                constraints: BoxConstraints(
-                    maxWidth: MediaQuery.of(context).size.width * .65),
-                child: AutoSizeText(
-                  '${data.offiziellerName}',
-                  style: Theme.of(context).textTheme.headline3,
-                  group: autoSizeGroup,
-                  wrapWords: false,
-                  maxLines: 1,
-                ),
-              ),
+            AutoSizeText(
+              '${data.offiziellerName}',
+              style: Theme.of(context).textTheme.headline3,
+              group: autoSizeGroup,
+              wrapWords: false,
+              maxLines: 1,
             ),
           ],
         ),
@@ -104,37 +97,36 @@ class DetailsContent extends ConsumerWidget {
           },
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  ConstrainedBox(
-                    constraints: BoxConstraints(
-                        maxWidth: MediaQuery.of(context).size.width * .65),
-                    child: AutoSizeText(
+              Flexible(
+                flex: 6,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    AutoSizeText(
                       '${data.strasse}',
                       group: autoSizeGroup,
                       style: Theme.of(context).textTheme.headline3,
+                      minFontSize: 0,
                       maxLines: 1,
                     ),
-                  ),
-                  ConstrainedBox(
-                    constraints: BoxConstraints(
-                        maxWidth: MediaQuery.of(context).size.width * .65),
-                    child: AutoSizeText(
+                    AutoSizeText(
                       '${data.plz} ${data.ort} ${data.kanton}',
                       group: autoSizeGroup,
+                      minFontSize: 0,
                       style: Theme.of(context).textTheme.headline3,
                       maxLines: 1,
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-              FaIcon(
-                FontAwesomeIcons.mapMarked,
-                color: Theme.of(context).colorScheme.secondaryVariant,
-                size: 22,
+              Flexible(
+                flex: 1,
+                child: FaIcon(
+                  FontAwesomeIcons.mapMarked,
+                  color: Theme.of(context).colorScheme.secondaryVariant,
+                  size: 22,
+                ),
               ),
             ],
           ),
@@ -154,20 +146,23 @@ class DetailsContent extends ConsumerWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              ConstrainedBox(
-                constraints: BoxConstraints(
-                    maxWidth: MediaQuery.of(context).size.width * .65),
+              Flexible(
+                flex: 6,
                 child: AutoSizeText(
                   '${data.telefon}',
                   group: autoSizeGroup,
                   style: Theme.of(context).textTheme.headline3,
                   maxLines: 1,
+                  minFontSize: 0,
                 ),
               ),
-              FaIcon(
-                FontAwesomeIcons.phone,
-                color: Theme.of(context).colorScheme.secondaryVariant,
-                size: 22,
+              Flexible(
+                flex: 1,
+                child: FaIcon(
+                  FontAwesomeIcons.phone,
+                  color: Theme.of(context).colorScheme.secondaryVariant,
+                  size: 22,
+                ),
               ),
             ],
           ),
@@ -187,21 +182,25 @@ class DetailsContent extends ConsumerWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              ConstrainedBox(
-                constraints: BoxConstraints(
-                    maxWidth: MediaQuery.of(context).size.width * .65),
+              Flexible(
+                flex: 6,
                 child: AutoSizeText(
                   '${data.website}',
                   group: autoSizeGroup,
                   style: Theme.of(context).textTheme.headline3,
+                  wrapWords: false,
+                  minFontSize: 0,
                   maxLines: 1,
                 ),
               ),
-              FaIcon(
-                FontAwesomeIcons.link,
-                color: Theme.of(context).colorScheme.secondaryVariant,
-                size: 22,
-              ),
+              Flexible(
+                flex: 1,
+                child: FaIcon(
+                  FontAwesomeIcons.link,
+                  color: Theme.of(context).colorScheme.secondaryVariant,
+                  size: 22,
+                ),
+              )
             ],
           ),
         ),
@@ -221,20 +220,23 @@ class DetailsContent extends ConsumerWidget {
             mainAxisSize: MainAxisSize.max,
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              ConstrainedBox(
-                constraints: BoxConstraints(
-                    maxWidth: MediaQuery.of(context).size.width * .65),
+              Flexible(
+                flex: 6,
                 child: AutoSizeText(
                   '${data.email}',
                   group: autoSizeGroup,
                   style: Theme.of(context).textTheme.headline3,
+                  minFontSize: 0,
                   maxLines: 1,
                 ),
               ),
-              FaIcon(
-                FontAwesomeIcons.envelope,
-                color: Theme.of(context).colorScheme.secondaryVariant,
-                size: 22,
+              Flexible(
+                flex: 1,
+                child: FaIcon(
+                  FontAwesomeIcons.envelope,
+                  color: Theme.of(context).colorScheme.secondaryVariant,
+                  size: 22,
+                ),
               ),
             ],
           ),
