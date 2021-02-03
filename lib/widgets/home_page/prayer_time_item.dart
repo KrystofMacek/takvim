@@ -38,14 +38,14 @@ class PrayerTimeItem extends StatelessWidget {
                 style: Theme.of(context)
                     .textTheme
                     .bodyText2
-                    .copyWith(color: CustomColors.mainColor, fontSize: 16),
+                    .copyWith(color: CustomColors.mainColor, fontSize: 18),
               ),
               Text(
                 '${dataMap['time']}',
                 textAlign: TextAlign.center,
                 style: TextStyle(
                         fontFamily: 'Courier-Prime',
-                        fontSize: 16,
+                        fontSize: 18,
                         letterSpacing: .3,
                         fontStyle: FontStyle.italic)
                     .copyWith(color: CustomColors.mainColor),
@@ -70,7 +70,7 @@ class PrayerTimeItem extends StatelessWidget {
                 style: Theme.of(context)
                     .textTheme
                     .bodyText1
-                    .copyWith(fontWeight: FontWeight.normal, fontSize: 18),
+                    .copyWith(fontWeight: FontWeight.normal, fontSize: 20),
               ),
               Row(
                 children: [
@@ -94,7 +94,7 @@ class PrayerTimeItem extends StatelessWidget {
                     // style: Theme.of(context).textTheme.bodyText1,
                     style: TextStyle(
                         fontFamily: 'Noto-Mono',
-                        fontSize: 18,
+                        fontSize: 20,
                         letterSpacing: .3,
                         fontWeight: FontWeight.normal,
                         fontStyle: FontStyle.normal),

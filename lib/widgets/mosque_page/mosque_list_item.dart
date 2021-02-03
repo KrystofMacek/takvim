@@ -36,8 +36,8 @@ class MosqueItem extends ConsumerWidget {
                   children: [
                     Text(
                       '${data.ort} ${data.kanton}',
-                      style: CustomTextFonts.mosqueListOther
-                          .copyWith(color: CustomColors.cityNameColor),
+                      style: CustomTextFonts.mosqueListOther.copyWith(
+                          color: CustomColors.cityNameColor, fontSize: 18),
                     ),
                     SizedBox(
                       height: 10,
@@ -50,7 +50,7 @@ class MosqueItem extends ConsumerWidget {
                         style: Theme.of(context)
                             .textTheme
                             .headline4
-                            .copyWith(color: Colors.black),
+                            .copyWith(color: Colors.black, fontSize: 16),
                         maxLines: 1,
                       ),
                     ),
@@ -96,8 +96,8 @@ class MosqueItem extends ConsumerWidget {
                   children: [
                     Text(
                       '${data.ort} ${data.kanton}',
-                      style: CustomTextFonts.mosqueListOther
-                          .copyWith(color: CustomColors.cityNameColor),
+                      style: CustomTextFonts.mosqueListOther.copyWith(
+                          color: CustomColors.cityNameColor, fontSize: 18),
                     ),
                     SizedBox(
                       height: 10,
@@ -107,10 +107,8 @@ class MosqueItem extends ConsumerWidget {
                           maxWidth: MediaQuery.of(context).size.width * 0.7),
                       child: AutoSizeText(
                         '${data.name}',
-                        style: Theme.of(context)
-                            .textTheme
-                            .subtitle1
-                            .copyWith(fontStyle: FontStyle.italic),
+                        style: Theme.of(context).textTheme.subtitle1.copyWith(
+                            fontStyle: FontStyle.italic, fontSize: 16),
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                       ),

@@ -10,9 +10,9 @@ class CustomTextFonts {
       TextStyle(fontSize: 18, fontWeight: FontWeight.bold);
 
   static TextStyle mosqueListName =
-      TextStyle(fontSize: 16, fontStyle: FontStyle.italic);
+      TextStyle(fontSize: 18, fontStyle: FontStyle.italic);
   static TextStyle mosqueListOther =
-      TextStyle(fontSize: 16, fontStyle: FontStyle.normal);
+      TextStyle(fontSize: 18, fontStyle: FontStyle.normal);
 
   static TextStyle prayerTimesMain =
       TextStyle(fontSize: 18, fontStyle: FontStyle.normal);

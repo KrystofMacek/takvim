@@ -110,7 +110,7 @@ class _MyAppState extends State<MyApp> {
                   fontStyle: FontStyle.italic,
                   color: Colors.white),
               headline1: TextStyle(
-                  fontSize: 18,
+                  fontSize: 20,
                   fontWeight: FontWeight.w400,
                   color: Colors.white),
               headline3: TextStyle(
@@ -118,7 +118,7 @@ class _MyAppState extends State<MyApp> {
                   fontWeight: FontWeight.w400,
                   color: Colors.white),
               headline4: TextStyle(
-                  fontSize: 16,
+                  fontSize: 18,
                   fontStyle: FontStyle.italic,
                   color: Colors.white),
               headline5: TextStyle(
@@ -131,7 +131,7 @@ class _MyAppState extends State<MyApp> {
                   fontStyle: FontStyle.italic,
                   color: Color(0xFF202020)),
               subtitle1: TextStyle(
-                  fontSize: 16,
+                  fontSize: 18,
                   fontStyle: FontStyle.normal,
                   color: Colors.white),
               bodyText1: TextStyle(
@@ -168,7 +168,7 @@ class _MyAppState extends State<MyApp> {
                   fontStyle: FontStyle.italic,
                   color: Colors.white),
               headline1: TextStyle(
-                  fontSize: 18,
+                  fontSize: 20,
                   fontWeight: FontWeight.w400,
                   color: Colors.white),
               headline3: TextStyle(
@@ -176,7 +176,7 @@ class _MyAppState extends State<MyApp> {
                   fontWeight: FontWeight.w400,
                   color: Colors.black),
               headline4: TextStyle(
-                  fontSize: 16,
+                  fontSize: 18,
                   fontStyle: FontStyle.italic,
                   color: Colors.black),
               headline5: TextStyle(
@@ -189,13 +189,9 @@ class _MyAppState extends State<MyApp> {
                   fontStyle: FontStyle.italic,
                   color: CustomColors.mainColor),
               subtitle1: TextStyle(
-                  fontSize: 16,
+                  fontSize: 18,
                   fontStyle: FontStyle.normal,
                   color: Colors.black),
-              //     bodyText1: GoogleFonts.inconsolata(
-              //     fontSize: 18, fontStyle: FontStyle.normal),
-              // bodyText2: GoogleFonts.inconsolata(
-              //     fontSize: 16, fontStyle: FontStyle.normal),
               bodyText1: TextStyle(
                 fontSize: 18,
                 fontStyle: FontStyle.normal,

@@ -36,10 +36,12 @@ class SelectedMosqueView extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text('${selectedMosqueData.ort} ${selectedMosqueData.kanton}',
-                      style: CustomTextFonts.mosqueListOther),
+                      style: CustomTextFonts.mosqueListOther
+                          .copyWith(fontSize: 18)),
                   Text(
                     '${selectedMosqueData.name}',
-                    style: CustomTextFonts.mosqueListName,
+                    style:
+                        CustomTextFonts.mosqueListName.copyWith(fontSize: 18),
                   ),
                 ],
               );

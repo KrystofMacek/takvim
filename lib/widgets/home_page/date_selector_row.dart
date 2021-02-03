@@ -3,6 +3,7 @@ import 'package:takvim/common/styling.dart';
 import 'package:takvim/data/models/dateBounds.dart';
 import 'package:takvim/data/models/language_pack.dart';
 import 'package:takvim/providers/date_provider.dart';
+import 'package:auto_size_text/auto_size_text.dart';
 
 class DateSelectorRow extends StatefulWidget {
   const DateSelectorRow({
@@ -79,12 +80,14 @@ class _DateSelectorRowState extends State<DateSelectorRow>
                     Text(
                       '${widget._selectedDate.getDateFormatted()}',
                       style: Theme.of(context).textTheme.bodyText1.copyWith(
-                          fontWeight: FontWeight.normal, fontSize: 18),
+                          fontWeight: FontWeight.normal, fontSize: 20),
                     ),
-                    Text(
+                    AutoSizeText(
                       '${widget._selectedDate.getDayOfTheWeek(widget._appLang)}',
+                      maxLines: 1,
+                      minFontSize: 16,
                       style: Theme.of(context).textTheme.bodyText1.copyWith(
-                          fontWeight: FontWeight.normal, fontSize: 18),
+                          fontWeight: FontWeight.normal, fontSize: 20),
                     ),
                   ],
                 ),
