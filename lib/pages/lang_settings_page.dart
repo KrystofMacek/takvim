@@ -17,6 +17,12 @@ class LangSettingsPage extends ConsumerWidget {
     final LanguagePackController _langPackController =
         watch(languagePackController);
 
+    final size = MediaQuery.of(context).size;
+    double baseSize = size.height;
+
+    double ratio = 375 / 667;
+    final double colWidth = baseSize * ratio;
+
     if (_appLang == null) {
       print('is null');
       _langPackController.updateAppLanguage();

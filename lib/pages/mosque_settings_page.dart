@@ -32,6 +32,11 @@ class MosqueSettingsPage extends ConsumerWidget {
     final SelectedDate _selectedDateController = watch(
       selectedDate,
     );
+    final size = MediaQuery.of(context).size;
+    double baseSize = size.height;
+
+    double ratio = 375 / 667;
+    final double colWidth = baseSize * ratio;
 
     return Container(
       color: Theme.of(context).primaryColor,
@@ -79,83 +84,90 @@ class MosqueSettingsPage extends ConsumerWidget {
               }
             },
           ),
-          body: Flex(
-            direction: Axis.vertical,
-            children: [
-              Expanded(
-                child: Container(
-                  padding: EdgeInsets.symmetric(vertical: 4, horizontal: 3),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      SizedBox(
-                        height: 10,
-                      ),
-                      Consumer(
-                        builder: (context, watch, child) {
-                          String selectedMosqueId = watch(selectedMosque.state);
-                          return SelectedMosqueView(
-                            mosqueController: _mosqueController,
-                            selectedMosqueController: selectedMosqueId,
-                          );
-                        },
-                      ),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      FilterMosqueInput(
-                          appLang: _appLang,
-                          mosqueController: _mosqueController),
-                      SizedBox(
-                        height: 5,
-                      ),
-                      StreamBuilder<List<MosqueData>>(
-                        stream: _mosqueController.watchMosques(),
-                        builder: (BuildContext context,
-                            AsyncSnapshot<List<MosqueData>> snapshot) {
-                          if (snapshot.hasData) {
-                            return Consumer(
-                              builder: (context, watch, child) {
-                                List<MosqueData> filteredList =
-                                    watch(filteredMosqueList.state);
-                                String selectedId = watch(selectedMosque.state);
+          body: Center(
+            child: ConstrainedBox(
+              constraints: BoxConstraints(maxWidth: colWidth),
+              child: Flex(
+                direction: Axis.vertical,
+                children: [
+                  Expanded(
+                    child: Container(
+                      padding: EdgeInsets.symmetric(vertical: 4, horizontal: 3),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          SizedBox(
+                            height: 10,
+                          ),
+                          Consumer(
+                            builder: (context, watch, child) {
+                              String selectedMosqueId =
+                                  watch(selectedMosque.state);
+                              return SelectedMosqueView(
+                                mosqueController: _mosqueController,
+                                selectedMosqueController: selectedMosqueId,
+                              );
+                            },
+                          ),
+                          SizedBox(
+                            height: 10,
+                          ),
+                          FilterMosqueInput(
+                              appLang: _appLang,
+                              mosqueController: _mosqueController),
+                          SizedBox(
+                            height: 5,
+                          ),
+                          StreamBuilder<List<MosqueData>>(
+                            stream: _mosqueController.watchMosques(),
+                            builder: (BuildContext context,
+                                AsyncSnapshot<List<MosqueData>> snapshot) {
+                              if (snapshot.hasData) {
+                                return Consumer(
+                                  builder: (context, watch, child) {
+                                    List<MosqueData> filteredList =
+                                        watch(filteredMosqueList.state);
+                                    String selectedId =
+                                        watch(selectedMosque.state);
 
-                                return Expanded(
-                                  child: ListView.separated(
-                                    itemCount: filteredList.length + 1,
-                                    separatorBuilder: (context, index) =>
-                                        SizedBox(),
-                                    itemBuilder: (context, index) {
-                                      if (index == filteredList.length) {
-                                        return SizedBox(
-                                          height: 80,
-                                        );
-                                      }
-                                      MosqueData data = filteredList[index];
+                                    return Expanded(
+                                      child: ListView.separated(
+                                        itemCount: filteredList.length + 1,
+                                        separatorBuilder: (context, index) =>
+                                            SizedBox(),
+                                        itemBuilder: (context, index) {
+                                          if (index == filteredList.length) {
+                                            return SizedBox(
+                                              height: 80,
+                                            );
+                                          }
+                                          MosqueData data = filteredList[index];
 
-                                      bool isSelected =
-                                          (data.mosqueId == selectedId);
+                                          bool isSelected =
+                                              (data.mosqueId == selectedId);
 
-                                      return MosqueItem(
-                                        data: data,
-                                        isSelected: isSelected,
-                                      );
-                                    },
-                                  ),
+                                          return MosqueItem(
+                                            data: data,
+                                            isSelected: isSelected,
+                                          );
+                                        },
+                                      ),
+                                    );
+                                  },
                                 );
-                              },
-                            );
-                          } else {
-                            return CircularProgressIndicator();
-                          }
-                        },
+                              } else {
+                                return CircularProgressIndicator();
+                              }
+                            },
+                          ),
+                        ],
                       ),
-                    ],
+                    ),
                   ),
-                ),
+                ],
               ),
-            ],
+            ),
           ),
         ),
       ),

@@ -121,6 +121,11 @@ class _MyAppState extends State<MyApp> {
                   fontSize: 16,
                   fontStyle: FontStyle.italic,
                   color: Colors.white),
+              headline5: TextStyle(
+                  fontSize: 16,
+                  fontFamily: 'Noto-Mono',
+                  fontStyle: FontStyle.normal,
+                  color: Colors.teal[800]),
               subtitle2: TextStyle(
                   fontSize: 16,
                   fontStyle: FontStyle.italic,
@@ -174,6 +179,11 @@ class _MyAppState extends State<MyApp> {
                   fontSize: 16,
                   fontStyle: FontStyle.italic,
                   color: Colors.black),
+              headline5: TextStyle(
+                  fontSize: 16,
+                  fontFamily: 'Noto-Mono',
+                  fontStyle: FontStyle.normal,
+                  color: Colors.teal[800]),
               subtitle2: TextStyle(
                   fontSize: 16,
                   fontStyle: FontStyle.italic,

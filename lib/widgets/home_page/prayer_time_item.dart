@@ -70,7 +70,7 @@ class PrayerTimeItem extends StatelessWidget {
                 style: Theme.of(context)
                     .textTheme
                     .bodyText1
-                    .copyWith(fontWeight: FontWeight.bold),
+                    .copyWith(fontWeight: FontWeight.normal, fontSize: 18),
               ),
               Row(
                 children: [
@@ -80,12 +80,7 @@ class PrayerTimeItem extends StatelessWidget {
                           child: Center(
                             child: Text(
                               '$remainingDurText',
-                              style: TextStyle(
-                                  fontFamily: 'Noto-Mono',
-                                  fontSize: 16,
-                                  letterSpacing: .3,
-                                  color: Colors.black,
-                                  fontStyle: FontStyle.normal),
+                              style: Theme.of(context).textTheme.headline5,
                             ),
                           ),
                         )
@@ -99,9 +94,9 @@ class PrayerTimeItem extends StatelessWidget {
                     // style: Theme.of(context).textTheme.bodyText1,
                     style: TextStyle(
                         fontFamily: 'Noto-Mono',
-                        fontSize: 16,
+                        fontSize: 18,
                         letterSpacing: .3,
-                        fontWeight: FontWeight.bold,
+                        fontWeight: FontWeight.normal,
                         fontStyle: FontStyle.normal),
                   ),
                 ],

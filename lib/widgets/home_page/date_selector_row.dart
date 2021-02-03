@@ -78,11 +78,13 @@ class _DateSelectorRowState extends State<DateSelectorRow>
                   children: [
                     Text(
                       '${widget._selectedDate.getDateFormatted()}',
-                      style: Theme.of(context).textTheme.bodyText1,
+                      style: Theme.of(context).textTheme.bodyText1.copyWith(
+                          fontWeight: FontWeight.normal, fontSize: 18),
                     ),
                     Text(
                       '${widget._selectedDate.getDayOfTheWeek(widget._appLang)}',
-                      style: Theme.of(context).textTheme.bodyText1,
+                      style: Theme.of(context).textTheme.bodyText1.copyWith(
+                          fontWeight: FontWeight.normal, fontSize: 18),
                     ),
                   ],
                 ),

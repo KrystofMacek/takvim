@@ -14,6 +14,12 @@ import '../providers/date_provider.dart';
 class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
+    double baseSize = size.height;
+
+    double ratio = 375 / 667;
+    final double colWidth = baseSize * ratio;
+
     return Consumer(
       builder: (context, watch, child) {
         final LanguagePack _appLang = watch(appLanguagePackProvider.state);
@@ -53,37 +59,41 @@ class HomePage extends StatelessWidget {
                     future: _langPackController.getAppLangPack(),
                     builder: (BuildContext context, AsyncSnapshot snapshot) {
                       if (snapshot.hasData) {
-                        return Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Consumer(
-                              builder: (context, watch, child) {
-                                watch(selectedDate.state);
-                                return Column(
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    CalendarDayPicker(
-                                        selectedDate: _selectedDate),
-                                    SizedBox(
-                                      height: 12,
-                                    ),
-                                    DateSelectorRow(
+                        return ConstrainedBox(
+                          constraints: BoxConstraints(maxWidth: colWidth),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Consumer(
+                                builder: (context, watch, child) {
+                                  watch(selectedDate.state);
+                                  return Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: [
+                                      CalendarDayPicker(
+                                          selectedDate: _selectedDate),
+                                      SizedBox(
+                                        height: 12,
+                                      ),
+                                      DateSelectorRow(
+                                          selectedDate: _selectedDate,
+                                          appLang: _appLang),
+                                      SizedBox(
+                                        height: 15,
+                                      ),
+                                      DailyDataView(
+                                        mosqueController: _mosqueController,
                                         selectedDate: _selectedDate,
-                                        appLang: _appLang),
-                                    SizedBox(
-                                      height: 15,
-                                    ),
-                                    DailyDataView(
-                                      mosqueController: _mosqueController,
-                                      selectedDate: _selectedDate,
-                                      appLang: _appLang,
-                                    ),
-                                  ],
-                                );
-                              },
-                            ),
-                          ],
+                                        appLang: _appLang,
+                                      ),
+                                    ],
+                                  );
+                                },
+                              ),
+                            ],
+                          ),
                         );
                       } else {
                         return CircularProgressIndicator();

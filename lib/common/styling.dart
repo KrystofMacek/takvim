@@ -22,6 +22,7 @@ class CustomTextFonts {
 
 class CustomColors {
   static final Color mainColor = Colors.tealAccent[700];
+  static final Color counterTimeColor = Colors.tealAccent[900];
   static final Color cityNameColor = Colors.teal[700];
   static final Color highlightColor = Color(0xffb2dfdb);
 
