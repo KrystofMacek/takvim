@@ -116,7 +116,7 @@ class DailyDataView extends StatelessWidget {
                           padding: EdgeInsets.symmetric(horizontal: 4),
                           child: Center(
                             child: ConstrainedBox(
-                              constraints: BoxConstraints(maxHeight: 115),
+                              constraints: BoxConstraints(maxHeight: 125),
                               child: Container(
                                 decoration: BoxDecoration(
                                   color: data.notes.isNotEmpty
