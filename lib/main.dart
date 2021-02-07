@@ -114,7 +114,7 @@ class _MyAppState extends State<MyApp> {
                   fontWeight: FontWeight.w400,
                   color: Colors.white),
               headline3: TextStyle(
-                  fontSize: 20,
+                  fontSize: 18,
                   fontWeight: FontWeight.w400,
                   color: Colors.white),
               headline4: TextStyle(
@@ -172,7 +172,7 @@ class _MyAppState extends State<MyApp> {
                   fontWeight: FontWeight.w400,
                   color: Colors.white),
               headline3: TextStyle(
-                  fontSize: 20,
+                  fontSize: 18,
                   fontWeight: FontWeight.w400,
                   color: Colors.black),
               headline4: TextStyle(
@@ -202,6 +202,7 @@ class _MyAppState extends State<MyApp> {
               ),
             ),
         colorScheme: ColorScheme.light(
+            surface: Color(0xffb2dfdb),
             primary: Color(0xFF00bfa5),
             primaryVariant: Color(0xffb2dfdb),
             secondaryVariant: CustomColors.mainColor),

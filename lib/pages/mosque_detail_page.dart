@@ -33,18 +33,26 @@ class MosqueDetailPage extends ConsumerWidget {
           drawer: _DrawerDetailsPage(
             languagePack: _appLang,
           ),
-          floatingActionButton: FloatingActionButton(
-            child: FaIcon(
-              FontAwesomeIcons.times,
+          floatingActionButton: Material(
+            borderRadius: BorderRadius.circular(50),
+            elevation: 2,
+            color: Theme.of(context).primaryColor,
+            child: Padding(
+              padding: const EdgeInsets.all(4.0),
+              child: IconButton(
+                icon: FaIcon(
+                  FontAwesomeIcons.times,
+                  size: 28,
+                ),
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+              ),
             ),
-            onPressed: () {
-              Navigator.pop(context);
-            },
-            backgroundColor: Theme.of(context).primaryColor,
           ),
           body: Center(
             child: Container(
-              padding: EdgeInsets.symmetric(horizontal: 40, vertical: 30),
+              padding: EdgeInsets.symmetric(horizontal: 35, vertical: 30),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
@@ -146,7 +154,7 @@ class DetailsContent extends ConsumerWidget {
                       child: FaIcon(
                         FontAwesomeIcons.mapMarked,
                         color: Colors.white,
-                        size: 22,
+                        size: 20,
                       ),
                     ),
                   ),

@@ -53,7 +53,7 @@ class HomePage extends StatelessWidget {
                 languagePack: _appLang,
               ),
               body: Container(
-                padding: EdgeInsets.symmetric(vertical: 15, horizontal: 20),
+                padding: EdgeInsets.only(top: 15, left: 20, right: 20),
                 child: Center(
                   child: FutureBuilder(
                     future: _langPackController.getAppLangPack(),

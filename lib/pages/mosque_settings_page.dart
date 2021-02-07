@@ -50,39 +50,47 @@ class MosqueSettingsPage extends ConsumerWidget {
           drawer: _DrawerMosqSettingPage(
             languagePack: _appLang,
           ),
-          floatingActionButton: FloatingActionButton(
-            child: FaIcon(
-              FontAwesomeIcons.check,
+          floatingActionButton: Material(
+            borderRadius: BorderRadius.circular(50),
+            elevation: 2,
+            color: Theme.of(context).primaryColor,
+            child: Padding(
+              padding: const EdgeInsets.all(4.0),
+              child: IconButton(
+                icon: FaIcon(
+                  FontAwesomeIcons.check,
+                  size: 28,
+                ),
+                onPressed: () {
+                  final prefBox = Hive.box('pref');
+
+                  if (_selectedMosque.getSelectedMosqueId() == null) {
+                    String prefSelect = prefBox.get('mosque');
+                    if (prefSelect == null) {
+                      _selectedMosque.updateSelectedMosque('1001');
+                    } else {
+                      _selectedMosque.updateSelectedMosque(prefSelect);
+                    }
+                  }
+
+                  prefBox.put('mosque', _selectedMosque.getSelectedMosqueId());
+
+                  FirebaseDatabase.instance
+                      .reference()
+                      .child('prayerTimes')
+                      .child(_selectedMosque.getSelectedMosqueId())
+                      .keepSynced(true);
+
+                  if (prefBox.get('firstOpen')) {
+                    prefBox.put('firstOpen', false);
+                    Navigator.pushNamed(context, '/home');
+                  } else {
+                    _selectedDateController.updateSelectedDate(DateTime.now());
+                    Navigator.popUntil(context, ModalRoute.withName('/home'));
+                  }
+                },
+              ),
             ),
-            backgroundColor: Theme.of(context).primaryColor,
-            onPressed: () {
-              final prefBox = Hive.box('pref');
-
-              if (_selectedMosque.getSelectedMosqueId() == null) {
-                String prefSelect = prefBox.get('mosque');
-                if (prefSelect == null) {
-                  _selectedMosque.updateSelectedMosque('1001');
-                } else {
-                  _selectedMosque.updateSelectedMosque(prefSelect);
-                }
-              }
-
-              prefBox.put('mosque', _selectedMosque.getSelectedMosqueId());
-
-              FirebaseDatabase.instance
-                  .reference()
-                  .child('prayerTimes')
-                  .child(_selectedMosque.getSelectedMosqueId())
-                  .keepSynced(true);
-
-              if (prefBox.get('firstOpen')) {
-                prefBox.put('firstOpen', false);
-                Navigator.pushNamed(context, '/home');
-              } else {
-                _selectedDateController.updateSelectedDate(DateTime.now());
-                Navigator.popUntil(context, ModalRoute.withName('/home'));
-              }
-            },
           ),
           body: Center(
             child: ConstrainedBox(
