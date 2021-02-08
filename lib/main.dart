@@ -1,4 +1,5 @@
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -6,6 +7,7 @@ import 'package:responsive_framework/responsive_framework.dart';
 import 'package:takvim/pages/lang_settings_page.dart';
 import 'package:takvim/pages/mosque_detail_page.dart';
 import 'package:takvim/pages/mosque_settings_page.dart';
+import 'package:takvim/pages/subscribtion_page.dart';
 import 'pages/pages.dart';
 import 'package:flutter_riverpod/all.dart';
 import 'package:flutter/services.dart';
@@ -216,6 +218,7 @@ class _MyAppState extends State<MyApp> {
         '/lang': (context) => LangSettingsPage(),
         '/mosque': (context) => MosqueSettingsPage(),
         '/mosqueDetail': (context) => MosqueDetailPage(),
+        '/sub': (context) => SubscribtionPage(),
       },
       home: HomePage(),
     );
