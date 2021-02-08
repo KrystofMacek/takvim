@@ -12,12 +12,12 @@ dependencies:
   flutter:
     sdk: flutter
   auto_size_text: ^2.1.0
-  cloud_firestore: ^0.16.0
-  firebase_core: 
-  firebase_messaging: 
+  cloud_firestore: ^0.14.4
+  firebase_core: ^0.5.3
+  firebase_messaging: 6.0.16
   cross_connectivity: ^1.1.0
   cupertino_icons: 1.0.0
-  firebase_database: ^6.0.0
+  firebase_database: ^4.4.0
   flag: 2.0.4
   flutter_riverpod: ^0.12.1
   font_awesome_flutter: ^8.11.0
