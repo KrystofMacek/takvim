@@ -23,11 +23,51 @@ void main() async {
   await Firebase.initializeApp();
   FirebaseDatabase.instance.setPersistenceEnabled(true);
 
+  FirebaseMessaging fcm = FirebaseMessaging();
+  await _fcmPermission(fcm);
+  fcm.configure(
+    onMessage: (message) async {
+      print('onMessage $message');
+    },
+    onLaunch: (message) async {
+      print('onLaunch $message');
+    },
+    onResume: (message) async {
+      print('onResume $message');
+    },
+    onBackgroundMessage: myBackgroundMessageHandler,
+  );
   runApp(
     ProviderScope(
       child: MyApp(),
     ),
   );
+}
+
+Future<dynamic> myBackgroundMessageHandler(Map<String, dynamic> message) async {
+  if (message.containsKey('data')) {
+    // Handle data message
+    final dynamic data = message['data'];
+  }
+
+  if (message.containsKey('notification')) {
+    // Handle notification message
+    final dynamic notification = message['notification'];
+  }
+
+  // Or do other work.
+}
+
+Future<void> _fcmPermission(FirebaseMessaging fcm) async {
+  await fcm.requestNotificationPermissions(
+    IosNotificationSettings(
+      alert: true,
+      badge: true,
+      sound: true,
+      provisional: false,
+    ),
+  );
+  fcm.getToken().then((value) => print('Token :$value'));
 }
 
 class MyApp extends StatefulWidget {
@@ -62,7 +102,6 @@ class _MyAppState extends State<MyApp> {
       prefBox.put('appLang', '101');
       firstOpen = true;
     }
-
     prefBox.put('firstOpen', firstOpen);
   }
 

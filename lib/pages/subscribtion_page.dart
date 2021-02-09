@@ -1,33 +1,10 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import '../widgets/subscription_page/widgets.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../providers/messaging_provider.dart';
 
-class SubscribtionPage extends ConsumerWidget {
+class SubscribtionPage extends StatelessWidget {
   @override
-  Widget build(BuildContext context, ScopedReader watch) {
-    FirebaseMessaging fcm = watch(fcmProvider);
-    fcm.configure(
-      onMessage: (message) async {
-        print('Message: $message');
-        showDialog(
-          context: context,
-          builder: (context) => AlertDialog(
-            content: ListTile(
-              title: Text(message['notification']['title']),
-            ),
-            actions: [
-              FlatButton(
-                child: Text('OK'),
-                onPressed: () => Navigator.of(context).pop(),
-              )
-            ],
-          ),
-        );
-      },
-    );
-
+  Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
         child: Center(

@@ -1,12 +1,11 @@
 import 'package:riverpod/all.dart';
 import 'package:hive/hive.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
-import '../messaging_provider.dart';
 
 final currentSubsListProvider = StateNotifierProvider(
   (ref) => CurrentSubsList(
     Hive.box('pref'),
-    ref.watch(fcmProvider),
+    FirebaseMessaging(),
   ),
 );
 
