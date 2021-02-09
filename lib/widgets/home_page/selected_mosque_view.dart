@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:takvim/data/models/mosque_data.dart';
-import 'package:takvim/providers/mosque_provider.dart';
+import 'package:takvim/providers/mosque_page/mosque_provider.dart';
 import 'package:firebase_database/firebase_database.dart';
 
 class SelectedMosqueView extends StatelessWidget {

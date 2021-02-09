@@ -3,13 +3,13 @@ import 'package:flutter_riverpod/all.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:hive/hive.dart';
 import 'package:takvim/data/models/language_pack.dart';
-import 'package:takvim/providers/date_provider.dart';
-import 'package:takvim/providers/language_provider.dart';
-import 'package:takvim/providers/mosque_provider.dart';
+import 'package:takvim/providers/home_page/date_provider.dart';
+import 'package:takvim/providers/language_page/language_provider.dart';
+import 'package:takvim/providers/mosque_page/mosque_provider.dart';
 import 'package:takvim/widgets/home_page/app_bar_content.dart';
 import '../common/styling.dart';
 import '../widgets/home_page/home_page_widgets.dart';
-import '../providers/date_provider.dart';
+import '../providers/home_page/date_provider.dart';
 
 class HomePage extends StatelessWidget {
   @override

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:takvim/common/styling.dart';
 import 'package:takvim/data/models/dateBounds.dart';
-import 'package:takvim/providers/date_provider.dart';
+import 'package:takvim/providers/home_page/date_provider.dart';
 
 class CalendarDayPicker extends StatelessWidget {
   const CalendarDayPicker({

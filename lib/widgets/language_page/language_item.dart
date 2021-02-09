@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../providers/language_provider.dart';
+import '../../providers/language_page/language_provider.dart';
 import 'package:hive/hive.dart';
 import 'package:flag/flag.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';

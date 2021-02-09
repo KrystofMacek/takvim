@@ -1,19 +1,14 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import '../widgets/subscription_page/widgets.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../providers/messaging_provider.dart';
 
-class SubscribtionPage extends StatefulWidget {
-  SubscribtionPage({Key key}) : super(key: key);
-
+class SubscribtionPage extends ConsumerWidget {
   @override
-  _SubscribtionPageState createState() => _SubscribtionPageState();
-}
-
-class _SubscribtionPageState extends State<SubscribtionPage> {
-  FirebaseMessaging messaging = FirebaseMessaging();
-
-  @override
-  void initState() {
-    messaging.configure(
+  Widget build(BuildContext context, ScopedReader watch) {
+    FirebaseMessaging fcm = watch(fcmProvider);
+    fcm.configure(
       onMessage: (message) async {
         print('Message: $message');
         showDialog(
@@ -33,16 +28,16 @@ class _SubscribtionPageState extends State<SubscribtionPage> {
       },
     );
 
-    messaging.getToken().then((value) => print('Token :$value'));
-    super.initState();
-  }
-
-  @override
-  Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
         child: Center(
-          child: Buttons(messaging: messaging),
+          child: Column(
+            children: [
+              Expanded(
+                child: AvailableSubsListStream(),
+              ),
+            ],
+          ),
         ),
       ),
     );

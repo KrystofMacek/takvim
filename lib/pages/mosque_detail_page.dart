@@ -4,13 +4,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:takvim/data/models/language_pack.dart';
 import 'package:takvim/data/models/mosque_data.dart';
-import 'package:takvim/providers/mosque_detail_provider.dart';
+import 'package:takvim/providers/mosque_page/mosque_detail_provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../widgets/home_page/app_bar.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:hive/hive.dart';
 import '../common/styling.dart';
-import '../providers/language_provider.dart';
+import '../providers/language_page/language_provider.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 
 class MosqueDetailPage extends ConsumerWidget {

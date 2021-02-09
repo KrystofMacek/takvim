@@ -1,7 +1,7 @@
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter_riverpod/all.dart';
 import 'package:hive/hive.dart';
-import '../data/models/language_pack.dart';
+import '../../data/models/language_pack.dart';
 
 // Provider of App langPack
 final appLanguagePackProvider =

@@ -2,7 +2,7 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter_riverpod/all.dart';
 import 'package:hive/hive.dart';
 import 'package:takvim/data/models/mosque_data.dart';
-import '../data/models/day_data.dart';
+import '../../data/models/day_data.dart';
 
 final selectedMosque = StateNotifierProvider<SelectedMosque>((ref) {
   return SelectedMosque();
@@ -79,14 +79,11 @@ class MosqueController extends StateNotifier<MosqueController> {
   final Box _prefBox = Hive.box('pref');
 
   Stream<List<MosqueData>> watchMosques() {
-
     List<MosqueData> mosqueList = [];
     _databaseReference.child('mosques').onValue.listen((event) {
-
       if (event.snapshot.value != null) {
         mosqueList = [];
         event.snapshot.value.forEach((key, value) {
-
           mosqueList.add(
             MosqueData.fromFirebase(value),
           );
@@ -101,7 +98,6 @@ class MosqueController extends StateNotifier<MosqueController> {
   }
 
   Future<List<MosqueData>> getListOfMosques() async {
-
     List<MosqueData> mosques = [];
     final DataSnapshot ref =
         await _databaseReference.child('mosques').orderByChild('Name').once();
@@ -166,7 +162,6 @@ class MosqueController extends StateNotifier<MosqueController> {
 
   Future<MosqueData> getSelectedMosque(String selectedMosque) async {
     String mosque = _prefBox.get('mosque');
-
 
     if (mosque == null) {
       _selectedMosque.updateSelectedMosque('1001');
