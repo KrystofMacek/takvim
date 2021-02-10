@@ -27,6 +27,7 @@ dependencies:
   intl: ^0.16.1
   responsive_framework: ^0.0.14
   url_launcher: ^5.7.10
+  collection: ^1.14.13
 
 dependency_overrides:
   flutter_svg: 0.18.0

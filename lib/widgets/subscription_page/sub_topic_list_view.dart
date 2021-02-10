@@ -2,13 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../providers/subscription/sub_topic_stream_provider.dart';
 import '../../providers/subscription/subs_list_provider.dart';
+import '../../data/models/subsTopic.dart';
+import '../../common/styling.dart';
 
 class SubTopicListView extends ConsumerWidget {
-  const SubTopicListView({Key key, @required String mosqueId})
-      : _mosqueId = mosqueId,
+  const SubTopicListView({
+    Key key,
+    @required List<SubsTopic> topics,
+  })  : _topics = topics,
         super(key: key);
 
-  final String _mosqueId;
+  final List<SubsTopic> _topics;
   @override
   Widget build(BuildContext context, ScopedReader watch) {
     List<String> currentSubsList = watch(currentSubsListProvider.state);
@@ -16,54 +20,49 @@ class SubTopicListView extends ConsumerWidget {
 
     List<String> currentMosqueSubsList = watch(currentMosqueSubs.state);
     CurrentMosqueSubs currentMosqueSubsController = watch(currentMosqueSubs);
+    final SubsTopic data = _topics.first;
 
-    return watch(subTopicListStreamProvider).when(
-      data: (value) {
-        List<String> subtopics = [];
-        value.docs.forEach((element) {
-          subtopics.add(element.id);
-        });
-
-        return ListView.separated(
-          shrinkWrap: true,
-          itemCount: subtopics.length,
-          separatorBuilder: (BuildContext context, int index) {
-            return SizedBox(
-              height: 10,
-            );
-          },
-          itemBuilder: (BuildContext context, int index) {
-            bool subscribed = currentSubsList.contains(subtopics[index]);
-            bool isMosqueSub = currentMosqueSubsList.contains(_mosqueId);
-
-            return Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(subtopics[index]),
-                Checkbox(
-                  value: subscribed,
-                  onChanged: (value) {
-                    _subscribe(
-                      context,
-                      subscribed,
-                      currentSubsList,
-                      currentSubsListController,
-                      currentMosqueSubsController,
-                      subtopics,
-                      index,
-                      isMosqueSub,
-                    );
-                  },
-                )
-              ],
-            );
-          },
+    return ListView.separated(
+      shrinkWrap: true,
+      itemCount: _topics.length,
+      separatorBuilder: (BuildContext context, int index) {
+        return SizedBox(
+          height: 10,
         );
       },
-      loading: () => Center(
-        child: CircularProgressIndicator(),
-      ),
-      error: (error, stackTrace) => Text('Error loading sub topics'),
+      itemBuilder: (BuildContext context, int index) {
+        bool subscribed = currentSubsList.contains(_topics[index].topic);
+        bool isMosqueSub = currentMosqueSubsList.contains(data.mosqueId);
+
+        return Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              _topics[index].label,
+              style: Theme.of(context)
+                  .textTheme
+                  .headline4
+                  .copyWith(color: Colors.black),
+            ),
+            Checkbox(
+              activeColor: CustomColors.mainColor,
+              value: subscribed,
+              onChanged: (value) {
+                _subscribe(
+                  context,
+                  subscribed,
+                  currentSubsList,
+                  currentSubsListController,
+                  currentMosqueSubsController,
+                  _topics,
+                  index,
+                  isMosqueSub,
+                );
+              },
+            )
+          ],
+        );
+      },
     );
   }
 
@@ -73,7 +72,7 @@ class SubTopicListView extends ConsumerWidget {
     List<String> currentSubsList,
     CurrentSubsList currentSubsListController,
     CurrentMosqueSubs currentMosqueSubsController,
-    List<String> subtopics,
+    List<SubsTopic> subtopics,
     int index,
     bool isMosqueSub,
   ) {
@@ -82,12 +81,12 @@ class SubTopicListView extends ConsumerWidget {
       // remove from sub list
       currentSubsListController
           .removeFromSubsList(
-            subtopics[index],
+            subtopics[index].topic,
           )
           .whenComplete(
             () => Scaffold.of(context).showSnackBar(
               SnackBar(
-                content: Text('Unsubscribed from ${subtopics[index]}'),
+                content: Text('Unsubscribed from ${subtopics[index].topic}'),
               ),
             ),
           );
@@ -101,24 +100,26 @@ class SubTopicListView extends ConsumerWidget {
       );
       // if he isnt remove from list
       if (noLongerMosqueSub)
-        currentMosqueSubsController.removeMosqueFromSubsList(_mosqueId);
+        currentMosqueSubsController
+            .removeMosqueFromSubsList(subtopics[index].mosqueId);
       // If the user is not subscribed
     } else {
       // Add to sub list
       currentSubsListController
           .addToSubsList(
-            subtopics[index],
+            subtopics[index].topic,
           )
           .whenComplete(
             () => Scaffold.of(context).showSnackBar(
               SnackBar(
-                content: Text('Subscribed to ${subtopics[index]}'),
+                content: Text('Subscribed to ${subtopics[index].topic}'),
               ),
             ),
           );
       // if its first sub to this mosque add it to his list
       if (!isMosqueSub)
-        currentMosqueSubsController.addMosqueToSubsList(_mosqueId);
+        currentMosqueSubsController
+            .addMosqueToSubsList(subtopics[index].mosqueId);
     }
   }
 }

@@ -4,19 +4,26 @@ import 'package:takvim/common/styling.dart';
 import '../../providers/subscription/selected_subs_item_provider.dart';
 import './sub_topic_list_view.dart';
 import '../../providers/subscription/subs_list_provider.dart';
+import '../../data/models/subsTopic.dart';
 
 class OpenedSubsItem extends ConsumerWidget {
-  const OpenedSubsItem({Key key, @required String mosqueId})
-      : _mosqueId = mosqueId,
+  const OpenedSubsItem({
+    Key key,
+    @required List<SubsTopic> topics,
+  })  : _topics = topics,
         super(key: key);
 
-  final String _mosqueId;
+  final List<SubsTopic> _topics;
 
   @override
   Widget build(BuildContext context, ScopedReader watch) {
     List<String> currentMosqueSubsList = watch(currentMosqueSubs.state);
+    SelectedSubsItem _selectedSubsItemProvider = watch(selectedSubsItem);
+    final SubsTopic data = _topics.first;
     return GestureDetector(
-      onTap: () {},
+      onTap: () {
+        _selectedSubsItemProvider.updateSelectedSubsItem('');
+      },
       child: Card(
         color: CustomColors.highlightColor,
         child: Container(
@@ -30,20 +37,21 @@ class OpenedSubsItem extends ConsumerWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        '$_mosqueId',
+                        '${data.mosqueName}',
                         style: CustomTextFonts.mosqueListOther.copyWith(
                             color: CustomColors.cityNameColor, fontSize: 18),
                       ),
                     ],
                   ),
                   Checkbox(
-                    value: currentMosqueSubsList.contains(_mosqueId),
+                    value: currentMosqueSubsList.contains(data.mosqueId),
                     onChanged: (value) {},
+                    activeColor: CustomColors.mainColor,
                   )
                 ],
               ),
               SubTopicListView(
-                mosqueId: _mosqueId,
+                topics: _topics,
               ),
             ],
           ),
