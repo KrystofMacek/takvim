@@ -31,7 +31,7 @@ class FilterSubsriptions extends StatelessWidget {
                 color: CustomColors.mainColor,
               )),
               filled: true,
-              hintText: 'Search mosque name',
+              hintText: '${_appLang.search}',
             ),
             onChanged: (value) {
               _subsFilteringController.filterMosqueList(value);

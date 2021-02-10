@@ -1,95 +1,131 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/all.dart';
 import 'package:takvim/providers/firestore_provider.dart';
-import './closed_subs_item.dart';
 import './opened_subs_item.dart';
 import '../../providers/subscription/selected_subs_item_provider.dart';
-import '../../data/models/mosque_data.dart';
 import '../../data/models/subsTopic.dart';
 import 'package:collection/collection.dart';
 import './single_topic_subs_item.dart';
 import '../../data/models/language_pack.dart';
 import '../../providers/language_page/language_provider.dart';
 import './filter_field.dart';
+import '../../providers/mosque_page/mosque_provider.dart';
+import '../../data/models/mosque_data.dart';
+import '../../widgets/mosque_page/mosque_list_item.dart';
+import '../../widgets/mosque_page/filter_text_field.dart';
+import './unsubscribable_item.dart';
 
 class AvailableSubsListStream extends ConsumerWidget {
   const AvailableSubsListStream({Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context, ScopedReader watch) {
-    String _selectedSubsItemProvider = watch(selectedSubsItem.state);
     SubsFilteringController _subsFilteringController =
         watch(subsFilteringController);
     final LanguagePack _appLang = watch(appLanguagePackProvider.state);
+    final MosqueController _mosqueController = watch(mosqueController);
 
-    return watch(subsListStreamProvider).when(
-      data: (value) {
-        return Consumer(
-          builder: (context, watch, child) {
-            List<SubsTopic> filteredList = watch(subsFilteredMosqueList.state);
+    return Column(
+      children: [
+        SizedBox(
+          height: 7,
+        ),
+        FilterMosqueInput(
+            appLang: _appLang, mosqueController: _mosqueController),
+        SizedBox(
+          height: 5,
+        ),
+        StreamBuilder<List<MosqueData>>(
+          stream: _mosqueController.watchMosques(),
+          builder:
+              (BuildContext context, AsyncSnapshot<List<MosqueData>> snapshot) {
+            if (snapshot.hasData) {
+              return Consumer(
+                builder: (context, watch, child) {
+                  List<MosqueData> filteredList =
+                      watch(filteredMosqueList.state);
 
-            final Map<String, List<SubsTopic>> map =
-                groupBy(filteredList, (topic) => topic.mosqueId);
+                  // SUBSCRIPTION
+                  return watch(subsListStreamProvider).when(
+                    data: (value) {
+                      List<SubsTopic> filteredSubsTopicList =
+                          watch(subsFilteredMosqueList.state);
+                      final Map<String, List<SubsTopic>> subsMap = groupBy(
+                          filteredSubsTopicList, (topic) => topic.mosqueId);
+                      final subscibableMosques = subsMap.keys.toList();
 
-            final displayedTopics = map.keys.toList();
+                      String _selectedSubsItemProvider =
+                          watch(selectedSubsItem.state);
+                      return Expanded(
+                        child: ListView.separated(
+                          itemBuilder: (context, index) {
+                            if (index == filteredList.length) {
+                              return SizedBox(
+                                height: 80,
+                              );
+                            }
 
-            return Column(
-              children: [
-                SizedBox(
-                  height: 5,
-                ),
-                FilterSubsriptions(
-                  appLang: _appLang,
-                ),
-                SizedBox(
-                  height: 5,
-                ),
-                Expanded(
-                  child: ListView.separated(
-                    itemBuilder: (context, index) {
-                      List<SubsTopic> topics = map['${displayedTopics[index]}'];
+                            MosqueData mosqueData = filteredList[index];
+                            bool isSubscribable = subscibableMosques
+                                .contains(mosqueData.mosqueId);
 
-                      if (index == displayedTopics.length) {
-                        return SizedBox(
-                          height: 80,
-                        );
-                      }
+                            if (index == filteredList.length) {
+                              return SizedBox(
+                                height: 80,
+                              );
+                            }
 
-                      bool isSingleTopic = topics.length == 1;
+                            if (!isSubscribable) {
+                              return UnsubscribableTopicItem(
+                                mosqueData: mosqueData,
+                                selected: _selectedSubsItemProvider ==
+                                    mosqueData.mosqueId,
+                              );
+                            }
 
-                      if (isSingleTopic) {
-                        return SingleTopicSubsItem(
-                          topic: topics.first,
-                          selected: _selectedSubsItemProvider ==
-                              displayedTopics[index],
-                        );
-                      } else {
-                        return _selectedSubsItemProvider !=
-                                displayedTopics[index]
-                            ? ClosedSubsItem(
-                                topics: topics,
-                              )
-                            : OpenedSubsItem(
+                            bool isSingleTopic =
+                                subsMap[mosqueData.mosqueId].length == 1;
+
+                            if (isSingleTopic) {
+                              SubsTopic topic =
+                                  subsMap['${mosqueData.mosqueId}'].first;
+                              return SingleTopicSubsItem(
+                                mosqueData: mosqueData,
+                                topic: topic,
+                                selected: _selectedSubsItemProvider ==
+                                    mosqueData.mosqueId,
+                              );
+                            } else {
+                              List<SubsTopic> topics =
+                                  subsMap['${mosqueData.mosqueId}'];
+                              return OpenedSubsItem(
+                                selected: _selectedSubsItemProvider ==
+                                    mosqueData.mosqueId,
                                 topics: topics,
                               );
-                      }
+                            }
+                          },
+                          separatorBuilder: (context, index) => SizedBox(),
+                          itemCount: filteredList.length + 1,
+                        ),
+                      );
                     },
-                    separatorBuilder: (context, index) => SizedBox(),
-                    itemCount: displayedTopics.length,
-                  ),
-                ),
-              ],
-            );
+                    loading: () => Center(
+                      child: CircularProgressIndicator(),
+                    ),
+                    error: (error, stackTrace) => Center(
+                      child: Text(
+                          'Error Loading Subscription List ${error.toString()} ${stackTrace.toString()}'),
+                    ),
+                  );
+                },
+              );
+            } else {
+              return CircularProgressIndicator();
+            }
           },
-        );
-      },
-      loading: () => Center(
-        child: CircularProgressIndicator(),
-      ),
-      error: (error, stackTrace) => Center(
-        child: Text(
-            'Error Loading Subscription List ${error.toString()} ${stackTrace.toString()}'),
-      ),
+        ),
+      ],
     );
   }
 }

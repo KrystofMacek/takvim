@@ -4,6 +4,7 @@ import 'package:takvim/common/styling.dart';
 import '../../providers/subscription/selected_subs_item_provider.dart';
 import '../../providers/subscription/subs_list_provider.dart';
 import '../../data/models/subsTopic.dart';
+import './stream_mosque_info.dart';
 
 class ClosedSubsItem extends ConsumerWidget {
   const ClosedSubsItem({
@@ -31,15 +32,8 @@ class ClosedSubsItem extends ConsumerWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    '${data.mosqueName}',
-                    style: CustomTextFonts.mosqueListOther.copyWith(
-                        color: CustomColors.cityNameColor, fontSize: 18),
-                  ),
-                ],
+              MosqueDataStream(
+                mosqueId: data.mosqueId,
               ),
               Checkbox(
                 value: currentMosqueSubsList.contains(data.mosqueId),

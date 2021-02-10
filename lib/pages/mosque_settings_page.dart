@@ -122,8 +122,9 @@ class MosqueSettingsPage extends ConsumerWidget {
                             height: 10,
                           ),
                           FilterMosqueInput(
-                              appLang: _appLang,
-                              mosqueController: _mosqueController),
+                            appLang: _appLang,
+                            mosqueController: _mosqueController,
+                          ),
                           SizedBox(
                             height: 5,
                           ),

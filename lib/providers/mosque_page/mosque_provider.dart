@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/all.dart';
 import 'package:hive/hive.dart';
 import 'package:takvim/data/models/mosque_data.dart';
 import '../../data/models/day_data.dart';
+import '../firestore_provider.dart';
 
 final selectedMosque = StateNotifierProvider<SelectedMosque>((ref) {
   return SelectedMosque();
@@ -55,11 +56,14 @@ final mosqueController = StateNotifierProvider<MosqueController>((ref) {
   SelectedMosque _selectedMosque = ref.watch(selectedMosque);
   MosqueList _listOfMosques = ref.watch(mosqueList);
   FilteredMosqueList _filteredMosqueList = ref.watch(filteredMosqueList);
+  SubsFilteredMosqueList _subsFilteredMosqueList =
+      ref.watch(subsFilteredMosqueList);
   return MosqueController(
     FirebaseDatabase.instance.reference(),
     _selectedMosque,
     _listOfMosques,
     _filteredMosqueList,
+    _subsFilteredMosqueList,
   );
 });
 
@@ -69,12 +73,14 @@ class MosqueController extends StateNotifier<MosqueController> {
     this._selectedMosque,
     this._mosqueList,
     this._filteredMosqueList,
+    this._subsFilteredMosqueList,
   ) : super(null);
 
   final SelectedMosque _selectedMosque;
   final MosqueList _mosqueList;
   final FilteredMosqueList _filteredMosqueList;
   final DatabaseReference _databaseReference;
+  final SubsFilteredMosqueList _subsFilteredMosqueList;
 
   final Box _prefBox = Hive.box('pref');
 
@@ -95,6 +101,23 @@ class MosqueController extends StateNotifier<MosqueController> {
     });
 
     return Stream.value(mosqueList);
+  }
+
+  Future<List<MosqueData>> getFilteredListOfMosques() async {
+    List<MosqueData> mosques = [];
+    final DataSnapshot ref = await _databaseReference.child('mosques').once();
+
+    if (ref.value != null) {
+      ref.value.forEach(
+        (key, mosque) => {
+          mosques.add(
+            MosqueData.fromFirebase(mosque),
+          ),
+        },
+      );
+    }
+
+    return mosques;
   }
 
   Future<List<MosqueData>> getListOfMosques() async {

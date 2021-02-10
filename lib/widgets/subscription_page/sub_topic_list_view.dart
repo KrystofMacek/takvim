@@ -4,6 +4,7 @@ import '../../providers/subscription/sub_topic_stream_provider.dart';
 import '../../providers/subscription/subs_list_provider.dart';
 import '../../data/models/subsTopic.dart';
 import '../../common/styling.dart';
+import './checkbox.dart';
 
 class SubTopicListView extends ConsumerWidget {
   const SubTopicListView({
@@ -27,7 +28,7 @@ class SubTopicListView extends ConsumerWidget {
       itemCount: _topics.length,
       separatorBuilder: (BuildContext context, int index) {
         return SizedBox(
-          height: 10,
+          height: 15,
         );
       },
       itemBuilder: (BuildContext context, int index) {
@@ -44,22 +45,30 @@ class SubTopicListView extends ConsumerWidget {
                   .headline4
                   .copyWith(color: Colors.black),
             ),
-            Checkbox(
-              activeColor: CustomColors.mainColor,
-              value: subscribed,
-              onChanged: (value) {
-                _subscribe(
-                  context,
-                  subscribed,
-                  currentSubsList,
-                  currentSubsListController,
-                  currentMosqueSubsController,
-                  _topics,
-                  index,
-                  isMosqueSub,
-                );
-              },
-            )
+            Container(
+              padding: EdgeInsets.only(right: 10),
+              child: GestureDetector(
+                onTap: () {
+                  _subscribe(
+                    context,
+                    subscribed,
+                    currentSubsList,
+                    currentSubsListController,
+                    currentMosqueSubsController,
+                    _topics,
+                    index,
+                    isMosqueSub,
+                  );
+                },
+                child: CustomCheckBox(
+                  size: 20,
+                  iconSize: 17,
+                  isChecked: subscribed,
+                  isDisabled: false,
+                  isClickable: true,
+                ),
+              ),
+            ),
           ],
         );
       },
@@ -93,9 +102,11 @@ class SubTopicListView extends ConsumerWidget {
 
       // check if he is sub to another subtopic of mosque
       bool noLongerMosqueSub = true;
+
       subtopics.forEach(
         (element) {
-          if (currentSubsList.contains(element)) noLongerMosqueSub = false;
+          if (currentSubsList.contains(element.topic))
+            noLongerMosqueSub = false;
         },
       );
       // if he isnt remove from list

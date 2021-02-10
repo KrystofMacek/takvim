@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/all.dart';
-import 'package:firebase_database/firebase_database.dart';
 import '../data/models/subsTopic.dart';
 
 final firestoreProvider = Provider<FirebaseFirestore>((ref) {
@@ -22,6 +21,7 @@ final subsListStreamProvider =
     event.docs.forEach((element) {
       subsTopics.add(SubsTopic.fromJson(element.data()));
     });
+
     ref.watch(subsFilteringController).initLists(subsTopics);
   });
   return Stream.value(subsTopics);
