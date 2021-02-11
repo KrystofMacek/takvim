@@ -7,6 +7,7 @@ import '../../providers/subscription/subs_list_provider.dart';
 import '../../data/models/subsTopic.dart';
 import './stream_mosque_info.dart';
 import './checkbox.dart';
+import 'package:hive/hive.dart';
 
 class OpenedSubsItem extends ConsumerWidget {
   const OpenedSubsItem({
@@ -22,6 +23,8 @@ class OpenedSubsItem extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, ScopedReader watch) {
+    bool darkTheme = Hive.box('pref').get('theme');
+
     List<String> currentMosqueSubsList = watch(currentMosqueSubs.state);
     SelectedSubsItem _selectedSubsItemProvider = watch(selectedSubsItem);
     final SubsTopic data = _topics.first;
@@ -36,34 +39,43 @@ class OpenedSubsItem extends ConsumerWidget {
             ? CustomColors.highlightColor
             : Theme.of(context).cardColor,
         child: Container(
-          padding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
           child: Column(
             children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  MosqueDataStream(
-                    mosqueId: data.mosqueId,
-                  ),
-                  Container(
-                    padding: EdgeInsets.only(right: 10),
-                    child: CustomCheckBox(
-                      size: 20,
-                      iconSize: 17,
-                      isChecked: currentMosqueSubsList.contains(data.mosqueId),
-                      isDisabled: false,
-                      isClickable: false,
+              Container(
+                padding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    MosqueDataStream(
+                      mosqueId: data.mosqueId,
                     ),
-                  ),
-                ],
+                    Container(
+                      padding: EdgeInsets.only(right: 10),
+                      child: CustomCheckBox(
+                        size: 25,
+                        iconSize: 17,
+                        isChecked:
+                            currentMosqueSubsList.contains(data.mosqueId),
+                        isDisabled: false,
+                        isClickable: false,
+                      ),
+                    ),
+                  ],
+                ),
               ),
               if (_selected)
                 SizedBox(
                   height: 10,
                 ),
               if (_selected)
-                SubTopicListView(
-                  topics: _topics,
+                Container(
+                  color: darkTheme
+                      ? CustomColors.highlightColorDarker
+                      : CustomColors.highlightColorLighter,
+                  padding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+                  child: SubTopicListView(
+                    topics: _topics,
+                  ),
                 ),
             ],
           ),

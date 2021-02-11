@@ -66,16 +66,6 @@ class UnsubscribableTopicItem extends ConsumerWidget {
                   ),
                 ],
               ),
-              Container(
-                padding: EdgeInsets.only(right: 10),
-                child: CustomCheckBox(
-                  size: 20,
-                  iconSize: 17,
-                  isChecked: false,
-                  isDisabled: true,
-                  isClickable: true,
-                ),
-              )
             ],
           ),
         ),

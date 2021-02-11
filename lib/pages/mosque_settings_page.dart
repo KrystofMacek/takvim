@@ -245,7 +245,7 @@ class _DrawerMosqSettingPage extends StatelessWidget {
                     FontAwesomeIcons.bell,
                     size: 28,
                   ),
-                  title: Text('Subscribe'),
+                  title: Text('${_languagePack.subscribe}'),
                   onTap: () {
                     Navigator.popAndPushNamed(context, '/sub');
                   },

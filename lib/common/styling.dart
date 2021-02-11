@@ -25,6 +25,8 @@ class CustomColors {
   static final Color counterTimeColor = Colors.tealAccent[900];
   static final Color cityNameColor = Colors.teal[700];
   static final Color highlightColor = Color(0xffb2dfdb);
+  static final Color highlightColorLighter = Color(0xffDEF4F3);
+  static final Color highlightColorDarker = Color(0xff80BFBA);
 
   static final MaterialColor swatch = MaterialColor(
     0xFF00bfa5,

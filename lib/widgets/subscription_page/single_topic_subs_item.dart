@@ -90,8 +90,8 @@ class SingleTopicSubsItem extends ConsumerWidget {
                     }
                   },
                   child: CustomCheckBox(
-                    size: 20,
-                    iconSize: 17,
+                    size: 25,
+                    iconSize: 21,
                     isChecked: subscribed,
                     isDisabled: false,
                     isClickable: true,

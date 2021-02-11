@@ -29,16 +29,16 @@ class CustomCheckBox extends StatelessWidget {
         height: _size,
         width: _size,
         decoration: BoxDecoration(
-          color: Colors.grey[600],
+          color: Colors.grey[500],
           borderRadius: BorderRadius.circular(5),
         ),
-        child: Center(
-          child: Icon(
-            Icons.close,
-            size: _iconSize,
-            color: Colors.white,
-          ),
-        ),
+        // child: Center(
+        //   child: Icon(
+        //     Icons.close,
+        //     size: _iconSize,
+        //     color: Colors.white,
+        //   ),
+        // ),
       );
     }
     if (!_isClickable) {
@@ -46,7 +46,11 @@ class CustomCheckBox extends StatelessWidget {
         height: _size,
         width: _size,
         decoration: BoxDecoration(
-          color: Colors.grey[600],
+          color: _isChecked ? Colors.grey[500] : Theme.of(context).cardColor,
+          border: Border.all(
+            width: 2,
+            color: Colors.grey[500],
+          ),
           borderRadius: BorderRadius.circular(5),
         ),
         child: Center(
@@ -56,11 +60,12 @@ class CustomCheckBox extends StatelessWidget {
                   size: _iconSize,
                   color: Colors.white,
                 )
-              : Icon(
-                  Icons.remove,
-                  size: _iconSize,
-                  color: Colors.white,
-                ),
+              : SizedBox(),
+          // Icon(
+          //     Icons.remove,
+          //     size: _iconSize,
+          //     color: Colors.white,
+          //   ),
         ),
       );
     }

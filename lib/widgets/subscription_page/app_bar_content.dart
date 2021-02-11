@@ -49,7 +49,7 @@ class SubscribtionPageAppBarContent extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                'Subscribe',
+                '${_appLang.subscribe}',
                 style: Theme.of(context).textTheme.headline1,
               ),
             ],

@@ -71,7 +71,7 @@ class SubscriptionPageDrawer extends ConsumerWidget {
                     FontAwesomeIcons.bell,
                     size: 28,
                   ),
-                  title: Text('Subscribe'),
+                  title: Text('${_languagePack.subscribe}'),
                   onTap: () {
                     Navigator.pop(context);
                   },

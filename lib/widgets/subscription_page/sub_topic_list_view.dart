@@ -5,6 +5,7 @@ import '../../providers/subscription/subs_list_provider.dart';
 import '../../data/models/subsTopic.dart';
 import '../../common/styling.dart';
 import './checkbox.dart';
+import 'package:hive/hive.dart';
 
 class SubTopicListView extends ConsumerWidget {
   const SubTopicListView({
@@ -22,7 +23,7 @@ class SubTopicListView extends ConsumerWidget {
     List<String> currentMosqueSubsList = watch(currentMosqueSubs.state);
     CurrentMosqueSubs currentMosqueSubsController = watch(currentMosqueSubs);
     final SubsTopic data = _topics.first;
-
+    bool darkTheme = Hive.box('pref').get('theme');
     return ListView.separated(
       shrinkWrap: true,
       itemCount: _topics.length,
@@ -38,12 +39,15 @@ class SubTopicListView extends ConsumerWidget {
         return Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text(
-              _topics[index].label,
-              style: Theme.of(context)
-                  .textTheme
-                  .headline4
-                  .copyWith(color: Colors.black),
+            Container(
+              padding: EdgeInsets.only(left: 15),
+              child: Text(
+                _topics[index].label,
+                style: Theme.of(context).textTheme.headline4.copyWith(
+                      color: darkTheme ? Colors.white : Colors.black,
+                      fontStyle: FontStyle.normal,
+                    ),
+              ),
             ),
             Container(
               padding: EdgeInsets.only(right: 10),
@@ -61,7 +65,7 @@ class SubTopicListView extends ConsumerWidget {
                   );
                 },
                 child: CustomCheckBox(
-                  size: 20,
+                  size: 25,
                   iconSize: 17,
                   isChecked: subscribed,
                   isDisabled: false,
@@ -88,17 +92,9 @@ class SubTopicListView extends ConsumerWidget {
     // If the user is subscribed
     if (subscribed) {
       // remove from sub list
-      currentSubsListController
-          .removeFromSubsList(
-            subtopics[index].topic,
-          )
-          .whenComplete(
-            () => Scaffold.of(context).showSnackBar(
-              SnackBar(
-                content: Text('Unsubscribed from ${subtopics[index].topic}'),
-              ),
-            ),
-          );
+      currentSubsListController.removeFromSubsList(
+        subtopics[index].topic,
+      );
 
       // check if he is sub to another subtopic of mosque
       bool noLongerMosqueSub = true;
@@ -116,17 +112,9 @@ class SubTopicListView extends ConsumerWidget {
       // If the user is not subscribed
     } else {
       // Add to sub list
-      currentSubsListController
-          .addToSubsList(
-            subtopics[index].topic,
-          )
-          .whenComplete(
-            () => Scaffold.of(context).showSnackBar(
-              SnackBar(
-                content: Text('Subscribed to ${subtopics[index].topic}'),
-              ),
-            ),
-          );
+      currentSubsListController.addToSubsList(
+        subtopics[index].topic,
+      );
       // if its first sub to this mosque add it to his list
       if (!isMosqueSub)
         currentMosqueSubsController
