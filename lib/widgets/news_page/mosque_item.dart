@@ -1,46 +1,41 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:takvim/common/styling.dart';
-import '../../providers/subscription/selected_subs_item_provider.dart';
-import '../../data/models/mosque_data.dart';
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import '../../data/models/mosque_data.dart';
+import '../../common/styling.dart';
+import '../../providers/news_page/selected_mosque_news_provider.dart';
 
-class UnsubscribableTopicItem extends ConsumerWidget {
-  const UnsubscribableTopicItem({
+class SubsMosqueItem extends ConsumerWidget {
+  const SubsMosqueItem({
     Key key,
-    @required bool selected,
-    @required MosqueData mosqueData,
-  })  : _selected = selected,
-        _mosqueData = mosqueData,
-        super(key: key);
+    @required this.data,
+    @required this.isSelected,
+  }) : super(key: key);
 
-  final bool _selected;
-  final MosqueData _mosqueData;
+  final MosqueData data;
+  final bool isSelected;
 
   @override
   Widget build(BuildContext context, ScopedReader watch) {
-    SelectedSubsItem _selectedSubsItemProvider = watch(selectedSubsItem);
-
+    SelectedMosuqeNewsProvider _selectedMosqueNewsController =
+        watch(selectedMosuqeNewsProvider);
     return GestureDetector(
       onTap: () {
-        _selected
-            ? _selectedSubsItemProvider.updateSelectedSubsItem('')
-            : _selectedSubsItemProvider
-                .updateSelectedSubsItem(_mosqueData.mosqueId);
+        _selectedMosqueNewsController.updateSelectedMosqueNews(data.mosqueId);
+        Navigator.pushNamed(context, '/newsPage');
       },
       child: Card(
-        color: Theme.of(context).cardColor,
         child: Container(
           padding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Column(
-                mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    '${_mosqueData.ort} ${_mosqueData.kanton}',
+                    '${data.ort} ${data.kanton}',
                     style: CustomTextFonts.mosqueListOther.copyWith(
                         color: CustomColors.cityNameColor, fontSize: 18),
                   ),
@@ -51,7 +46,7 @@ class UnsubscribableTopicItem extends ConsumerWidget {
                     constraints: BoxConstraints(
                         maxWidth: MediaQuery.of(context).size.width * 0.7),
                     child: AutoSizeText(
-                      '${_mosqueData.name}',
+                      '${data.name}',
                       style: Theme.of(context)
                           .textTheme
                           .subtitle1
@@ -61,6 +56,14 @@ class UnsubscribableTopicItem extends ConsumerWidget {
                     ),
                   ),
                 ],
+              ),
+              Container(
+                padding: EdgeInsets.only(right: 10),
+                child: FaIcon(
+                  FontAwesomeIcons.arrowRight,
+                  color: CustomColors.mainColor,
+                  size: 20,
+                ),
               ),
             ],
           ),

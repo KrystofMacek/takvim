@@ -7,7 +7,6 @@ import 'package:takvim/data/models/language_pack.dart';
 import 'package:takvim/providers/language_page/language_provider.dart';
 import 'package:takvim/widgets/home_page/app_bar.dart';
 import 'package:takvim/widgets/language_page/app_bar_content.dart';
-import '../common/styling.dart';
 import '../widgets/language_page/language_page_widgets.dart';
 
 class LangSettingsPage extends ConsumerWidget {
@@ -16,12 +15,6 @@ class LangSettingsPage extends ConsumerWidget {
     final LanguagePack _appLang = watch(appLanguagePackProvider.state);
     final LanguagePackController _langPackController =
         watch(languagePackController);
-
-    final size = MediaQuery.of(context).size;
-    double baseSize = size.height;
-
-    double ratio = 375 / 667;
-    final double colWidth = baseSize * ratio;
 
     if (_appLang == null) {
       print('is null');
@@ -36,7 +29,7 @@ class LangSettingsPage extends ConsumerWidget {
             height: 70,
             child: LanguageAppBarContent(appLang: _appLang),
           ),
-          drawer: _DrawerLangPage(
+          drawer: DrawerLangPage(
             languagePack: _appLang,
           ),
           floatingActionButton: FloatingActionButton(
@@ -118,94 +111,6 @@ class LangSettingsPage extends ConsumerWidget {
             ),
           ),
         ),
-      ),
-    );
-  }
-}
-
-class _DrawerLangPage extends StatelessWidget {
-  const _DrawerLangPage({
-    Key key,
-    LanguagePack languagePack,
-  })  : _languagePack = languagePack,
-        super(key: key);
-
-  final LanguagePack _languagePack;
-
-  @override
-  Widget build(BuildContext context) {
-    return Drawer(
-      child: Flex(
-        direction: Axis.vertical,
-        children: [
-          Expanded(
-            child: ListView(
-              padding: EdgeInsets.zero,
-              children: <Widget>[
-                ListTile(
-                  contentPadding:
-                      EdgeInsets.symmetric(horizontal: 20, vertical: 8),
-                  leading: FaIcon(
-                    FontAwesomeIcons.bars,
-                    size: 24,
-                  ),
-                  onTap: () {
-                    Navigator.pop(context);
-                  },
-                ),
-                ListTile(
-                  contentPadding:
-                      EdgeInsets.symmetric(horizontal: 15, vertical: 8),
-                  leading: FaIcon(
-                    FontAwesomeIcons.mosque,
-                    size: 22,
-                  ),
-                  title: Text('${_languagePack.selectMosque}'),
-                  onTap: () {
-                    Navigator.popAndPushNamed(context, '/mosque');
-                  },
-                ),
-                ListTile(
-                  contentPadding:
-                      EdgeInsets.symmetric(horizontal: 15, vertical: 8),
-                  leading: FaIcon(
-                    FontAwesomeIcons.globe,
-                    size: 28,
-                  ),
-                  title: Text('${_languagePack.selectLanguage}'),
-                  onTap: () {
-                    Navigator.popAndPushNamed(context, '/lang');
-                  },
-                ),
-                ListTile(
-                  contentPadding:
-                      EdgeInsets.symmetric(horizontal: 15, vertical: 8),
-                  leading: FaIcon(
-                    FontAwesomeIcons.bell,
-                    size: 28,
-                  ),
-                  title: Text('${_languagePack.subscribe}'),
-                  onTap: () {
-                    Navigator.popAndPushNamed(context, '/sub');
-                  },
-                ),
-                ListTile(
-                  contentPadding:
-                      EdgeInsets.symmetric(horizontal: 15, vertical: 8),
-                  leading: Icon(
-                    Icons.wb_sunny,
-                    size: 28,
-                  ),
-                  title: Text('${_languagePack.appTheme}'),
-                  onTap: () {
-                    currentTheme.switchTheme(Hive.box('pref'));
-                    // Navigator.pop(context);
-                  },
-                ),
-              ],
-            ),
-          ),
-        ],
       ),
     );
   }

@@ -46,6 +46,7 @@ class LanguagePack {
     @required this.telefon,
     @required this.website,
     @required this.subscribe,
+    @required this.news,
   });
 
   final String address;
@@ -82,6 +83,7 @@ class LanguagePack {
   final String telefon;
   final String website;
   final String subscribe;
+  final String news;
 
   LanguagePack copyWith({
     String address,
@@ -154,6 +156,7 @@ class LanguagePack {
         telefon: telefon ?? this.telefon,
         website: website ?? this.website,
         subscribe: subscribe ?? this.subscribe,
+        news: news ?? this.news,
       );
 
   factory LanguagePack.fromJson(Map<String, dynamic> json) => LanguagePack(
@@ -191,6 +194,7 @@ class LanguagePack {
         telefon: json["Telefon"],
         website: json["Website"],
         subscribe: json["Subscribe"],
+        news: json["News"],
       );
 
   factory LanguagePack.fromFirebase(Map<dynamic, dynamic> json) => LanguagePack(
@@ -228,6 +232,7 @@ class LanguagePack {
         telefon: json["Telefon"],
         website: json["Website"],
         subscribe: json["Subscribe"],
+        news: json["News"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -265,5 +270,6 @@ class LanguagePack {
         "Telefon": telefon,
         "Website": website,
         "Subscribe": subscribe,
+        "News": news,
       };
 }

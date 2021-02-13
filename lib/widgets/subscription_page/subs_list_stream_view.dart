@@ -8,10 +8,8 @@ import 'package:collection/collection.dart';
 import './single_topic_subs_item.dart';
 import '../../data/models/language_pack.dart';
 import '../../providers/language_page/language_provider.dart';
-import './filter_field.dart';
 import '../../providers/mosque_page/mosque_provider.dart';
 import '../../data/models/mosque_data.dart';
-import '../../widgets/mosque_page/mosque_list_item.dart';
 import '../../widgets/mosque_page/filter_text_field.dart';
 import './unsubscribable_item.dart';
 
@@ -20,8 +18,6 @@ class AvailableSubsListStream extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, ScopedReader watch) {
-    SubsFilteringController _subsFilteringController =
-        watch(subsFilteringController);
     final LanguagePack _appLang = watch(appLanguagePackProvider.state);
     final MosqueController _mosqueController = watch(mosqueController);
 

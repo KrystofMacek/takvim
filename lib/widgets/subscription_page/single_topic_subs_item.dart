@@ -29,6 +29,7 @@ class SingleTopicSubsItem extends ConsumerWidget {
 
     List<String> currentSubsList = watch(currentSubsListProvider.state);
     CurrentSubsList currentSubsListController = watch(currentSubsListProvider);
+    CurrentMosqueSubs currentMosqueSubsController = watch(currentMosqueSubs);
 
     bool subscribed = currentSubsList.contains(_topic.topic);
 
@@ -39,7 +40,7 @@ class SingleTopicSubsItem extends ConsumerWidget {
             : _selectedSubsItemProvider.updateSelectedSubsItem(_topic.mosqueId);
       },
       child: Card(
-        color: _selected
+        color: subscribed
             ? CustomColors.highlightColor
             : Theme.of(context).cardColor,
         child: Container(
@@ -83,15 +84,19 @@ class SingleTopicSubsItem extends ConsumerWidget {
                       currentSubsListController.removeFromSubsList(
                         _topic.topic,
                       );
+                      currentMosqueSubsController
+                          .removeMosqueFromSubsList(_mosqueData.mosqueId);
                     } else {
                       currentSubsListController.addToSubsList(
                         _topic.topic,
                       );
+                      currentMosqueSubsController
+                          .addMosqueToSubsList(_mosqueData.mosqueId);
                     }
                   },
                   child: CustomCheckBox(
-                    size: 25,
-                    iconSize: 21,
+                    size: 30,
+                    iconSize: 20,
                     isChecked: subscribed,
                     isDisabled: false,
                     isClickable: true,

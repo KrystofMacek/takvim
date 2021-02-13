@@ -1,18 +1,21 @@
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_riverpod/all.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 import 'package:takvim/pages/lang_settings_page.dart';
 import 'package:takvim/pages/mosque_detail_page.dart';
 import 'package:takvim/pages/mosque_settings_page.dart';
+import 'package:takvim/pages/news/news_mosques_page.dart';
+import 'package:takvim/pages/news/news_page.dart';
 import 'package:takvim/pages/subscribtion_page.dart';
-import 'pages/pages.dart';
-import 'package:flutter_riverpod/all.dart';
-import 'package:flutter/services.dart';
+
 import './common/styling.dart';
-import 'package:firebase_database/firebase_database.dart';
+import 'pages/pages.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -47,11 +50,13 @@ void main() async {
 Future<dynamic> myBackgroundMessageHandler(Map<String, dynamic> message) async {
   if (message.containsKey('data')) {
     // Handle data message
+    print('myBackgroundMessageHandler contains data key $message');
     final dynamic data = message['data'];
   }
 
   if (message.containsKey('notification')) {
     // Handle notification message
+    print('myBackgroundMessageHandler contains notification key $message');
     final dynamic notification = message['notification'];
   }
 
@@ -59,15 +64,7 @@ Future<dynamic> myBackgroundMessageHandler(Map<String, dynamic> message) async {
 }
 
 Future<void> _fcmPermission(FirebaseMessaging fcm) async {
-  await fcm.requestNotificationPermissions(
-    IosNotificationSettings(
-      alert: true,
-      badge: true,
-      sound: true,
-      provisional: false,
-    ),
-  );
-  fcm.getToken().then((value) => print('Token :$value'));
+  await fcm.requestNotificationPermissions();
 }
 
 class MyApp extends StatefulWidget {
@@ -83,7 +80,7 @@ class _MyAppState extends State<MyApp> {
     super.initState();
     final prefBox = Hive.box('pref');
 
-    String appLang = prefBox.get('appLang');
+    final String appLang = prefBox.get('appLang');
     String mosque = prefBox.get('mosque');
 
     currentTheme.addListener(() {
@@ -126,131 +123,18 @@ class _MyAppState extends State<MyApp> {
         defaultScale: true,
         defaultScaleFactor: 1.2,
         breakpoints: [
-          ResponsiveBreakpoint.resize(480, name: MOBILE),
-          ResponsiveBreakpoint.autoScale(800, name: TABLET),
-          ResponsiveBreakpoint.resize(1000, name: DESKTOP),
-          ResponsiveBreakpoint.autoScale(2460, name: 'TV'),
-          ResponsiveBreakpoint.autoScale(3840, name: '4K'),
+          const ResponsiveBreakpoint.resize(480, name: MOBILE),
+          const ResponsiveBreakpoint.autoScale(800, name: TABLET),
+          const ResponsiveBreakpoint.resize(1000, name: DESKTOP),
+          const ResponsiveBreakpoint.autoScale(2460, name: 'TV'),
+          const ResponsiveBreakpoint.autoScale(3840, name: '4K'),
         ],
       ),
       debugShowCheckedModeBanner: false,
       title: 'Takvim',
       themeMode: currentTheme.currentTheme(),
-      darkTheme: ThemeData(
-        primaryColor: Color(0xFF283142),
-        canvasColor: Color(0xFF09111F),
-        primarySwatch: CustomColors.swatch,
-        scaffoldBackgroundColor: Color(0xFF09111F),
-        cardColor: Color(0xFF283142),
-        floatingActionButtonTheme: ThemeData.light()
-            .floatingActionButtonTheme
-            .copyWith(foregroundColor: CustomColors.mainColor),
-        textTheme: ThemeData.dark().textTheme.copyWith(
-              headline2: TextStyle(
-                  fontSize: 16,
-                  fontStyle: FontStyle.italic,
-                  color: Colors.white),
-              headline1: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.w400,
-                  color: Colors.white),
-              headline3: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.w400,
-                  color: Colors.white),
-              headline4: TextStyle(
-                  fontSize: 18,
-                  fontStyle: FontStyle.italic,
-                  color: Colors.white),
-              headline5: TextStyle(
-                  fontSize: 16,
-                  fontFamily: 'Noto-Mono',
-                  fontStyle: FontStyle.normal,
-                  color: Colors.teal[800]),
-              subtitle2: TextStyle(
-                  fontSize: 16,
-                  fontStyle: FontStyle.italic,
-                  color: Color(0xFF202020)),
-              subtitle1: TextStyle(
-                  fontSize: 18,
-                  fontStyle: FontStyle.normal,
-                  color: Colors.white),
-              bodyText1: TextStyle(
-                fontSize: 18,
-                fontStyle: FontStyle.normal,
-              ),
-              bodyText2: TextStyle(
-                fontSize: 16,
-                fontStyle: FontStyle.italic,
-                color: Colors.grey[300],
-              ),
-            ),
-        colorScheme: ColorScheme.dark(
-          surface: Color(0xFF283142),
-          primary: Color(0xFF283142),
-          primaryVariant: Color(0xff80BFBA),
-          secondaryVariant: Colors.grey[300],
-        ),
-        iconTheme: IconThemeData(
-          color: CustomColors.mainColor,
-        ),
-      ),
-      theme: ThemeData(
-        scaffoldBackgroundColor: Colors.grey[100],
-        primaryColor: Colors.tealAccent[700],
-        primarySwatch: CustomColors.swatch,
-        canvasColor: Colors.grey[100],
-        floatingActionButtonTheme: ThemeData.light()
-            .floatingActionButtonTheme
-            .copyWith(foregroundColor: Colors.white),
-        textTheme: ThemeData.light().textTheme.copyWith(
-              headline2: TextStyle(
-                  fontSize: 16,
-                  fontStyle: FontStyle.italic,
-                  color: Colors.white),
-              headline1: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.w400,
-                  color: Colors.white),
-              headline3: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.w400,
-                  color: Colors.black),
-              headline4: TextStyle(
-                  fontSize: 18,
-                  fontStyle: FontStyle.italic,
-                  color: Colors.black),
-              headline5: TextStyle(
-                  fontSize: 16,
-                  fontFamily: 'Noto-Mono',
-                  fontStyle: FontStyle.normal,
-                  color: Colors.teal[800]),
-              subtitle2: TextStyle(
-                  fontSize: 16,
-                  fontStyle: FontStyle.italic,
-                  color: CustomColors.mainColor),
-              subtitle1: TextStyle(
-                  fontSize: 18,
-                  fontStyle: FontStyle.normal,
-                  color: Colors.black),
-              bodyText1: TextStyle(
-                fontSize: 18,
-                fontStyle: FontStyle.normal,
-              ),
-              bodyText2: TextStyle(
-                fontSize: 16,
-                fontStyle: FontStyle.italic,
-              ),
-            ),
-        colorScheme: ColorScheme.light(
-            surface: Color(0xffb2dfdb),
-            primary: Color(0xFF00bfa5),
-            primaryVariant: Color(0xffb2dfdb),
-            secondaryVariant: CustomColors.mainColor),
-        iconTheme: IconThemeData(
-          color: Colors.white,
-        ),
-      ),
+      darkTheme: buildDarkThemeData(),
+      theme: buildLightThemeData(),
       initialRoute: _getInitialRoute(),
       routes: {
         '/home': (context) => HomePage(),
@@ -258,6 +142,8 @@ class _MyAppState extends State<MyApp> {
         '/mosque': (context) => MosqueSettingsPage(),
         '/mosqueDetail': (context) => MosqueDetailPage(),
         '/sub': (context) => SubscribtionPage(),
+        '/newsPage': (context) => NewsPage(),
+        '/newsMosquesPage': (context) => NewsMosquesPage(),
       },
       home: HomePage(),
     );

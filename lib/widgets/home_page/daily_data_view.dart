@@ -1,4 +1,3 @@
-import 'package:auto_size_text/auto_size_text.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -94,24 +93,6 @@ class DailyDataView extends StatelessWidget {
                         SizedBox(
                           height: 18,
                         ),
-                        /*Center(
-                          child: Container(
-                            decoration: BoxDecoration(
-                              color: data.notes.isNotEmpty
-                                  ? Theme.of(context).colorScheme.surface
-                                  : Colors.transparent,
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                            padding: EdgeInsets.symmetric(
-                                vertical: 5, horizontal: 10),
-                            child: AutoSizeText(
-                              '${data.notes}',
-                              style: Theme.of(context).textTheme.headline3,
-                              textAlign: TextAlign.center,
-                              maxLines: 5,
-                            ),
-                          ),
-                        ),*/
                         Container(
                           padding: EdgeInsets.symmetric(horizontal: 4),
                           child: Center(

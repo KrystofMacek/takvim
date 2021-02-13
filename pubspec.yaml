@@ -3,7 +3,7 @@ description: A new Flutter project.
 
 publish_to: "none" # Remove this line if you wish to publish to pub.dev
 
-version: 1.1.0+4
+version: 1.1.1+1
 
 
 environment:
@@ -29,6 +29,7 @@ dependencies:
   responsive_framework: ^0.0.14
   url_launcher: ^5.7.10
   collection: ^1.14.13
+  strings: ^0.1.4
 
 dependency_overrides:
   flutter_svg: 0.18.0

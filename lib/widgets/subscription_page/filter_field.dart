@@ -1,6 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/material.dart';
-import '../../providers/mosque_page/mosque_provider.dart';
 import '../../data/models/language_pack.dart';
 import '../../common/styling.dart';
 import '../../providers/firestore_provider.dart';

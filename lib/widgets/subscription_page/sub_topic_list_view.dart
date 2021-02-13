@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../../providers/subscription/sub_topic_stream_provider.dart';
 import '../../providers/subscription/subs_list_provider.dart';
 import '../../data/models/subsTopic.dart';
 import '../../common/styling.dart';
@@ -28,52 +27,68 @@ class SubTopicListView extends ConsumerWidget {
       shrinkWrap: true,
       itemCount: _topics.length,
       separatorBuilder: (BuildContext context, int index) {
-        return SizedBox(
-          height: 15,
-        );
+        return SizedBox();
       },
       itemBuilder: (BuildContext context, int index) {
         bool subscribed = currentSubsList.contains(_topics[index].topic);
         bool isMosqueSub = currentMosqueSubsList.contains(data.mosqueId);
 
-        return Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Container(
-              padding: EdgeInsets.only(left: 15),
-              child: Text(
-                _topics[index].label,
-                style: Theme.of(context).textTheme.headline4.copyWith(
-                      color: darkTheme ? Colors.white : Colors.black,
-                      fontStyle: FontStyle.normal,
-                    ),
-              ),
-            ),
-            Container(
-              padding: EdgeInsets.only(right: 10),
-              child: GestureDetector(
-                onTap: () {
-                  _subscribe(
-                    context,
-                    subscribed,
-                    currentSubsList,
-                    currentSubsListController,
-                    currentMosqueSubsController,
-                    _topics,
-                    index,
-                    isMosqueSub,
-                  );
-                },
-                child: CustomCheckBox(
-                  size: 25,
-                  iconSize: 17,
-                  isChecked: subscribed,
-                  isDisabled: false,
-                  isClickable: true,
+        return Container(
+          decoration: BoxDecoration(
+            borderRadius: (index == _topics.length - 1)
+                ? BorderRadius.only(
+                    bottomLeft: Radius.circular(5),
+                    bottomRight: Radius.circular(5),
+                  )
+                : BorderRadius.circular(0),
+            color: darkTheme
+                ? (subscribed
+                    ? CustomColors.highlightColorDarker
+                    : Theme.of(context).cardColor)
+                : (subscribed
+                    ? CustomColors.highlightColorLighter
+                    : Theme.of(context).cardColor),
+          ),
+          padding: EdgeInsets.only(left: 15, right: 10, top: 15, bottom: 15),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Container(
+                padding: EdgeInsets.only(left: 15),
+                child: Text(
+                  _topics[index].label,
+                  style: Theme.of(context).textTheme.headline4.copyWith(
+                        color: darkTheme ? Colors.white : Colors.black,
+                        fontStyle: FontStyle.normal,
+                      ),
                 ),
               ),
-            ),
-          ],
+              Container(
+                padding: EdgeInsets.only(right: 10),
+                child: GestureDetector(
+                  onTap: () {
+                    _subscribe(
+                      context,
+                      subscribed,
+                      currentSubsList,
+                      currentSubsListController,
+                      currentMosqueSubsController,
+                      _topics,
+                      index,
+                      isMosqueSub,
+                    );
+                  },
+                  child: CustomCheckBox(
+                    size: 30,
+                    iconSize: 20,
+                    isChecked: subscribed,
+                    isDisabled: false,
+                    isClickable: true,
+                  ),
+                ),
+              ),
+            ],
+          ),
         );
       },
     );

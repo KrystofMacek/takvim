@@ -1,4 +1,6 @@
 import 'package:intl/intl.dart';
+import 'package:hive/hive.dart';
+import '../providers/news_page/selected_mosque_news_provider.dart';
 
 String formatDateToID(DateTime date) {
   final dateFormat = DateFormat('yyyyMMdd');
@@ -27,4 +29,20 @@ DateTime getDateTimeOfParyer(String time) {
   DateTime now = DateTime.now();
   return DateTime(now.year, now.month, now.day, int.parse(hourMinute[0]),
       int.parse(hourMinute[1]));
+}
+
+String newsNavigator(SelectedMosuqeNewsProvider provider) {
+  Box prefBox = Hive.box('pref');
+  final List<String> listOfMosques = prefBox.get('mosqueSubsList');
+
+  print('news Navigator list: $listOfMosques');
+  if (listOfMosques == null || listOfMosques.isEmpty) {
+    prefBox.put('mosqueSubsList', <String>[]);
+    return '/newsMosquesPage';
+  } else if (listOfMosques.length == 1) {
+    provider.updateSelectedMosqueNews(listOfMosques.first);
+    return '/newsPage';
+  } else {
+    return '/newsMosquesPage';
+  }
 }

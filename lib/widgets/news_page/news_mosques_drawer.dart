@@ -5,12 +5,10 @@ import '../../common/styling.dart';
 import 'package:hive/hive.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../providers/firestore_provider.dart';
-import '../../providers/news_page/selected_mosque_news_provider.dart';
-import '../../common/utils.dart';
 import 'package:cross_connectivity/cross_connectivity.dart';
 
-class SubscriptionPageDrawer extends ConsumerWidget {
-  const SubscriptionPageDrawer({
+class NewsMosquesDrawer extends ConsumerWidget {
+  const NewsMosquesDrawer({
     Key key,
     LanguagePack languagePack,
   })  : _languagePack = languagePack,
@@ -73,8 +71,6 @@ class SubscriptionPageDrawer extends ConsumerWidget {
                           },
                         ),
                         Consumer(builder: (context, watch, child) {
-                          SelectedMosuqeNewsProvider prov =
-                              watch(selectedMosuqeNewsProvider);
                           return ListTile(
                             contentPadding: EdgeInsets.symmetric(
                                 horizontal: 15, vertical: 8),
@@ -84,8 +80,7 @@ class SubscriptionPageDrawer extends ConsumerWidget {
                             ),
                             title: Text('${_languagePack.news}'),
                             onTap: () {
-                              String target = newsNavigator(prov);
-                              Navigator.popAndPushNamed(context, target);
+                              Navigator.pop(context);
                             },
                           );
                         }),
@@ -98,7 +93,7 @@ class SubscriptionPageDrawer extends ConsumerWidget {
                           ),
                           title: Text('${_languagePack.subscribe}'),
                           onTap: () {
-                            Navigator.pop(context);
+                            Navigator.popAndPushNamed(context, '/sub');
                           },
                         ),
                         ListTile(

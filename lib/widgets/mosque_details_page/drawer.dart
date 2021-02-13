@@ -1,16 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/all.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import '../../data/models/language_pack.dart';
-import '../../common/styling.dart';
 import 'package:hive/hive.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../../providers/firestore_provider.dart';
-import '../../providers/news_page/selected_mosque_news_provider.dart';
-import '../../common/utils.dart';
+import 'package:takvim/common/utils.dart';
+import 'package:takvim/data/models/language_pack.dart';
 import 'package:cross_connectivity/cross_connectivity.dart';
+import '../../providers/news_page/selected_mosque_news_provider.dart';
+import '../../common/styling.dart';
 
-class SubscriptionPageDrawer extends ConsumerWidget {
-  const SubscriptionPageDrawer({
+class MosqueDetailsDrawer extends StatelessWidget {
+  const MosqueDetailsDrawer({
     Key key,
     LanguagePack languagePack,
   })  : _languagePack = languagePack,
@@ -19,9 +18,7 @@ class SubscriptionPageDrawer extends ConsumerWidget {
   final LanguagePack _languagePack;
 
   @override
-  Widget build(BuildContext context, ScopedReader watch) {
-    SubsFilteringController filteringController =
-        watch(subsFilteringController);
+  Widget build(BuildContext context) {
     return StreamBuilder<bool>(
         stream: Connectivity().isConnected,
         initialData: false,
@@ -55,7 +52,6 @@ class SubscriptionPageDrawer extends ConsumerWidget {
                           ),
                           title: Text('${_languagePack.selectMosque}'),
                           onTap: () {
-                            filteringController.resetFilter();
                             Navigator.popAndPushNamed(context, '/mosque');
                           },
                         ),
@@ -68,7 +64,6 @@ class SubscriptionPageDrawer extends ConsumerWidget {
                           ),
                           title: Text('${_languagePack.selectLanguage}'),
                           onTap: () {
-                            filteringController.resetFilter();
                             Navigator.popAndPushNamed(context, '/lang');
                           },
                         ),
@@ -98,7 +93,7 @@ class SubscriptionPageDrawer extends ConsumerWidget {
                           ),
                           title: Text('${_languagePack.subscribe}'),
                           onTap: () {
-                            Navigator.pop(context);
+                            Navigator.popAndPushNamed(context, '/sub');
                           },
                         ),
                         ListTile(
@@ -149,7 +144,6 @@ class SubscriptionPageDrawer extends ConsumerWidget {
                           ),
                           title: Text('${_languagePack.selectLanguage}'),
                           onTap: () {
-                            filteringController.resetFilter();
                             Navigator.popAndPushNamed(context, '/lang');
                           },
                         ),

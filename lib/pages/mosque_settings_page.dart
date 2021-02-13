@@ -8,10 +8,10 @@ import 'package:takvim/providers/language_page/language_provider.dart';
 import 'package:takvim/providers/mosque_page/mosque_provider.dart';
 import 'package:takvim/widgets/home_page/app_bar.dart';
 import 'package:takvim/widgets/mosque_page/app_bar_content.dart';
-import '../common/styling.dart';
 import '../widgets/mosque_page/mosque_page_widgets.dart';
 import '../providers/home_page/date_provider.dart';
 import 'package:firebase_database/firebase_database.dart';
+import '../widgets/mosque_page/drawer.dart';
 
 class MosqueSettingsPage extends ConsumerWidget {
   @override
@@ -47,7 +47,7 @@ class MosqueSettingsPage extends ConsumerWidget {
             height: 70,
             child: MosqueSettingsAppBarContent(appLang: _appLang),
           ),
-          drawer: _DrawerMosqSettingPage(
+          drawer: MosqueSettingPageDrawer(
             languagePack: _appLang,
           ),
           floatingActionButton: Material(
@@ -179,94 +179,6 @@ class MosqueSettingsPage extends ConsumerWidget {
             ),
           ),
         ),
-      ),
-    );
-  }
-}
-
-class _DrawerMosqSettingPage extends StatelessWidget {
-  const _DrawerMosqSettingPage({
-    Key key,
-    LanguagePack languagePack,
-  })  : _languagePack = languagePack,
-        super(key: key);
-
-  final LanguagePack _languagePack;
-
-  @override
-  Widget build(BuildContext context) {
-    return Drawer(
-      child: Flex(
-        direction: Axis.vertical,
-        children: [
-          Expanded(
-            child: ListView(
-              padding: EdgeInsets.zero,
-              children: <Widget>[
-                ListTile(
-                  contentPadding:
-                      EdgeInsets.symmetric(horizontal: 20, vertical: 8),
-                  leading: FaIcon(
-                    FontAwesomeIcons.bars,
-                    size: 24,
-                  ),
-                  onTap: () {
-                    Navigator.pop(context);
-                  },
-                ),
-                ListTile(
-                  contentPadding:
-                      EdgeInsets.symmetric(horizontal: 15, vertical: 8),
-                  leading: FaIcon(
-                    FontAwesomeIcons.mosque,
-                    size: 22,
-                  ),
-                  title: Text('${_languagePack.selectMosque}'),
-                  onTap: () {
-                    Navigator.popAndPushNamed(context, '/mosque');
-                  },
-                ),
-                ListTile(
-                  contentPadding:
-                      EdgeInsets.symmetric(horizontal: 15, vertical: 8),
-                  leading: FaIcon(
-                    FontAwesomeIcons.globe,
-                    size: 28,
-                  ),
-                  title: Text('${_languagePack.selectLanguage}'),
-                  onTap: () {
-                    Navigator.popAndPushNamed(context, '/lang');
-                  },
-                ),
-                ListTile(
-                  contentPadding:
-                      EdgeInsets.symmetric(horizontal: 15, vertical: 8),
-                  leading: FaIcon(
-                    FontAwesomeIcons.bell,
-                    size: 28,
-                  ),
-                  title: Text('${_languagePack.subscribe}'),
-                  onTap: () {
-                    Navigator.popAndPushNamed(context, '/sub');
-                  },
-                ),
-                ListTile(
-                  contentPadding:
-                      EdgeInsets.symmetric(horizontal: 15, vertical: 8),
-                  leading: Icon(
-                    Icons.wb_sunny,
-                    size: 28,
-                  ),
-                  title: Text('${_languagePack.appTheme}'),
-                  onTap: () {
-                    currentTheme.switchTheme(Hive.box('pref'));
-                    // Navigator.pop(context);
-                  },
-                ),
-              ],
-            ),
-          ),
-        ],
       ),
     );
   }

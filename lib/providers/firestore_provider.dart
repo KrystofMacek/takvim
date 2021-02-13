@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/all.dart';
 import '../data/models/subsTopic.dart';
+import './news_page/selected_mosque_news_provider.dart';
 
 final firestoreProvider = Provider<FirebaseFirestore>((ref) {
   return FirebaseFirestore.instance;
@@ -25,6 +26,19 @@ final subsListStreamProvider =
     ref.watch(subsFilteringController).initLists(subsTopics);
   });
   return Stream.value(subsTopics);
+});
+
+final mosquesNewsStreamProvider =
+    StreamProvider.autoDispose<QuerySnapshot>((ref) {
+  return ref
+      .watch(
+        firestoreProvider,
+      )
+      .collection(
+        'posts',
+      )
+      .where('mosqueID', isEqualTo: ref.watch(selectedMosuqeNewsProvider.state))
+      .snapshots();
 });
 
 // Filtering

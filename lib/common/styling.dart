@@ -45,6 +45,14 @@ class CustomColors {
   );
 }
 
+class NewsLabelColors {
+  static final color1 = Colors.red[300];
+  static final color2 = Colors.green[300];
+  static final color3 = Colors.blue[300];
+  static final color4 = Colors.yellow[300];
+  static final color5 = Colors.purple[300];
+}
+
 ThemeNotifier currentTheme = ThemeNotifier();
 
 class ThemeNotifier with ChangeNotifier {
@@ -63,4 +71,105 @@ class ThemeNotifier with ChangeNotifier {
     pref.put('theme', _isDark);
     notifyListeners();
   }
+}
+
+ThemeData buildLightThemeData() {
+  return ThemeData(
+    scaffoldBackgroundColor: Colors.grey[100],
+    primaryColor: Colors.tealAccent[700],
+    primarySwatch: CustomColors.swatch,
+    canvasColor: Colors.grey[100],
+    floatingActionButtonTheme: ThemeData.light()
+        .floatingActionButtonTheme
+        .copyWith(foregroundColor: Colors.white),
+    textTheme: ThemeData.light().textTheme.copyWith(
+          headline2: TextStyle(
+              fontSize: 16, fontStyle: FontStyle.italic, color: Colors.white),
+          headline1: TextStyle(
+              fontSize: 20, fontWeight: FontWeight.w400, color: Colors.white),
+          headline3: TextStyle(
+              fontSize: 18, fontWeight: FontWeight.w400, color: Colors.black),
+          headline4: TextStyle(
+              fontSize: 18, fontStyle: FontStyle.italic, color: Colors.black),
+          headline5: TextStyle(
+              fontSize: 16,
+              fontFamily: 'Noto-Mono',
+              fontStyle: FontStyle.normal,
+              color: Colors.teal[800]),
+          subtitle2: TextStyle(
+              fontSize: 16,
+              fontStyle: FontStyle.italic,
+              color: CustomColors.mainColor),
+          subtitle1: TextStyle(
+              fontSize: 18, fontStyle: FontStyle.normal, color: Colors.black),
+          bodyText1: TextStyle(
+            fontSize: 18,
+            fontStyle: FontStyle.normal,
+          ),
+          bodyText2: TextStyle(
+            fontSize: 16,
+            fontStyle: FontStyle.italic,
+          ),
+        ),
+    colorScheme: ColorScheme.light(
+        surface: Color(0xffb2dfdb),
+        primary: Color(0xFF00bfa5),
+        primaryVariant: Color(0xffb2dfdb),
+        secondaryVariant: CustomColors.mainColor),
+    iconTheme: IconThemeData(
+      color: Colors.white,
+    ),
+  );
+}
+
+ThemeData buildDarkThemeData() {
+  return ThemeData(
+    primaryColor: Color(0xFF283142),
+    canvasColor: Color(0xFF09111F),
+    primarySwatch: CustomColors.swatch,
+    scaffoldBackgroundColor: Color(0xFF09111F),
+    cardColor: Color(0xFF283142),
+    floatingActionButtonTheme: ThemeData.light()
+        .floatingActionButtonTheme
+        .copyWith(foregroundColor: CustomColors.mainColor),
+    textTheme: ThemeData.dark().textTheme.copyWith(
+          headline2: TextStyle(
+              fontSize: 16, fontStyle: FontStyle.italic, color: Colors.white),
+          headline1: TextStyle(
+              fontSize: 20, fontWeight: FontWeight.w400, color: Colors.white),
+          headline3: TextStyle(
+              fontSize: 18, fontWeight: FontWeight.w400, color: Colors.white),
+          headline4: TextStyle(
+              fontSize: 18, fontStyle: FontStyle.italic, color: Colors.white),
+          headline5: TextStyle(
+              fontSize: 16,
+              fontFamily: 'Noto-Mono',
+              fontStyle: FontStyle.normal,
+              color: Colors.teal[800]),
+          subtitle2: TextStyle(
+              fontSize: 16,
+              fontStyle: FontStyle.italic,
+              color: Color(0xFF202020)),
+          subtitle1: TextStyle(
+              fontSize: 18, fontStyle: FontStyle.normal, color: Colors.white),
+          bodyText1: TextStyle(
+            fontSize: 18,
+            fontStyle: FontStyle.normal,
+          ),
+          bodyText2: TextStyle(
+            fontSize: 16,
+            fontStyle: FontStyle.italic,
+            color: Colors.grey[300],
+          ),
+        ),
+    colorScheme: ColorScheme.dark(
+      surface: Color(0xFF283142),
+      primary: Color(0xFF283142),
+      primaryVariant: Color(0xff80BFBA),
+      secondaryVariant: Colors.grey[300],
+    ),
+    iconTheme: IconThemeData(
+      color: CustomColors.mainColor,
+    ),
+  );
 }
