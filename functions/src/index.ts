@@ -5,7 +5,7 @@ admin.initializeApp();
 
 const fcm = admin.messaging();
 
-export const newNewsPostNotification = functions.firestore
+export const createNewsPostNotification = functions.firestore
 .document('posts/{postId}')
 .onCreate(async snapshot => {
     const newPost = snapshot.data();

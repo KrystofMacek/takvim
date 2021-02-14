@@ -13,6 +13,7 @@ import 'package:takvim/pages/mosque_settings_page.dart';
 import 'package:takvim/pages/news/news_mosques_page.dart';
 import 'package:takvim/pages/news/news_page.dart';
 import 'package:takvim/pages/subscribtion_page.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import './common/styling.dart';
 import 'pages/pages.dart';
@@ -33,10 +34,22 @@ void main() async {
       print('onMessage $message');
     },
     onLaunch: (message) async {
-      print('onLaunch $message');
+      final dynamic url = message['data']['URL'];
+
+      if (await canLaunch('http://$url')) {
+        await launch('http://$url');
+      } else {
+        throw 'Could not launch $url';
+      }
     },
     onResume: (message) async {
-      print('onResume $message');
+      final dynamic url = message['data']['URL'];
+
+      if (await canLaunch('http://$url')) {
+        await launch('http://$url');
+      } else {
+        throw 'Could not launch $url';
+      }
     },
     onBackgroundMessage: myBackgroundMessageHandler,
   );
@@ -47,21 +60,8 @@ void main() async {
   );
 }
 
-Future<dynamic> myBackgroundMessageHandler(Map<String, dynamic> message) async {
-  if (message.containsKey('data')) {
-    // Handle data message
-    print('myBackgroundMessageHandler contains data key $message');
-    final dynamic data = message['data'];
-  }
-
-  if (message.containsKey('notification')) {
-    // Handle notification message
-    print('myBackgroundMessageHandler contains notification key $message');
-    final dynamic notification = message['notification'];
-  }
-
-  // Or do other work.
-}
+Future<dynamic> myBackgroundMessageHandler(
+    Map<String, dynamic> message) async {}
 
 Future<void> _fcmPermission(FirebaseMessaging fcm) async {
   await fcm.requestNotificationPermissions();
