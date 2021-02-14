@@ -30,6 +30,8 @@
 .pub-cache/
 .pub/
 /build/
+/functions/node_modules/
+/node_modules/
 
 # Web related
 lib/generated_plugin_registrant.dart

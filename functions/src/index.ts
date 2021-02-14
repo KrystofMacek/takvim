@@ -1,8 +1,8 @@
-import * as functions from 'firebase-functions';
+
 import * as admin from 'firebase-admin';
+import * as functions from 'firebase-functions';
 admin.initializeApp();
 
-const db = admin.firestore();
 const fcm = admin.messaging();
 
 export const newNewsPostNotification = functions.firestore
@@ -27,10 +27,25 @@ export const newNewsPostNotification = functions.firestore
     }
 });
 
-// // Start writing Firebase Functions
-// // https://firebase.google.com/docs/functions/typescript
-//
-// export const helloWorld = functions.https.onRequest((request, response) => {
-//   functions.logger.info("Hello logs!", {structuredData: true});
-//   response.send("Hello from Firebase!");
-// });
+export const updateNewsPostNotification = functions.firestore
+.document('posts/{postId}')
+.onUpdate(async snapshot => {
+    const newPost = snapshot.after.data();
+    const payload: admin.messaging.MessagingPayload = {
+        notification: {
+            title: newPost.notificationTitle,
+            body: newPost.notificationBody,
+            clickAction: 'FLUTTER_NOTIFICATION_CLICK'
+        },
+        data: {
+            URL: newPost.url
+        }
+    }
+
+    if(newPost.sendNotification == true) {
+        return fcm.sendToTopic(newPost.topic, payload);
+    } else {
+        return;
+    }
+});
+
