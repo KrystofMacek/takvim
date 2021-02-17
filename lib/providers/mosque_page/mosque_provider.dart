@@ -158,9 +158,12 @@ class MosqueController extends StateNotifier<MosqueController> {
 
           queryVals.asMap().forEach((i, value) {
             value = value.replaceAll(RegExp(r'ë'), 'e');
+            value = value.replaceAll(RegExp(r'é'), 'e');
+            value = value.replaceAll(RegExp(r'è'), 'e');
             value = value.replaceAll(RegExp(r'ü'), 'u');
             value = value.replaceAll(RegExp(r'ö'), 'o');
             value = value.replaceAll(RegExp(r'ä'), 'a');
+            value = value.replaceAll(RegExp(r'à'), 'a');
 
             queryVals[i] = value;
           });

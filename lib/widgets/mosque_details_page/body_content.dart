@@ -79,6 +79,13 @@ class DetailsContent extends ConsumerWidget {
                     if (Platform.isIOS) {
                       url =
                           'http://maps.apple.com/?address=${data.ort}+${data.kanton}+$road';
+                      url = url.replaceAll(RegExp(r'ë'), 'e');
+                      url = url.replaceAll(RegExp(r'é'), 'e');
+                      url = url.replaceAll(RegExp(r'è'), 'e');
+                      url = url.replaceAll(RegExp(r'ü'), 'u');
+                      url = url.replaceAll(RegExp(r'ö'), 'o');
+                      url = url.replaceAll(RegExp(r'ä'), 'a');
+                      url = url.replaceAll(RegExp(r'à'), 'a');
                     }
                     try {
                       await launch(url);
