@@ -46,11 +46,11 @@ class CustomColors {
 }
 
 class NewsLabelColors {
-  static final color1 = Colors.red[300];
-  static final color2 = Colors.green[300];
-  static final color3 = Colors.blue[300];
-  static final color4 = Colors.yellow[300];
-  static final color5 = Colors.purple[300];
+  static final color1 = Colors.red[100];
+  static final color2 = Colors.brown[100];
+  static final color3 = Colors.orange[100];
+  static final color4 = Colors.blueGrey[100];
+  static final color5 = Colors.yellow[100];
 }
 
 ThemeNotifier currentTheme = ThemeNotifier();
