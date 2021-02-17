@@ -4,10 +4,11 @@ import '../../data/models/language_pack.dart';
 import '../../common/styling.dart';
 import 'package:hive/hive.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../../providers/firestore_provider.dart';
 import '../../providers/news_page/selected_mosque_news_provider.dart';
 import '../../common/utils.dart';
 import 'package:cross_connectivity/cross_connectivity.dart';
+import '../../providers/mosque_page/mosque_provider.dart';
+import '../../providers/subscription/selected_subs_item_provider.dart';
 
 class SubscriptionPageDrawer extends ConsumerWidget {
   const SubscriptionPageDrawer({
@@ -20,8 +21,8 @@ class SubscriptionPageDrawer extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, ScopedReader watch) {
-    SubsFilteringController filteringController =
-        watch(subsFilteringController);
+    MosqueController filteringController = watch(mosqueController);
+    SelectedSubsItem _selectedSubsItemProvider = watch(selectedSubsItem);
     return StreamBuilder<bool>(
         stream: Connectivity().isConnected,
         initialData: false,
@@ -56,6 +57,8 @@ class SubscriptionPageDrawer extends ConsumerWidget {
                           title: Text('${_languagePack.selectMosque}'),
                           onTap: () {
                             filteringController.resetFilter();
+                            _selectedSubsItemProvider
+                                .updateSelectedSubsItem('');
                             Navigator.popAndPushNamed(context, '/mosque');
                           },
                         ),
@@ -69,6 +72,8 @@ class SubscriptionPageDrawer extends ConsumerWidget {
                           title: Text('${_languagePack.selectLanguage}'),
                           onTap: () {
                             filteringController.resetFilter();
+                            _selectedSubsItemProvider
+                                .updateSelectedSubsItem('');
                             Navigator.popAndPushNamed(context, '/lang');
                           },
                         ),
@@ -84,6 +89,9 @@ class SubscriptionPageDrawer extends ConsumerWidget {
                             ),
                             title: Text('${_languagePack.news}'),
                             onTap: () {
+                              filteringController.resetFilter();
+                              _selectedSubsItemProvider
+                                  .updateSelectedSubsItem('');
                               String target = newsNavigator(prov);
                               Navigator.popAndPushNamed(context, target);
                             },

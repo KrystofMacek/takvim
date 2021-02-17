@@ -27,11 +27,11 @@ class SingleTopicSubsItem extends ConsumerWidget {
   Widget build(BuildContext context, ScopedReader watch) {
     SelectedSubsItem _selectedSubsItemProvider = watch(selectedSubsItem);
 
-    List<String> currentSubsList = watch(currentSubsListProvider.state);
+    List<SubsTopic> currentSubsList = watch(currentSubsListProvider.state);
     CurrentSubsList currentSubsListController = watch(currentSubsListProvider);
     CurrentMosqueSubs currentMosqueSubsController = watch(currentMosqueSubs);
 
-    bool subscribed = currentSubsList.contains(_topic.topic);
+    bool subscribed = currentSubsList.contains(_topic);
 
     return GestureDetector(
       onTap: () {
@@ -82,13 +82,13 @@ class SingleTopicSubsItem extends ConsumerWidget {
                     if (subscribed) {
                       // remove from sub list
                       currentSubsListController.removeFromSubsList(
-                        _topic.topic,
+                        _topic,
                       );
                       currentMosqueSubsController
                           .removeMosqueFromSubsList(_mosqueData.mosqueId);
                     } else {
                       currentSubsListController.addToSubsList(
-                        _topic.topic,
+                        _topic,
                       );
                       currentMosqueSubsController
                           .addMosqueToSubsList(_mosqueData.mosqueId);

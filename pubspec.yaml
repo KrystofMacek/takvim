@@ -30,6 +30,7 @@ dependencies:
   url_launcher: ^5.7.10
   collection: ^1.14.13
   strings: ^0.1.4
+  equatable: ^1.2.6
 
 dependency_overrides:
   flutter_svg: 0.18.0

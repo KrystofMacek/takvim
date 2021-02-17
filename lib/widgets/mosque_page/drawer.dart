@@ -7,8 +7,9 @@ import 'package:takvim/data/models/language_pack.dart';
 import 'package:cross_connectivity/cross_connectivity.dart';
 import '../../providers/news_page/selected_mosque_news_provider.dart';
 import '../../common/styling.dart';
+import '../../providers/mosque_page/mosque_provider.dart';
 
-class MosqueSettingPageDrawer extends StatelessWidget {
+class MosqueSettingPageDrawer extends ConsumerWidget {
   const MosqueSettingPageDrawer({
     Key key,
     LanguagePack languagePack,
@@ -18,7 +19,8 @@ class MosqueSettingPageDrawer extends StatelessWidget {
   final LanguagePack _languagePack;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, ScopedReader watch) {
+    MosqueController filteringController = watch(mosqueController);
     return StreamBuilder<bool>(
         stream: Connectivity().isConnected,
         initialData: false,
@@ -52,7 +54,7 @@ class MosqueSettingPageDrawer extends StatelessWidget {
                           ),
                           title: Text('${_languagePack.selectMosque}'),
                           onTap: () {
-                            Navigator.popAndPushNamed(context, '/mosque');
+                            Navigator.pop(context);
                           },
                         ),
                         ListTile(
@@ -64,6 +66,7 @@ class MosqueSettingPageDrawer extends StatelessWidget {
                           ),
                           title: Text('${_languagePack.selectLanguage}'),
                           onTap: () {
+                            filteringController.resetFilter();
                             Navigator.popAndPushNamed(context, '/lang');
                           },
                         ),
@@ -80,6 +83,7 @@ class MosqueSettingPageDrawer extends StatelessWidget {
                             title: Text('${_languagePack.news}'),
                             onTap: () {
                               String target = newsNavigator(prov);
+                              filteringController.resetFilter();
                               Navigator.popAndPushNamed(context, target);
                             },
                           );
@@ -93,6 +97,7 @@ class MosqueSettingPageDrawer extends StatelessWidget {
                           ),
                           title: Text('${_languagePack.subscribe}'),
                           onTap: () {
+                            filteringController.resetFilter();
                             Navigator.popAndPushNamed(context, '/sub');
                           },
                         ),
@@ -144,6 +149,7 @@ class MosqueSettingPageDrawer extends StatelessWidget {
                           ),
                           title: Text('${_languagePack.selectLanguage}'),
                           onTap: () {
+                            filteringController.resetFilter();
                             Navigator.popAndPushNamed(context, '/lang');
                           },
                         ),

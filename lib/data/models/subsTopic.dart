@@ -3,48 +3,48 @@
 //     final subsTopic = subsTopicFromJson(jsonString);
 
 import 'package:meta/meta.dart';
-import 'dart:convert';
+import 'package:hive/hive.dart';
+import 'package:equatable/equatable.dart';
 
-SubsTopic subsTopicFromJson(String str) => SubsTopic.fromJson(json.decode(str));
+part 'subsTopic.g.dart';
 
-String subsTopicToJson(SubsTopic data) => json.encode(data.toJson());
-
-class SubsTopic {
-  SubsTopic(
-      {@required this.label,
-      @required this.mosqueId,
-      @required this.topic,
-      @required this.mosqueName});
-
-  final String label;
-  final String mosqueId;
+@HiveType(typeId: 0, adapterName: 'SubsTopicAdapter')
+class SubsTopic extends Equatable {
+  SubsTopic({
+    @required this.topic,
+    @required this.label,
+    @required this.mosqueId,
+  });
+  @HiveField(0)
   final String topic;
-  final String mosqueName;
+  @HiveField(1)
+  final String label;
+  @HiveField(2)
+  final String mosqueId;
 
   SubsTopic copyWith({
+    String topic,
     String label,
     String mosqueId,
-    String topic,
-    String mosqueName,
   }) =>
       SubsTopic(
+        topic: topic ?? this.topic,
         label: label ?? this.label,
         mosqueId: mosqueId ?? this.mosqueId,
-        topic: topic ?? this.topic,
-        mosqueName: mosqueName ?? this.mosqueName,
       );
 
-  factory SubsTopic.fromJson(Map<String, dynamic> json) => SubsTopic(
-        label: json["label"],
-        mosqueId: json["mosqueID"],
-        topic: json["topic"],
-        mosqueName: json["mosqueName"],
+  factory SubsTopic.fromJson(String topicId, Map<String, dynamic> json) =>
+      SubsTopic(
+        topic: topicId,
+        label: json["name"],
+        mosqueId: json["mosqueId"],
       );
 
   Map<String, dynamic> toJson() => {
-        "label": label,
-        "mosqueID": mosqueId,
-        "topic": topic,
-        "mosqueName": mosqueName,
+        "name": label,
+        "mosqueId": mosqueId,
       };
+
+  @override
+  List<Object> get props => [topic];
 }

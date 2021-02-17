@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/all.dart';
 import 'package:hive/hive.dart';
 import 'package:takvim/data/models/mosque_data.dart';
 import '../../data/models/day_data.dart';
+import '../common/filter_text_provider.dart';
 
 final selectedMosque = StateNotifierProvider<SelectedMosque>((ref) {
   return SelectedMosque();
@@ -91,11 +92,17 @@ class MosqueController extends StateNotifier<MosqueController> {
         });
         mosqueList.sort((a, b) => a.ort.compareTo(b.ort));
         _mosqueList.updateList(mosqueList);
-        _filteredMosqueList.updateList(mosqueList);
+        if (_filteredMosqueList.state.isEmpty) {
+          _filteredMosqueList.updateList(mosqueList);
+        }
       }
     });
 
     return Stream.value(mosqueList);
+  }
+
+  void resetFilter() {
+    _filteredMosqueList.updateList(_mosqueList.state);
   }
 
   Future<List<MosqueData>> getFilteredListOfMosques() async {

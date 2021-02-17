@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../providers/news_page/selected_mosque_news_provider.dart';
@@ -16,6 +17,7 @@ import 'package:url_launcher/url_launcher.dart';
 import '../../providers/subscription/subs_list_provider.dart';
 import '../../common/styling.dart';
 import 'package:auto_size_text/auto_size_text.dart';
+import '../../data/models/subsTopic.dart';
 
 class NewsPage extends ConsumerWidget {
   const NewsPage({Key key}) : super(key: key);
@@ -71,12 +73,13 @@ class NewsListView extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, ScopedReader watch) {
-    List<String> subscribedTopics = watch(currentSubsListProvider.state);
+    List<SubsTopic> subscribedTopics = watch(currentSubsListProvider.state);
 
-    List<String> subscribedMosquesTopics = subscribedTopics
-        .where((element) => element.startsWith(_mosqueId))
+    List<SubsTopic> subscribedMosquesTopics = subscribedTopics
+        .where((element) => element.mosqueId == _mosqueId)
         .toList();
-    subscribedMosquesTopics.sort((a, b) => a.compareTo(b));
+
+    subscribedMosquesTopics.sort((a, b) => a.label.compareTo(b.label));
 
     bool hideLabel = subscribedMosquesTopics.length == 1;
 
@@ -86,20 +89,31 @@ class NewsListView extends ConsumerWidget {
         value.docs.forEach((element) {
           NewsPost post = NewsPost.fromJson(element.data());
           // newsPosts.add(post);
-          if (subscribedMosquesTopics.contains(post.topic)) {
-            newsPosts.add(post);
+          for (var topic in subscribedMosquesTopics) {
+            if (topic.topic == post.topicId) {
+              newsPosts.add(post);
+            }
           }
+          // if (subscribedMosquesTopics.contains(post.topicId)) {
+          //   newsPosts.add(post);
+          // }
         });
-        newsPosts.sort((a, b) => a.timeStamp.compareTo(b.timeStamp));
+
+        newsPosts.sort((a, b) => a.createdAt.compareTo(b.createdAt));
         newsPosts = newsPosts.reversed.toList();
         return ListView.separated(
-          itemCount: newsPosts.length,
+          itemCount: newsPosts.length + 1,
           separatorBuilder: (BuildContext context, int index) {
             return SizedBox();
           },
           itemBuilder: (BuildContext context, int index) {
+            if (index == newsPosts.length) {
+              return SizedBox(
+                height: 80,
+              );
+            }
             NewsPost data = newsPosts[index];
-            String timestamp = DateFormat('dd.MM.yyyy').format(data.timeStamp);
+            String timestamp = DateFormat('dd.MM.yyyy').format(data.createdAt);
             return GestureDetector(
               onTap: () async {
                 if (await canLaunch('http://${data.url}')) {
@@ -132,7 +146,7 @@ class NewsListView extends ConsumerWidget {
                               height: 5,
                             ),
                             AutoSizeText(
-                              '${data.notificationBody}',
+                              '${data.title}',
                               style: Theme.of(context).textTheme.headline3,
                               maxLines: 2,
                             ),
@@ -149,8 +163,14 @@ class NewsListView extends ConsumerWidget {
                               padding: EdgeInsets.symmetric(
                                   vertical: 5, horizontal: 8),
                               decoration: BoxDecoration(
-                                color: labelColoring(subscribedMosquesTopics
-                                    .indexOf(data.topic)),
+                                color: labelColoring(
+                                  subscribedMosquesTopics.indexOf(
+                                    subscribedMosquesTopics.firstWhere(
+                                      (element) =>
+                                          element.topic == data.topicId,
+                                    ),
+                                  ),
+                                ),
                                 borderRadius: BorderRadius.only(
                                   topLeft: Radius.circular(5),
                                   bottomLeft: Radius.circular(5),
@@ -161,12 +181,9 @@ class NewsListView extends ConsumerWidget {
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 children: [
                                   // Text('${capitalize(data.topic.split("_")[1])}'),
-                                  AutoSizeText(
-                                    '${data.topic.split("_")[1]}',
-                                    maxLines: 1,
-                                    minFontSize: 8,
-                                    maxFontSize: 14,
-                                  ),
+                                  StreamLabel(
+                                      data: data,
+                                      subscribedTopics: subscribedTopics),
                                 ],
                               ),
                             ),
@@ -206,5 +223,44 @@ class NewsListView extends ConsumerWidget {
         return NewsLabelColors.color5;
         break;
     }
+  }
+}
+
+class StreamLabel extends StatelessWidget {
+  const StreamLabel({
+    Key key,
+    @required this.data,
+    @required this.subscribedTopics,
+  }) : super(key: key);
+
+  final NewsPost data;
+  final List<SubsTopic> subscribedTopics;
+
+  @override
+  Widget build(BuildContext context) {
+    return StreamBuilder<DocumentSnapshot>(
+        stream: FirebaseFirestore.instance
+            .collection('topics')
+            .doc(data.topicId)
+            .snapshots(),
+        builder: (context, snapshot) {
+          if (snapshot != null && snapshot.hasData) {
+            SubsTopic topic =
+                SubsTopic.fromJson(snapshot.data.id, snapshot.data.data());
+            return AutoSizeText(
+              '${topic.label}',
+              maxLines: 1,
+              minFontSize: 8,
+              maxFontSize: 14,
+            );
+          } else {
+            return AutoSizeText(
+              '${subscribedTopics.firstWhere((element) => element.topic == data.topicId).label}',
+              maxLines: 1,
+              minFontSize: 8,
+              maxFontSize: 14,
+            );
+          }
+        });
   }
 }

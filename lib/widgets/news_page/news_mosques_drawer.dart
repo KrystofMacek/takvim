@@ -18,8 +18,8 @@ class NewsMosquesDrawer extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, ScopedReader watch) {
-    SubsFilteringController filteringController =
-        watch(subsFilteringController);
+    // SubsFilteringController filteringController =
+    //     watch(subsFilteringController);
     return StreamBuilder<bool>(
         stream: Connectivity().isConnected,
         initialData: false,
@@ -53,7 +53,7 @@ class NewsMosquesDrawer extends ConsumerWidget {
                           ),
                           title: Text('${_languagePack.selectMosque}'),
                           onTap: () {
-                            filteringController.resetFilter();
+                            // filteringController.resetFilter();
                             Navigator.popAndPushNamed(context, '/mosque');
                           },
                         ),
@@ -66,7 +66,7 @@ class NewsMosquesDrawer extends ConsumerWidget {
                           ),
                           title: Text('${_languagePack.selectLanguage}'),
                           onTap: () {
-                            filteringController.resetFilter();
+                            // filteringController.resetFilter();
                             Navigator.popAndPushNamed(context, '/lang');
                           },
                         ),
@@ -144,7 +144,7 @@ class NewsMosquesDrawer extends ConsumerWidget {
                           ),
                           title: Text('${_languagePack.selectLanguage}'),
                           onTap: () {
-                            filteringController.resetFilter();
+                            // filteringController.resetFilter();
                             Navigator.popAndPushNamed(context, '/lang');
                           },
                         ),

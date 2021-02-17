@@ -5,7 +5,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../data/models/language_pack.dart';
 import '../providers/language_page/language_provider.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import '../providers/firestore_provider.dart';
+import '../providers/mosque_page/mosque_provider.dart';
+import '../providers/subscription/selected_subs_item_provider.dart';
 
 class SubscribtionPage extends ConsumerWidget {
   @override
@@ -50,8 +51,8 @@ class SubscriptionPageFab extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, ScopedReader watch) {
-    SubsFilteringController filteringController =
-        watch(subsFilteringController);
+    MosqueController filteringController = watch(mosqueController);
+    SelectedSubsItem _selectedSubsItemProvider = watch(selectedSubsItem);
     return Material(
       borderRadius: BorderRadius.circular(50),
       elevation: 2,
@@ -65,6 +66,7 @@ class SubscriptionPageFab extends ConsumerWidget {
           ),
           onPressed: () {
             filteringController.resetFilter();
+            _selectedSubsItemProvider.updateSelectedSubsItem('');
             Navigator.popUntil(context, ModalRoute.withName('/home'));
           },
         ),

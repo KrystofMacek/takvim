@@ -16,7 +16,7 @@ class SubTopicListView extends ConsumerWidget {
   final List<SubsTopic> _topics;
   @override
   Widget build(BuildContext context, ScopedReader watch) {
-    List<String> currentSubsList = watch(currentSubsListProvider.state);
+    List<SubsTopic> currentSubsList = watch(currentSubsListProvider.state);
     CurrentSubsList currentSubsListController = watch(currentSubsListProvider);
 
     List<String> currentMosqueSubsList = watch(currentMosqueSubs.state);
@@ -30,7 +30,7 @@ class SubTopicListView extends ConsumerWidget {
         return SizedBox();
       },
       itemBuilder: (BuildContext context, int index) {
-        bool subscribed = currentSubsList.contains(_topics[index].topic);
+        bool subscribed = currentSubsList.contains(_topics[index]);
         bool isMosqueSub = currentMosqueSubsList.contains(data.mosqueId);
 
         return Container(
@@ -97,7 +97,7 @@ class SubTopicListView extends ConsumerWidget {
   void _subscribe(
     BuildContext context,
     bool subscribed,
-    List<String> currentSubsList,
+    List<SubsTopic> currentSubsList,
     CurrentSubsList currentSubsListController,
     CurrentMosqueSubs currentMosqueSubsController,
     List<SubsTopic> subtopics,
@@ -108,7 +108,7 @@ class SubTopicListView extends ConsumerWidget {
     if (subscribed) {
       // remove from sub list
       currentSubsListController.removeFromSubsList(
-        subtopics[index].topic,
+        subtopics[index],
       );
 
       // check if he is sub to another subtopic of mosque
@@ -116,8 +116,7 @@ class SubTopicListView extends ConsumerWidget {
 
       subtopics.forEach(
         (element) {
-          if (currentSubsList.contains(element.topic))
-            noLongerMosqueSub = false;
+          if (currentSubsList.contains(element)) noLongerMosqueSub = false;
         },
       );
       // if he isnt remove from list
@@ -128,7 +127,7 @@ class SubTopicListView extends ConsumerWidget {
     } else {
       // Add to sub list
       currentSubsListController.addToSubsList(
-        subtopics[index].topic,
+        subtopics[index],
       );
       // if its first sub to this mosque add it to his list
       if (!isMosqueSub)

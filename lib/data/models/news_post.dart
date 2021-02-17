@@ -12,58 +12,64 @@ String newsPostToJson(NewsPost data) => json.encode(data.toJson());
 class NewsPost {
   NewsPost({
     @required this.mosqueId,
-    @required this.notificationBody,
-    @required this.notificationTitle,
+    @required this.body,
+    @required this.title,
     @required this.sendNotification,
-    @required this.timeStamp,
-    @required this.topic,
+    @required this.createdAt,
+    @required this.updatedAt,
+    @required this.topicId,
     @required this.url,
   });
 
   final String mosqueId;
-  final String notificationBody;
-  final String notificationTitle;
+  final String body;
+  final String title;
   final bool sendNotification;
-  final DateTime timeStamp;
-  final String topic;
+  final DateTime createdAt;
+  final DateTime updatedAt;
+  final String topicId;
   final String url;
 
   NewsPost copyWith({
     String mosqueId,
-    String notificationBody,
-    String notificationTitle,
+    String body,
+    String title,
     bool sendNotification,
-    DateTime timeStamp,
-    String topic,
+    DateTime createdAt,
+    DateTime updatedAt,
+    String topicId,
     String url,
   }) =>
       NewsPost(
         mosqueId: mosqueId ?? this.mosqueId,
-        notificationBody: notificationBody ?? this.notificationBody,
-        notificationTitle: notificationTitle ?? this.notificationTitle,
+        body: body ?? this.body,
+        title: title ?? this.title,
         sendNotification: sendNotification ?? this.sendNotification,
-        timeStamp: timeStamp ?? this.timeStamp,
-        topic: topic ?? this.topic,
+        createdAt: createdAt ?? this.createdAt,
+        updatedAt: updatedAt ?? this.updatedAt,
+        topicId: topicId ?? this.topicId,
         url: url ?? this.url,
       );
 
   factory NewsPost.fromJson(Map<String, dynamic> json) => NewsPost(
         mosqueId: json["mosqueId"],
-        notificationBody: json["notificationBody"],
-        notificationTitle: json["notificationTitle"],
+        body: json["body"],
+        title: json["title"],
         sendNotification: json["sendNotification"],
-        timeStamp: json["timeStamp"].toDate(),
-        topic: json["topic"],
+        createdAt: json["createdAt"].toDate(),
+        updatedAt: json["updatedAt"].toDate(),
+        topicId: json["topicId"],
         url: json["url"],
       );
 
   Map<String, dynamic> toJson() => {
         "mosqueId": mosqueId,
-        "notificationBody": notificationBody,
-        "notificationTitle": notificationTitle,
+        "body": body,
+        "title": title,
         "sendNotification": sendNotification,
-        "timeStamp": timeStamp,
-        "topic": topic,
+        "createdAt": createdAt,
+        "updatedAt": updatedAt,
+        "topicId": topicId,
         "url": url,
       };
 }

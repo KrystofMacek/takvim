@@ -2,6 +2,8 @@ import 'package:riverpod/all.dart';
 import 'package:hive/hive.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 
+import '../../data/models/subsTopic.dart';
+
 final currentSubsListProvider = StateNotifierProvider(
   (ref) => CurrentSubsList(
     Hive.box('pref'),
@@ -9,31 +11,34 @@ final currentSubsListProvider = StateNotifierProvider(
   ),
 );
 
-class CurrentSubsList extends StateNotifier<List<String>> {
+class CurrentSubsList extends StateNotifier<List<SubsTopic>> {
   CurrentSubsList(Box prefBox, FirebaseMessaging fcm)
       : _prefBox = prefBox,
         _fcm = fcm,
-        super(prefBox.get('subsList') ?? []);
+        super(prefBox
+            .get('subsList', defaultValue: <SubsTopic>[]).cast<SubsTopic>());
 
   final Box _prefBox;
   final FirebaseMessaging _fcm;
 
-  Future<void> addToSubsList(String id) async {
-    if (!state.contains(id)) {
-      state.add(id);
+  Future<void> addToSubsList(SubsTopic subsTopic) async {
+    if (!state.contains(subsTopic)) {
+      state.add(subsTopic);
       state = state;
       _prefBox.put('subsList', state);
-      await _fcm.subscribeToTopic(id);
+      await _fcm.subscribeToTopic(subsTopic.topic);
     }
+    print('currentSubs: $state');
   }
 
-  Future<void> removeFromSubsList(String id) async {
-    if (state.contains(id)) {
-      state.remove(id);
+  Future<void> removeFromSubsList(SubsTopic subsTopic) async {
+    if (state.contains(subsTopic)) {
+      state.remove(subsTopic);
       state = state;
       _prefBox.put('subsList', state);
-      await _fcm.unsubscribeFromTopic(id);
+      await _fcm.unsubscribeFromTopic(subsTopic.topic);
     }
+    print('currentSubs: $state');
   }
 }
 

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../../providers/mosque_page/mosque_provider.dart';
 import '../../data/models/language_pack.dart';
 import '../../common/styling.dart';
+import '../../providers/common/filter_text_provider.dart';
 
 class FilterMosqueInput extends StatelessWidget {
   const FilterMosqueInput({
@@ -20,7 +21,6 @@ class FilterMosqueInput extends StatelessWidget {
   Widget build(BuildContext context) {
     return Consumer(
       builder: (context, watch, child) {
-        watch(mosqueList);
         return Container(
           padding: EdgeInsets.symmetric(horizontal: 5, vertical: 0),
           child: TextField(

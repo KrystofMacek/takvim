@@ -15,6 +15,7 @@ import 'package:takvim/pages/news/news_page.dart';
 import 'package:takvim/pages/subscribtion_page.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import './data/models/subsTopic.dart';
 import './common/styling.dart';
 import 'pages/pages.dart';
 
@@ -23,6 +24,7 @@ void main() async {
   SystemChrome.setPreferredOrientations(
       [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
   await Hive.initFlutter();
+  Hive.registerAdapter(SubsTopicAdapter());
   await Hive.openBox('pref');
   await Firebase.initializeApp();
   FirebaseDatabase.instance.setPersistenceEnabled(true);

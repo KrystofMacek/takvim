@@ -17,8 +17,8 @@ class NewsPageDrawer extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, ScopedReader watch) {
-    SubsFilteringController filteringController =
-        watch(subsFilteringController);
+    // SubsFilteringController filteringController =
+    //     watch(subsFilteringController);
     return Drawer(
       child: Flex(
         direction: Axis.vertical,
@@ -47,7 +47,7 @@ class NewsPageDrawer extends ConsumerWidget {
                   ),
                   title: Text('${_languagePack.selectMosque}'),
                   onTap: () {
-                    filteringController.resetFilter();
+                    // filteringController.resetFilter();
                     Navigator.popAndPushNamed(context, '/mosque');
                   },
                 ),
@@ -60,7 +60,7 @@ class NewsPageDrawer extends ConsumerWidget {
                   ),
                   title: Text('${_languagePack.selectLanguage}'),
                   onTap: () {
-                    filteringController.resetFilter();
+                    // filteringController.resetFilter();
                     Navigator.popAndPushNamed(context, '/lang');
                   },
                 ),
