@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -36,7 +38,12 @@ void main() async {
       print('onMessage $message');
     },
     onLaunch: (message) async {
-      final dynamic url = message['data']['URL'];
+      dynamic url = message['data']['URL'];
+      if (Platform.isIOS) {
+        if (message != null) {
+          url = message['URL'];
+        }
+      }
 
       if (await canLaunch('http://$url')) {
         await launch('http://$url');
@@ -45,8 +52,12 @@ void main() async {
       }
     },
     onResume: (message) async {
-      final dynamic url = message['data']['URL'];
-
+      dynamic url = message['data']['URL'];
+      if (Platform.isIOS) {
+        if (message != null) {
+          url = message['URL'];
+        }
+      }
       if (await canLaunch('http://$url')) {
         await launch('http://$url');
       } else {
