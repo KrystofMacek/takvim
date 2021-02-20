@@ -212,7 +212,9 @@ class NewsListView extends ConsumerWidget {
                             return GestureDetector(
                               onTap: () async {
                                 if (await canLaunch('http://${data.url}')) {
-                                  await launch('http://${data.url}');
+                                  await launch(
+                                    'http://${data.url}',
+                                  );
                                 } else {
                                   throw 'Could not launch ${data.url}';
                                 }

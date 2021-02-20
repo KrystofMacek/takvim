@@ -35,36 +35,60 @@ void main() async {
   await _fcmPermission(fcm);
   fcm.configure(
     onMessage: (message) async {
-      print('onMessage $message');
-    },
-    onLaunch: (message) async {
-      dynamic url = message['data']['URL'];
+      /*String url = '';
       if (Platform.isIOS) {
-        if (message != null) {
-          url = message['URL'];
-        }
+        url = message['URL'];
       }
+      if (Platform.isAndroid) {
+        url = message['data']['URL'];
+      }
+      print(url);
 
       if (await canLaunch('http://$url')) {
         await launch('http://$url');
       } else {
         throw 'Could not launch $url';
-      }
+      }*/
     },
-    onResume: (message) async {
-      dynamic url = message['data']['URL'];
+    onLaunch: (message) async {
+      String url = '';
       if (Platform.isIOS) {
-        if (message != null) {
-          url = message['URL'];
-        }
+        url = message['URL'];
       }
+      if (Platform.isAndroid) {
+        url = message['data']['URL'];
+      }
+      print(url);
+
       if (await canLaunch('http://$url')) {
-        await launch('http://$url');
+        await launch(
+          'http://$url',
+          forceSafariVC: false,
+        );
       } else {
         throw 'Could not launch $url';
       }
     },
-    onBackgroundMessage: myBackgroundMessageHandler,
+    onResume: (message) async {
+      String url = '';
+      if (Platform.isIOS) {
+        url = message['URL'];
+      }
+      if (Platform.isAndroid) {
+        url = message['data']['URL'];
+      }
+      print(url);
+
+      if (await canLaunch('http://$url')) {
+        await launch(
+          'http://$url',
+          forceSafariVC: false,
+        );
+      } else {
+        throw 'Could not launch $url';
+      }
+    },
+    onBackgroundMessage: Platform.isAndroid ? myBackgroundMessageHandler : null,
   );
   runApp(
     ProviderScope(
