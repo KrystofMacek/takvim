@@ -123,6 +123,7 @@ class MosqueController extends StateNotifier<MosqueController> {
         _filteredMosqueList.updateList(mosqueList);
       }
     });
+    Future.delayed(Duration(milliseconds: 200));
 
     return Stream.value(mosqueList);
   }
@@ -141,11 +142,7 @@ class MosqueController extends StateNotifier<MosqueController> {
         });
         mosqueList.sort((a, b) => a.ort.compareTo(b.ort));
         _mosqueList.updateList(mosqueList);
-
-        if (_filteredMosqueList.state.isEmpty ||
-            _filteredMosqueList.state.length == _mosqueList.state.length) {
-          _filteredMosqueList.updateList(mosqueList);
-        }
+        _filteredMosqueList.updateList(mosqueList);
       }
     });
 
