@@ -1,9 +1,10 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter_riverpod/all.dart';
 import 'package:hive/hive.dart';
 import 'package:takvim/data/models/mosque_data.dart';
+import 'package:takvim/providers/firestore_provider.dart';
 import '../../data/models/day_data.dart';
-import '../common/filter_text_provider.dart';
 
 final selectedMosque = StateNotifierProvider<SelectedMosque>((ref) {
   return SelectedMosque();
@@ -56,12 +57,14 @@ final mosqueController = StateNotifierProvider<MosqueController>((ref) {
   SelectedMosque _selectedMosque = ref.watch(selectedMosque);
   MosqueList _listOfMosques = ref.watch(mosqueList);
   FilteredMosqueList _filteredMosqueList = ref.watch(filteredMosqueList);
+  FirebaseFirestore _firebaseFirestore = ref.watch(firestoreProvider);
 
   return MosqueController(
     FirebaseDatabase.instance.reference(),
     _selectedMosque,
     _listOfMosques,
     _filteredMosqueList,
+    _firebaseFirestore,
   );
 });
 
@@ -71,28 +74,76 @@ class MosqueController extends StateNotifier<MosqueController> {
     this._selectedMosque,
     this._mosqueList,
     this._filteredMosqueList,
+    this._firebaseFirestore,
   ) : super(null);
 
   final SelectedMosque _selectedMosque;
   final MosqueList _mosqueList;
   final FilteredMosqueList _filteredMosqueList;
   final DatabaseReference _databaseReference;
+  final FirebaseFirestore _firebaseFirestore;
 
   final Box _prefBox = Hive.box('pref');
 
-  Stream<List<MosqueData>> watchMosques() {
+  // Stream<List<MosqueData>> watchMosques() {
+  //   List<MosqueData> mosqueList = [];
+  //   _databaseReference.child('mosques').onValue.listen((event) {
+  //     if (event.snapshot.value != null) {
+  //       mosqueList = [];
+  //       event.snapshot.value.forEach((key, value) {
+  //         mosqueList.add(
+  //           MosqueData.fromFirebase(value),
+  //         );
+  //       });
+  //       mosqueList.sort((a, b) => a.ort.compareTo(b.ort));
+  //       _mosqueList.updateList(mosqueList);
+  //       if (_filteredMosqueList.state.isEmpty) {
+  //         _filteredMosqueList.updateList(mosqueList);
+  //       }
+  //     }
+  //   });
+
+  //   return Stream.value(mosqueList);
+  // }
+
+  Stream<List<MosqueData>> watchPrayerTimeFirestoreMosques() {
     List<MosqueData> mosqueList = [];
-    _databaseReference.child('mosques').onValue.listen((event) {
-      if (event.snapshot.value != null) {
+    _firebaseFirestore
+        .collection('mosques')
+        .where('prayerTimesEnabled', isEqualTo: true)
+        .snapshots()
+        .listen((event) {
+      if (event.docs != null && event.docs.isNotEmpty) {
         mosqueList = [];
-        event.snapshot.value.forEach((key, value) {
-          mosqueList.add(
-            MosqueData.fromFirebase(value),
-          );
+        event.docs.forEach((element) {
+          mosqueList.add(MosqueData.fromJson(element.data()));
         });
         mosqueList.sort((a, b) => a.ort.compareTo(b.ort));
         _mosqueList.updateList(mosqueList);
-        if (_filteredMosqueList.state.isEmpty) {
+        _filteredMosqueList.updateList(mosqueList);
+      }
+    });
+
+    return Stream.value(mosqueList);
+  }
+
+  Stream<List<MosqueData>> watchSubscribableFirestoreMosques() {
+    List<MosqueData> mosqueList = [];
+    _firebaseFirestore
+        .collection('mosques')
+        .where('postsEnabledApp', isEqualTo: true)
+        .snapshots()
+        .listen((event) {
+      if (event.docs != null && event.docs.isNotEmpty) {
+        mosqueList = [];
+        event.docs.forEach((element) {
+          mosqueList.add(MosqueData.fromJson(element.data()));
+        });
+        mosqueList.sort((a, b) => a.ort.compareTo(b.ort));
+        _mosqueList.updateList(mosqueList);
+
+        if (_filteredMosqueList.state.isEmpty ||
+            _filteredMosqueList.state.length == _mosqueList.state.length) {
           _filteredMosqueList.updateList(mosqueList);
         }
       }
@@ -105,43 +156,43 @@ class MosqueController extends StateNotifier<MosqueController> {
     _filteredMosqueList.updateList(_mosqueList.state);
   }
 
-  Future<List<MosqueData>> getFilteredListOfMosques() async {
-    List<MosqueData> mosques = [];
-    final DataSnapshot ref = await _databaseReference.child('mosques').once();
+  // Future<List<MosqueData>> getFilteredListOfMosques() async {
+  //   List<MosqueData> mosques = [];
+  //   final DataSnapshot ref = await _databaseReference.child('mosques').once();
 
-    if (ref.value != null) {
-      ref.value.forEach(
-        (key, mosque) => {
-          mosques.add(
-            MosqueData.fromFirebase(mosque),
-          ),
-        },
-      );
-    }
+  //   if (ref.value != null) {
+  //     ref.value.forEach(
+  //       (key, mosque) => {
+  //         mosques.add(
+  //           MosqueData.fromFirebase(mosque),
+  //         ),
+  //       },
+  //     );
+  //   }
 
-    return mosques;
-  }
+  //   return mosques;
+  // }
 
-  Future<List<MosqueData>> getListOfMosques() async {
-    List<MosqueData> mosques = [];
-    final DataSnapshot ref =
-        await _databaseReference.child('mosques').orderByChild('Name').once();
+  // Future<List<MosqueData>> getListOfMosques() async {
+  //   List<MosqueData> mosques = [];
+  //   final DataSnapshot ref =
+  //       await _databaseReference.child('mosques').orderByChild('Name').once();
 
-    if (ref.value != null) {
-      ref.value.forEach(
-        (key, mosque) => {
-          mosques.add(
-            MosqueData.fromFirebase(mosque),
-          ),
-        },
-      );
-    }
+  //   if (ref.value != null) {
+  //     ref.value.forEach(
+  //       (key, mosque) => {
+  //         mosques.add(
+  //           MosqueData.fromFirebase(mosque),
+  //         ),
+  //       },
+  //     );
+  //   }
 
-    _mosqueList.updateList(mosques);
-    _filteredMosqueList.updateList(mosques);
+  //   _mosqueList.updateList(mosques);
+  //   _filteredMosqueList.updateList(mosques);
 
-    return mosques;
-  }
+  //   return mosques;
+  // }
 
   void filterMosqueList(String key) {
     List<MosqueData> fullList = _mosqueList.state;
@@ -176,7 +227,19 @@ class MosqueController extends StateNotifier<MosqueController> {
     );
   }
 
-  Stream<Event> watchMosque(String id) {
+  // Stream<Event> watchMosque(String id) {
+  //   String savedId = Hive.box('pref').get('mosque');
+  //   if (id == null) {
+  //     if (savedId == null) {
+  //       id = '1001';
+  //     } else {
+  //       id = savedId;
+  //     }
+  //   }
+  //   return _databaseReference.child('mosques').child(id).onValue;
+  // }
+
+  Stream<QuerySnapshot> watchFirestoreMosque(String id) {
     String savedId = Hive.box('pref').get('mosque');
     if (id == null) {
       if (savedId == null) {
@@ -185,30 +248,34 @@ class MosqueController extends StateNotifier<MosqueController> {
         id = savedId;
       }
     }
-    return _databaseReference.child('mosques').child(id).onValue;
+
+    return _firebaseFirestore
+        .collection('mosques')
+        .where('MosqueID', isEqualTo: id)
+        .snapshots();
   }
 
-  Future<MosqueData> getSelectedMosque(String selectedMosque) async {
-    String mosque = _prefBox.get('mosque');
+  // Future<MosqueData> getSelectedMosque(String selectedMosque) async {
+  //   String mosque = _prefBox.get('mosque');
 
-    if (mosque == null) {
-      _selectedMosque.updateSelectedMosque('1001');
-      _prefBox.put('mosque', '1001');
-      mosque = _selectedMosque.state;
-    } else if (_selectedMosque.state == null) {
-      _selectedMosque.updateSelectedMosque(mosque);
-    }
+  //   if (mosque == null) {
+  //     _selectedMosque.updateSelectedMosque('1001');
+  //     _prefBox.put('mosque', '1001');
+  //     mosque = _selectedMosque.state;
+  //   } else if (_selectedMosque.state == null) {
+  //     _selectedMosque.updateSelectedMosque(mosque);
+  //   }
 
-    MosqueData mosqueData;
+  //   MosqueData mosqueData;
 
-    final ref = await _databaseReference.child('mosques').child(mosque).once();
+  //   final ref = await _databaseReference.child('mosques').child(mosque).once();
 
-    if (ref.value != null) {
-      mosqueData = MosqueData.fromFirebase(ref.value);
-    }
+  //   if (ref.value != null) {
+  //     mosqueData = MosqueData.fromFirebase(ref.value);
+  //   }
 
-    return mosqueData;
-  }
+  //   return mosqueData;
+  // }
 
   Stream<Event> getPrayersForDate(String date) {
     Stream<Event> ref;
@@ -227,13 +294,13 @@ class MosqueController extends StateNotifier<MosqueController> {
     return ref;
   }
 
-  Future<DayData> getPrayersForDateF(String date) async {
-    final DataSnapshot ref = await _databaseReference
-        .child('prayerTimes')
-        .child(_selectedMosque.state)
-        .child(date)
-        .once();
+  // Future<DayData> getPrayersForDateF(String date) async {
+  //   final DataSnapshot ref = await _databaseReference
+  //       .child('prayerTimes')
+  //       .child(_selectedMosque.state)
+  //       .child(date)
+  //       .once();
 
-    return DayData.fromFirebase(ref.value);
-  }
+  //   return DayData.fromFirebase(ref.value);
+  // }
 }

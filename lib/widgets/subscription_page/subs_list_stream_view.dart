@@ -33,7 +33,7 @@ class AvailableSubsListStream extends ConsumerWidget {
         ),
         Expanded(
           child: StreamBuilder<List<MosqueData>>(
-            stream: _mosqueController.watchMosques(),
+            stream: _mosqueController.watchSubscribableFirestoreMosques(),
             builder: (BuildContext context,
                 AsyncSnapshot<List<MosqueData>> snapshot) {
               if (snapshot.hasData) {

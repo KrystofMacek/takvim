@@ -129,7 +129,8 @@ class MosqueSettingsPage extends ConsumerWidget {
                             height: 5,
                           ),
                           StreamBuilder<List<MosqueData>>(
-                            stream: _mosqueController.watchMosques(),
+                            stream: _mosqueController
+                                .watchPrayerTimeFirestoreMosques(),
                             builder: (BuildContext context,
                                 AsyncSnapshot<List<MosqueData>> snapshot) {
                               if (snapshot.hasData) {

@@ -4,6 +4,7 @@ import '../../providers/mosque_page/mosque_provider.dart';
 import 'package:firebase_database/firebase_database.dart';
 import '../../data/models/mosque_data.dart';
 import '../../common/styling.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class SelectedMosqueView extends StatelessWidget {
   const SelectedMosqueView({
@@ -23,14 +24,16 @@ class SelectedMosqueView extends StatelessWidget {
       builder: (context, watch, child) {
         // String _selectedMosque = watch(selectedMosque.state);
 
-        return StreamBuilder<Event>(
-          stream: _mosqueController.watchMosque(_selectedMosqueController),
-          builder: (BuildContext context, AsyncSnapshot<Event> snapshot) {
+        return StreamBuilder<QuerySnapshot>(
+          stream:
+              _mosqueController.watchFirestoreMosque(_selectedMosqueController),
+          builder:
+              (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
             if (snapshot.hasData &&
                 snapshot.data != null &&
-                snapshot.data.snapshot.value != null) {
+                snapshot.data.docs.first != null) {
               MosqueData selectedMosqueData =
-                  MosqueData.fromFirebase(snapshot.data.snapshot.value);
+                  MosqueData.fromJson(snapshot.data.docs.first.data());
 
               return Column(
                 mainAxisAlignment: MainAxisAlignment.center,

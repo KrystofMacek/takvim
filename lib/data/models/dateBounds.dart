@@ -26,4 +26,8 @@ class DateBounds {
         firstDate: DateTime.parse(json["firstDate"]),
         lastDate: DateTime.parse(json["lastDate"]),
       );
+  factory DateBounds.fromJson(Map<String, dynamic> json) => DateBounds(
+        firstDate: DateTime.parse(json["firstDay"]),
+        lastDate: DateTime.parse(json["lastDay"]),
+      );
 }
