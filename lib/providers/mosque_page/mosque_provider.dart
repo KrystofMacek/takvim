@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_database/firebase_database.dart';
+import 'package:flutter/semantics.dart';
 import 'package:flutter_riverpod/all.dart';
 import 'package:hive/hive.dart';
 import 'package:takvim/data/models/mosque_data.dart';
@@ -53,11 +54,24 @@ class FilteredMosqueList extends StateNotifier<List<MosqueData>> {
   }
 }
 
+final filterTextField = StateNotifierProvider<FilterTextField>((ref) {
+  return FilterTextField();
+});
+
+class FilterTextField extends StateNotifier<String> {
+  FilterTextField() : super('');
+
+  void updateText(String data) {
+    state = data;
+  }
+}
+
 final mosqueController = StateNotifierProvider<MosqueController>((ref) {
   SelectedMosque _selectedMosque = ref.watch(selectedMosque);
   MosqueList _listOfMosques = ref.watch(mosqueList);
   FilteredMosqueList _filteredMosqueList = ref.watch(filteredMosqueList);
   FirebaseFirestore _firebaseFirestore = ref.watch(firestoreProvider);
+  FilterTextField _filterTextField = ref.watch(filterTextField);
 
   return MosqueController(
     FirebaseDatabase.instance.reference(),
@@ -65,6 +79,7 @@ final mosqueController = StateNotifierProvider<MosqueController>((ref) {
     _listOfMosques,
     _filteredMosqueList,
     _firebaseFirestore,
+    _filterTextField,
   );
 });
 
@@ -75,6 +90,7 @@ class MosqueController extends StateNotifier<MosqueController> {
     this._mosqueList,
     this._filteredMosqueList,
     this._firebaseFirestore,
+    this._filterTextField,
   ) : super(null);
 
   final SelectedMosque _selectedMosque;
@@ -82,6 +98,7 @@ class MosqueController extends StateNotifier<MosqueController> {
   final FilteredMosqueList _filteredMosqueList;
   final DatabaseReference _databaseReference;
   final FirebaseFirestore _firebaseFirestore;
+  final FilterTextField _filterTextField;
 
   final Box _prefBox = Hive.box('pref');
 
@@ -120,10 +137,12 @@ class MosqueController extends StateNotifier<MosqueController> {
         });
         mosqueList.sort((a, b) => a.ort.compareTo(b.ort));
         _mosqueList.updateList(mosqueList);
-        _filteredMosqueList.updateList(mosqueList);
+
+        if (_filterTextField.state.isEmpty) {
+          _filteredMosqueList.updateList(mosqueList);
+        }
       }
     });
-    Future.delayed(Duration(milliseconds: 200));
 
     return Stream.value(mosqueList);
   }
@@ -142,7 +161,10 @@ class MosqueController extends StateNotifier<MosqueController> {
         });
         mosqueList.sort((a, b) => a.ort.compareTo(b.ort));
         _mosqueList.updateList(mosqueList);
-        _filteredMosqueList.updateList(mosqueList);
+
+        if (_filterTextField.state.isEmpty) {
+          _filteredMosqueList.updateList(mosqueList);
+        }
       }
     });
 

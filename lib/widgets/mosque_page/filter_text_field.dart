@@ -36,6 +36,7 @@ class FilterMosqueInput extends StatelessWidget {
             ),
             onChanged: (value) {
               _mosqueController.filterMosqueList(value);
+              context.read(filterTextField).updateText(value);
             },
           ),
         );
