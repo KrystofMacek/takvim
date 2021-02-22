@@ -22,7 +22,7 @@ class SelectedDate extends StateNotifier<DateTime> {
 
   Future<DateBounds> getFirestoreDateBounds() async {
     final DocumentSnapshot snap =
-        await _firebaseFirestore.collection('dataBounds').doc('calendar').get();
+        await _firebaseFirestore.collection('settings').doc('calendar').get();
 
     DateBounds bounds = DateBounds.fromJson(snap.data());
     return bounds;
