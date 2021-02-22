@@ -104,10 +104,33 @@ class AvailableSubsListStream extends ConsumerWidget {
                                   } else {
                                     List<SubsTopic> topics =
                                         subsMap['${mosqueData.mosqueId}'];
+
+                                    List<SubsTopic> orderedListOfTopics =
+                                        topics;
+                                    // ORDER SUBTOPICS FROM GENERAL
+                                    if (topics.length > 1) {
+                                      SubsTopic general = topics.firstWhere(
+                                          (element) =>
+                                              element.label.toLowerCase() ==
+                                              'general');
+                                      int generalIndex = topics.indexWhere(
+                                          (element) =>
+                                              element.label.toLowerCase() ==
+                                              'general');
+                                      topics.removeAt(generalIndex);
+                                      topics.sort(
+                                          (a, b) => a.label.compareTo(b.label));
+
+                                      orderedListOfTopics = [
+                                        general,
+                                        ...topics
+                                      ];
+                                    }
+
                                     return OpenedSubsItem(
                                       selected: _selectedSubsItemProvider ==
                                           mosqueData.mosqueId,
-                                      topics: topics,
+                                      topics: orderedListOfTopics,
                                     );
                                   }
                                 },

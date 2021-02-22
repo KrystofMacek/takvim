@@ -25,6 +25,7 @@ class OpenedSubsItem extends ConsumerWidget {
     List<String> currentMosqueSubsList = watch(currentMosqueSubs.state);
     SelectedSubsItem _selectedSubsItemProvider = watch(selectedSubsItem);
     final SubsTopic data = _topics.first;
+
     return Card(
       child: GestureDetector(
         onTap: () {
