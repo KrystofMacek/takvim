@@ -97,10 +97,24 @@ class NewsListView extends ConsumerWidget {
           subTopicList = subTopicList
               .where((element) => subscribedMosquesTopics.contains(element))
               .toList();
-          subTopicList.sort((a, b) => a.label.compareTo(b.label));
 
-          bool hideLabel =
-              subTopicList.length == 1 && subTopicList.first.label == 'general';
+          // ORDER SUBTOPICS FROM GENERAL
+          if (subTopicList.length > 1) {
+            int generalIndex = subTopicList.indexWhere(
+                (element) => element.label.toLowerCase() == 'general');
+            if (generalIndex != -1) {
+              SubsTopic general = subTopicList.firstWhere(
+                  (element) => element.label.toLowerCase() == 'general');
+              subTopicList.removeAt(generalIndex);
+              subTopicList.sort((a, b) => a.label.compareTo(b.label));
+
+              List<SubsTopic> orderedSubtopicList = [general, ...subTopicList];
+              subTopicList = orderedSubtopicList;
+            }
+          }
+
+          bool hideLabel = subTopicList.length == 1 &&
+              subTopicList.first.label.toLowerCase() == 'general';
 
           return Consumer(
             builder: (context, watch, child) {
@@ -234,7 +248,11 @@ class NewsListView extends ConsumerWidget {
                                             style: Theme.of(context)
                                                 .textTheme
                                                 .headline4
-                                                .copyWith(fontSize: 16),
+                                                .copyWith(
+                                                  fontSize: 16,
+                                                  color: CustomColors
+                                                      .cityNameColor,
+                                                ),
                                           ),
                                         ),
                                         !hideLabel
