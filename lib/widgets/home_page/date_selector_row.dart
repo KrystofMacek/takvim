@@ -49,7 +49,7 @@ class _DateSelectorRowState extends State<DateSelectorRow>
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<DateBounds>(
-      future: widget._selectedDate.getDateBounds(),
+      future: widget._selectedDate.getFirestoreDateBounds(),
       builder: (context, snapshot) {
         if (_resumed) {
           widget._selectedDate.onRefresh();

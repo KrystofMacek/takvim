@@ -25,7 +25,7 @@ class CalendarDayPicker extends StatelessWidget {
           size: 40,
         ),
         onPressed: () async {
-          DateBounds bounds = await _selectedDate.getDateBounds();
+          DateBounds bounds = await _selectedDate.getFirestoreDateBounds();
 
           final DateTime picked = await showDatePicker(
             context: context,

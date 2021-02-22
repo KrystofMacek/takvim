@@ -102,26 +102,6 @@ class MosqueController extends StateNotifier<MosqueController> {
 
   final Box _prefBox = Hive.box('pref');
 
-  // Stream<List<MosqueData>> watchMosques() {
-  //   List<MosqueData> mosqueList = [];
-  //   _databaseReference.child('mosques').onValue.listen((event) {
-  //     if (event.snapshot.value != null) {
-  //       mosqueList = [];
-  //       event.snapshot.value.forEach((key, value) {
-  //         mosqueList.add(
-  //           MosqueData.fromFirebase(value),
-  //         );
-  //       });
-  //       mosqueList.sort((a, b) => a.ort.compareTo(b.ort));
-  //       _mosqueList.updateList(mosqueList);
-  //       if (_filteredMosqueList.state.isEmpty) {
-  //         _filteredMosqueList.updateList(mosqueList);
-  //       }
-  //     }
-  //   });
-
-  //   return Stream.value(mosqueList);
-  // }
 
   Stream<List<MosqueData>> watchPrayerTimeFirestoreMosques() {
     List<MosqueData> mosqueList = [];
@@ -175,44 +155,6 @@ class MosqueController extends StateNotifier<MosqueController> {
     _filteredMosqueList.updateList(_mosqueList.state);
   }
 
-  // Future<List<MosqueData>> getFilteredListOfMosques() async {
-  //   List<MosqueData> mosques = [];
-  //   final DataSnapshot ref = await _databaseReference.child('mosques').once();
-
-  //   if (ref.value != null) {
-  //     ref.value.forEach(
-  //       (key, mosque) => {
-  //         mosques.add(
-  //           MosqueData.fromFirebase(mosque),
-  //         ),
-  //       },
-  //     );
-  //   }
-
-  //   return mosques;
-  // }
-
-  // Future<List<MosqueData>> getListOfMosques() async {
-  //   List<MosqueData> mosques = [];
-  //   final DataSnapshot ref =
-  //       await _databaseReference.child('mosques').orderByChild('Name').once();
-
-  //   if (ref.value != null) {
-  //     ref.value.forEach(
-  //       (key, mosque) => {
-  //         mosques.add(
-  //           MosqueData.fromFirebase(mosque),
-  //         ),
-  //       },
-  //     );
-  //   }
-
-  //   _mosqueList.updateList(mosques);
-  //   _filteredMosqueList.updateList(mosques);
-
-  //   return mosques;
-  // }
-
   void filterMosqueList(String key) {
     List<MosqueData> fullList = _mosqueList.state;
     _filteredMosqueList.updateList(
@@ -246,18 +188,6 @@ class MosqueController extends StateNotifier<MosqueController> {
     );
   }
 
-  // Stream<Event> watchMosque(String id) {
-  //   String savedId = Hive.box('pref').get('mosque');
-  //   if (id == null) {
-  //     if (savedId == null) {
-  //       id = '1001';
-  //     } else {
-  //       id = savedId;
-  //     }
-  //   }
-  //   return _databaseReference.child('mosques').child(id).onValue;
-  // }
-
   Stream<QuerySnapshot> watchFirestoreMosque(String id) {
     String savedId = Hive.box('pref').get('mosque');
     if (id == null) {
@@ -273,28 +203,6 @@ class MosqueController extends StateNotifier<MosqueController> {
         .where('MosqueID', isEqualTo: id)
         .snapshots();
   }
-
-  // Future<MosqueData> getSelectedMosque(String selectedMosque) async {
-  //   String mosque = _prefBox.get('mosque');
-
-  //   if (mosque == null) {
-  //     _selectedMosque.updateSelectedMosque('1001');
-  //     _prefBox.put('mosque', '1001');
-  //     mosque = _selectedMosque.state;
-  //   } else if (_selectedMosque.state == null) {
-  //     _selectedMosque.updateSelectedMosque(mosque);
-  //   }
-
-  //   MosqueData mosqueData;
-
-  //   final ref = await _databaseReference.child('mosques').child(mosque).once();
-
-  //   if (ref.value != null) {
-  //     mosqueData = MosqueData.fromFirebase(ref.value);
-  //   }
-
-  //   return mosqueData;
-  // }
 
   Stream<Event> getPrayersForDate(String date) {
     Stream<Event> ref;
@@ -312,14 +220,4 @@ class MosqueController extends StateNotifier<MosqueController> {
 
     return ref;
   }
-
-  // Future<DayData> getPrayersForDateF(String date) async {
-  //   final DataSnapshot ref = await _databaseReference
-  //       .child('prayerTimes')
-  //       .child(_selectedMosque.state)
-  //       .child(date)
-  //       .once();
-
-  //   return DayData.fromFirebase(ref.value);
-  // }
 }

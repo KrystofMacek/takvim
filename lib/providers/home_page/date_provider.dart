@@ -20,13 +20,6 @@ class SelectedDate extends StateNotifier<DateTime> {
   DatabaseReference db = FirebaseDatabase.instance.reference();
   final FirebaseFirestore _firebaseFirestore;
 
-  Future<DateBounds> getDateBounds() async {
-    final DataSnapshot ref = await db.child('dataBounds').once();
-    DateBounds bounds = DateBounds.fromFirebase(ref.value);
-
-    return bounds;
-  }
-
   Future<DateBounds> getFirestoreDateBounds() async {
     final DocumentSnapshot snap =
         await _firebaseFirestore.collection('dataBounds').doc('calendar').get();
