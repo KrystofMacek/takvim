@@ -236,6 +236,7 @@ class NewsListView extends ConsumerWidget {
                                 if (await canLaunch('http://${data.url}')) {
                                   await launch(
                                     'http://${data.url}',
+                                    forceSafariVC: false,
                                   );
                                 } else {
                                   throw 'Could not launch ${data.url}';

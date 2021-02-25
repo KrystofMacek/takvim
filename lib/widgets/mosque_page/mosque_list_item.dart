@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:takvim/providers/mosque_page/mosque_detail_provider.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '../../providers/mosque_page/mosque_provider.dart';
 import '../../data/models/mosque_data.dart';
 import '../../common/styling.dart';
@@ -68,9 +69,20 @@ class MosqueItem extends ConsumerWidget {
                         color: CustomColors.mainColor,
                         size: 20,
                       ),
-                      onPressed: () {
-                        detailsId.updateSelectedMosque(data);
-                        Navigator.pushNamed(context, '/mosqueDetail');
+                      onPressed: () async {
+                        print('select');
+                        if (await canLaunch(
+                            'https://news.takvim.ch/mosque/${data.mosqueId}')) {
+                          await launch(
+                            'https://news.takvim.ch/mosque/${data.mosqueId}',
+                            forceWebView: true,
+                            enableJavaScript: true,
+                          );
+                        } else {
+                          throw 'Could not launch ${data.mosqueId}';
+                        }
+                        // detailsId.updateSelectedMosque(data);
+                        // Navigator.pushNamed(context, '/mosqueDetail');
                       },
                     );
                   },
@@ -127,9 +139,21 @@ class MosqueItem extends ConsumerWidget {
                         color: CustomColors.mainColor,
                         size: 20,
                       ),
-                      onPressed: () {
-                        detailsId.updateSelectedMosque(data);
-                        Navigator.pushNamed(context, '/mosqueDetail');
+                      onPressed: () async {
+                        if (data.mosqueId != '1001') {
+                          detailsId.updateSelectedMosque(data);
+                          Navigator.pushNamed(context, '/mosqueDetail');
+                        } else {
+                          if (await canLaunch(
+                              'https://news.takvim.ch/mosque/${data.mosqueId}')) {
+                            await launch(
+                              'https://news.takvim.ch/mosque/${data.mosqueId}',
+                              forceSafariVC: false,
+                            );
+                          } else {
+                            throw 'Could not launch ${data.mosqueId}';
+                          }
+                        }
                       },
                     );
                   },

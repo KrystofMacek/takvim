@@ -20,6 +20,7 @@ class MosqueSettingsPage extends ConsumerWidget {
     final LanguagePackController _langPackController = watch(
       languagePackController,
     );
+    MosqueController filteringController = watch(mosqueController);
     if (_appLang == null) {
       _langPackController.updateAppLanguage();
     }
@@ -88,6 +89,7 @@ class MosqueSettingsPage extends ConsumerWidget {
                     _selectedDateController.updateSelectedDate(DateTime.now());
                     Navigator.popUntil(context, ModalRoute.withName('/home'));
                   }
+                  filteringController.resetFilter();
                 },
               ),
             ),
