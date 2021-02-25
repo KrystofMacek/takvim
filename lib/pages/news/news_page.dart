@@ -99,18 +99,26 @@ class NewsListView extends ConsumerWidget {
               .toList();
 
           // ORDER SUBTOPICS FROM GENERAL
-          if (subTopicList.length > 1) {
-            int generalIndex = subTopicList.indexWhere(
-                (element) => element.label.toLowerCase() == 'general');
-            if (generalIndex != -1) {
-              SubsTopic general = subTopicList.firstWhere(
-                  (element) => element.label.toLowerCase() == 'general');
-              subTopicList.removeAt(generalIndex);
-              subTopicList.sort((a, b) => a.label.compareTo(b.label));
 
-              List<SubsTopic> orderedSubtopicList = [general, ...subTopicList];
-              subTopicList = orderedSubtopicList;
+          try {
+            if (subTopicList.length > 1) {
+              int generalIndex = subTopicList.indexWhere(
+                  (element) => element.label.toLowerCase() == 'general');
+              if (generalIndex != -1) {
+                SubsTopic general = subTopicList.firstWhere(
+                    (element) => element.label.toLowerCase() == 'general');
+                subTopicList.removeAt(generalIndex);
+                subTopicList.sort((a, b) => a.label.compareTo(b.label));
+
+                List<SubsTopic> orderedSubtopicList = [
+                  general,
+                  ...subTopicList
+                ];
+                subTopicList = orderedSubtopicList;
+              }
             }
+          } catch (e) {
+            print(e);
           }
 
           bool hideLabel = subTopicList.length == 1 &&
