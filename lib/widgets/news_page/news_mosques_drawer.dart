@@ -24,7 +24,125 @@ class NewsMosquesDrawer extends ConsumerWidget {
         stream: Connectivity().isConnected,
         initialData: false,
         builder: (context, snapshot) {
-          if (snapshot.data) {
+          return Drawer(
+            child: Flex(
+              direction: Axis.vertical,
+              children: [
+                Expanded(
+                  child: ListView(
+                    padding: EdgeInsets.zero,
+                    children: <Widget>[
+                      ListTile(
+                        contentPadding:
+                            EdgeInsets.symmetric(horizontal: 20, vertical: 8),
+                        leading: FaIcon(
+                          FontAwesomeIcons.bars,
+                          size: 24,
+                        ),
+                        onTap: () {
+                          Navigator.pop(context);
+                        },
+                      ),
+                      ListTile(
+                        contentPadding:
+                            EdgeInsets.symmetric(horizontal: 15, vertical: 8),
+                        leading: FaIcon(
+                          FontAwesomeIcons.mosque,
+                          size: 22,
+                        ),
+                        title: Text(
+                          '${_languagePack.selectMosque}',
+                          style: !snapshot.data
+                              ? TextStyle(color: Colors.grey)
+                              : TextStyle(),
+                        ),
+                        onTap: () {
+                          // filteringController.resetFilter();
+                          if (snapshot.data)
+                            Navigator.popAndPushNamed(context, '/mosque');
+                        },
+                      ),
+                      ListTile(
+                        contentPadding:
+                            EdgeInsets.symmetric(horizontal: 15, vertical: 8),
+                        leading: FaIcon(
+                          FontAwesomeIcons.globe,
+                          size: 28,
+                        ),
+                        title: Text('${_languagePack.selectLanguage}'),
+                        onTap: () {
+                          // filteringController.resetFilter();
+                          Navigator.popAndPushNamed(context, '/lang');
+                        },
+                      ),
+                      Consumer(builder: (context, watch, child) {
+                        return ListTile(
+                          contentPadding:
+                              EdgeInsets.symmetric(horizontal: 15, vertical: 8),
+                          leading: FaIcon(
+                            FontAwesomeIcons.newspaper,
+                            size: 28,
+                          ),
+                          title: Text('${_languagePack.news}'),
+                          onTap: () {
+                            Navigator.pop(context);
+                          },
+                        );
+                      }),
+                      ListTile(
+                        contentPadding:
+                            EdgeInsets.symmetric(horizontal: 15, vertical: 8),
+                        leading: FaIcon(
+                          FontAwesomeIcons.bell,
+                          size: 28,
+                        ),
+                        title: Text(
+                          '${_languagePack.subscribe}',
+                          style: !snapshot.data
+                              ? TextStyle(color: Colors.grey)
+                              : TextStyle(),
+                        ),
+                        onTap: () {
+                          if (snapshot.data)
+                            Navigator.popAndPushNamed(context, '/sub');
+                        },
+                      ),
+                      ListTile(
+                        contentPadding:
+                            EdgeInsets.symmetric(horizontal: 15, vertical: 8),
+                        leading: Icon(
+                          Icons.wb_sunny,
+                          size: 28,
+                        ),
+                        title: Text('${_languagePack.appTheme}'),
+                        onTap: () {
+                          currentTheme.switchTheme(Hive.box('pref'));
+                          // Navigator.pop(context);
+                        },
+                      ),
+                      !snapshot.data
+                          ? ListTile(
+                              contentPadding: EdgeInsets.symmetric(
+                                  horizontal: 15, vertical: 8),
+                              leading: Icon(
+                                Icons.wifi_off,
+                                color: Colors.red[300],
+                                size: 28,
+                              ),
+                              title: Text(
+                                '${_languagePack.noInternet}',
+                                style: TextStyle(color: Colors.red[300]),
+                              ),
+                              onTap: () {},
+                            )
+                          : SizedBox(),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          );
+          /*if (snapshot.data) {
             return Drawer(
               child: Flex(
                 direction: Axis.vertical,
@@ -167,7 +285,7 @@ class NewsMosquesDrawer extends ConsumerWidget {
                 ],
               ),
             );
-          }
+          }*/
         });
   }
 }

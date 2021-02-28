@@ -177,7 +177,7 @@ class _MyAppState extends State<MyApp> {
         '/home': (context) => HomePage(),
         '/lang': (context) => LangSettingsPage(),
         '/mosque': (context) => MosqueSettingsPage(),
-        '/mosqueDetail': (context) => MosqueDetailPage(),
+        // '/mosqueDetail': (context) => MosqueDetailPage(),
         '/sub': (context) => SubscribtionPage(),
         '/newsPage': (context) => NewsPage(),
         '/newsMosquesPage': (context) => NewsMosquesPage(),
