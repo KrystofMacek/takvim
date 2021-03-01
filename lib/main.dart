@@ -16,7 +16,7 @@ import 'package:takvim/pages/news/news_mosques_page.dart';
 import 'package:takvim/pages/news/news_page.dart';
 import 'package:takvim/pages/subscribtion_page.dart';
 import 'package:url_launcher/url_launcher.dart';
-
+import './pages/compass_page.dart';
 import './data/models/subsTopic.dart';
 import './common/styling.dart';
 import 'pages/pages.dart';
@@ -181,6 +181,7 @@ class _MyAppState extends State<MyApp> {
         '/sub': (context) => SubscribtionPage(),
         '/newsPage': (context) => NewsPage(),
         '/newsMosquesPage': (context) => NewsMosquesPage(),
+        '/compass': (context) => CompassPage(),
       },
       home: HomePage(),
     );

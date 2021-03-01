@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:takvim/common/utils.dart';
+import 'package:takvim/providers/news_page/selected_mosque_news_provider.dart';
 import '../../data/models/language_pack.dart';
 import '../../common/styling.dart';
 import 'package:hive/hive.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../../providers/firestore_provider.dart';
 import 'package:cross_connectivity/cross_connectivity.dart';
 
-class NewsDrawer extends ConsumerWidget {
-  const NewsDrawer({
+class CompassDrawer extends ConsumerWidget {
+  const CompassDrawer({
     Key key,
     LanguagePack languagePack,
   })  : _languagePack = languagePack,
@@ -76,6 +77,8 @@ class NewsDrawer extends ConsumerWidget {
                         },
                       ),
                       Consumer(builder: (context, watch, child) {
+                        SelectedMosuqeNewsProvider prov =
+                            watch(selectedMosuqeNewsProvider);
                         return ListTile(
                           contentPadding:
                               EdgeInsets.symmetric(horizontal: 15, vertical: 8),
@@ -83,9 +86,17 @@ class NewsDrawer extends ConsumerWidget {
                             FontAwesomeIcons.newspaper,
                             size: 28,
                           ),
-                          title: Text('${_languagePack.news}'),
+                          title: Text(
+                            '${_languagePack.news}',
+                            style: !snapshot.data
+                                ? TextStyle(color: Colors.grey)
+                                : TextStyle(),
+                          ),
                           onTap: () {
-                            Navigator.pop(context);
+                            if (snapshot.data) {
+                              String target = newsNavigator(prov);
+                              Navigator.popAndPushNamed(context, target);
+                            }
                           },
                         );
                       }),
@@ -116,7 +127,7 @@ class NewsDrawer extends ConsumerWidget {
                         ),
                         title: Text('${_languagePack.compass}'),
                         onTap: () {
-                          Navigator.pushNamed(context, '/compass');
+                          Navigator.pop(context);
                         },
                       ),
                       ListTile(

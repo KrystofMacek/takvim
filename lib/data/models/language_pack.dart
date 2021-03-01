@@ -48,6 +48,7 @@ class LanguagePack {
     @required this.subscribe,
     @required this.news,
     @required this.noInternet,
+    @required this.compass,
   });
 
   final String address;
@@ -86,6 +87,7 @@ class LanguagePack {
   final String subscribe;
   final String news;
   final String noInternet;
+  final String compass;
 
   LanguagePack copyWith({
     String address,
@@ -123,44 +125,47 @@ class LanguagePack {
     String website,
     String subscribe,
     String noInternet,
+    String compass,
   }) =>
       LanguagePack(
-          address: address ?? this.address,
-          app: app ?? this.app,
-          appTheme: appTheme ?? this.appTheme,
-          asr: asr ?? this.asr,
-          contact: contact ?? this.contact,
-          dhuhr: dhuhr ?? this.dhuhr,
-          dhuhrTime: dhuhrTime ?? this.dhuhrTime,
-          di: di ?? this.di,
-          languagePackDo: languagePackDo ?? this.languagePackDo,
-          email: email ?? this.email,
-          fajr: fajr ?? this.fajr,
-          flagName: flagName ?? this.flagName,
-          fr: fr ?? this.fr,
-          isha: isha ?? this.isha,
-          ishaTime: ishaTime ?? this.ishaTime,
-          language: language ?? this.language,
-          languageId: languageId ?? this.languageId,
-          languageName: languageName ?? this.languageName,
-          maghrib: maghrib ?? this.maghrib,
-          mi: mi ?? this.mi,
-          mo: mo ?? this.mo,
-          mosque: mosque ?? this.mosque,
-          name: name ?? this.name,
-          prayerTimes: prayerTimes ?? this.prayerTimes,
-          sa: sa ?? this.sa,
-          sabah: sabah ?? this.sabah,
-          search: search ?? this.search,
-          selectLanguage: selectLanguage ?? this.selectLanguage,
-          selectMosque: selectMosque ?? this.selectMosque,
-          so: so ?? this.so,
-          sunrise: sunrise ?? this.sunrise,
-          telefon: telefon ?? this.telefon,
-          website: website ?? this.website,
-          subscribe: subscribe ?? this.subscribe,
-          news: news ?? this.news,
-          noInternet: noInternet ?? this.noInternet);
+        address: address ?? this.address,
+        app: app ?? this.app,
+        appTheme: appTheme ?? this.appTheme,
+        asr: asr ?? this.asr,
+        contact: contact ?? this.contact,
+        dhuhr: dhuhr ?? this.dhuhr,
+        dhuhrTime: dhuhrTime ?? this.dhuhrTime,
+        di: di ?? this.di,
+        languagePackDo: languagePackDo ?? this.languagePackDo,
+        email: email ?? this.email,
+        fajr: fajr ?? this.fajr,
+        flagName: flagName ?? this.flagName,
+        fr: fr ?? this.fr,
+        isha: isha ?? this.isha,
+        ishaTime: ishaTime ?? this.ishaTime,
+        language: language ?? this.language,
+        languageId: languageId ?? this.languageId,
+        languageName: languageName ?? this.languageName,
+        maghrib: maghrib ?? this.maghrib,
+        mi: mi ?? this.mi,
+        mo: mo ?? this.mo,
+        mosque: mosque ?? this.mosque,
+        name: name ?? this.name,
+        prayerTimes: prayerTimes ?? this.prayerTimes,
+        sa: sa ?? this.sa,
+        sabah: sabah ?? this.sabah,
+        search: search ?? this.search,
+        selectLanguage: selectLanguage ?? this.selectLanguage,
+        selectMosque: selectMosque ?? this.selectMosque,
+        so: so ?? this.so,
+        sunrise: sunrise ?? this.sunrise,
+        telefon: telefon ?? this.telefon,
+        website: website ?? this.website,
+        subscribe: subscribe ?? this.subscribe,
+        news: news ?? this.news,
+        noInternet: noInternet ?? this.noInternet,
+        compass: compass ?? this.compass,
+      );
 
   factory LanguagePack.fromJson(Map<String, dynamic> json) => LanguagePack(
         address: json["Address"],
@@ -199,6 +204,7 @@ class LanguagePack {
         subscribe: json["Subscribe"],
         news: json["News"],
         noInternet: json["noInternet"],
+        compass: json["Compass"],
       );
 
   factory LanguagePack.fromFirebase(Map<dynamic, dynamic> json) => LanguagePack(
@@ -238,6 +244,7 @@ class LanguagePack {
         subscribe: json["Subscribe"],
         news: json["News"],
         noInternet: json["noInternet"],
+        compass: json["Compass"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -277,5 +284,6 @@ class LanguagePack {
         "Subscribe": subscribe,
         "News": news,
         "noInternet": noInternet,
+        "Compass": compass,
       };
 }

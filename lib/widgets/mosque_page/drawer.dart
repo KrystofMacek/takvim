@@ -117,6 +117,18 @@ class MosqueSettingPageDrawer extends ConsumerWidget {
                       ListTile(
                         contentPadding:
                             EdgeInsets.symmetric(horizontal: 15, vertical: 8),
+                        leading: FaIcon(
+                          FontAwesomeIcons.compass,
+                          size: 28,
+                        ),
+                        title: Text('${_languagePack.compass}'),
+                        onTap: () {
+                          Navigator.pushNamed(context, '/compass');
+                        },
+                      ),
+                      ListTile(
+                        contentPadding:
+                            EdgeInsets.symmetric(horizontal: 15, vertical: 8),
                         leading: Icon(
                           Icons.wb_sunny,
                           size: 28,
