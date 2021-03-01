@@ -191,7 +191,7 @@ class AvailableSubsListStream extends ConsumerWidget {
                           size: 28,
                         ),
                         title: Text(
-                          'No Internet Connection',
+                          '${_appLang.noInternet}',
                           style: TextStyle(color: Colors.red[300]),
                         ),
                         onTap: () {},

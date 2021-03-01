@@ -70,8 +70,17 @@ class MosqueItem extends ConsumerWidget {
                         size: 20,
                       ),
                       onPressed: () async {
-                        detailsId.updateSelectedMosque(data);
-                        Navigator.pushNamed(context, '/mosqueDetail');
+                        if (await canLaunch(
+                            'https://news.takvim.ch/mosque/${data.mosqueId}?integratedView=true')) {
+                          await launch(
+                            'https://news.takvim.ch/mosque/${data.mosqueId}?integratedView=true',
+                            forceSafariVC: false,
+                          );
+                        } else {
+                          throw 'Could not launch ${data.mosqueId}';
+                        }
+                        // detailsId.updateSelectedMosque(data);
+                        // Navigator.pushNamed(context, '/mosqueDetail');
                         // if (data.mosqueId != '1001') {
                         //   detailsId.updateSelectedMosque(data);
                         //   Navigator.pushNamed(context, '/mosqueDetail');

@@ -309,7 +309,12 @@ class NewsListView extends ConsumerWidget {
                                         '${data.title}',
                                         style: Theme.of(context)
                                             .textTheme
-                                            .headline3,
+                                            .headline3
+                                            .copyWith(
+                                              letterSpacing: .4,
+                                              fontWeight: FontWeight.w300,
+                                              fontSize: 16,
+                                            ),
                                         maxLines: 2,
                                       ),
                                     ),

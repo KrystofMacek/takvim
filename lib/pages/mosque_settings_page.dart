@@ -8,6 +8,7 @@ import 'package:takvim/providers/language_page/language_provider.dart';
 import 'package:takvim/providers/mosque_page/mosque_provider.dart';
 import 'package:takvim/widgets/home_page/app_bar.dart';
 import 'package:takvim/widgets/mosque_page/app_bar_content.dart';
+import 'package:cross_connectivity/cross_connectivity.dart';
 import '../widgets/mosque_page/mosque_page_widgets.dart';
 import '../providers/home_page/date_provider.dart';
 import 'package:firebase_database/firebase_database.dart';
@@ -38,6 +39,8 @@ class MosqueSettingsPage extends ConsumerWidget {
 
     double ratio = 375 / 667;
     final double colWidth = baseSize * ratio;
+
+    final Connectivity _connectivity = Connectivity();
 
     return Container(
       color: Theme.of(context).primaryColor,
@@ -130,47 +133,82 @@ class MosqueSettingsPage extends ConsumerWidget {
                           SizedBox(
                             height: 5,
                           ),
-                          StreamBuilder<List<MosqueData>>(
-                            stream: _mosqueController
-                                .watchPrayerTimeFirestoreMosques(),
-                            initialData: [],
-                            builder: (BuildContext context,
-                                AsyncSnapshot<List<MosqueData>> snapshot) {
-                              if (snapshot.hasData) {
-                                return Consumer(
-                                  builder: (context, watch, child) {
-                                    List<MosqueData> filteredList =
-                                        watch(filteredMosqueList.state);
-                                    String selectedId =
-                                        watch(selectedMosque.state);
+                          StreamBuilder(
+                            stream: _connectivity.isConnected,
+                            initialData: true,
+                            builder:
+                                (BuildContext context, AsyncSnapshot snapshot) {
+                              if (snapshot.data) {
+                                return StreamBuilder<List<MosqueData>>(
+                                  stream: _mosqueController
+                                      .watchPrayerTimeFirestoreMosques(),
+                                  initialData: [],
+                                  builder: (BuildContext context,
+                                      AsyncSnapshot<List<MosqueData>>
+                                          snapshot) {
+                                    if (snapshot.hasData) {
+                                      return Consumer(
+                                        builder: (context, watch, child) {
+                                          List<MosqueData> filteredList =
+                                              watch(filteredMosqueList.state);
+                                          String selectedId =
+                                              watch(selectedMosque.state);
 
-                                    return Expanded(
-                                      child: ListView.separated(
-                                        itemCount: filteredList.length + 1,
-                                        separatorBuilder: (context, index) =>
-                                            SizedBox(),
-                                        itemBuilder: (context, index) {
-                                          if (index == filteredList.length) {
-                                            return SizedBox(
-                                              height: 80,
-                                            );
-                                          }
-                                          MosqueData data = filteredList[index];
+                                          return Expanded(
+                                            child: ListView.separated(
+                                              itemCount:
+                                                  filteredList.length + 1,
+                                              separatorBuilder:
+                                                  (context, index) =>
+                                                      SizedBox(),
+                                              itemBuilder: (context, index) {
+                                                if (index ==
+                                                    filteredList.length) {
+                                                  return SizedBox(
+                                                    height: 80,
+                                                  );
+                                                }
+                                                MosqueData data =
+                                                    filteredList[index];
 
-                                          bool isSelected =
-                                              (data.mosqueId == selectedId);
+                                                bool isSelected =
+                                                    (data.mosqueId ==
+                                                        selectedId);
 
-                                          return MosqueItem(
-                                            data: data,
-                                            isSelected: isSelected,
+                                                return MosqueItem(
+                                                  data: data,
+                                                  isSelected: isSelected,
+                                                );
+                                              },
+                                            ),
                                           );
                                         },
-                                      ),
-                                    );
+                                      );
+                                    } else {
+                                      return CircularProgressIndicator();
+                                    }
                                   },
                                 );
                               } else {
-                                return CircularProgressIndicator();
+                                return Expanded(
+                                  child: !snapshot.data
+                                      ? ListTile(
+                                          contentPadding: EdgeInsets.symmetric(
+                                              horizontal: 15, vertical: 8),
+                                          leading: Icon(
+                                            Icons.wifi_off,
+                                            color: Colors.red[300],
+                                            size: 28,
+                                          ),
+                                          title: Text(
+                                            '${_appLang.noInternet}',
+                                            style: TextStyle(
+                                                color: Colors.red[300]),
+                                          ),
+                                          onTap: () {},
+                                        )
+                                      : SizedBox(),
+                                );
                               }
                             },
                           ),
