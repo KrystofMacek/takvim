@@ -70,7 +70,7 @@ class CompassDrawer extends ConsumerWidget {
                           FontAwesomeIcons.globe,
                           size: 28,
                         ),
-                        title: Text('${_languagePack.selectLanguage}'),
+                        title: Text('${_languagePack.language}'),
                         onTap: () {
                           // filteringController.resetFilter();
                           Navigator.popAndPushNamed(context, '/lang');

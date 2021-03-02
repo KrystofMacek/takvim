@@ -49,7 +49,7 @@ class LanguageAppBarContent extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                '${_appLang.selectLanguage}',
+                '${_appLang.language}',
                 style: Theme.of(context).textTheme.headline1,
               ),
             ],

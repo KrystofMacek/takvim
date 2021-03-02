@@ -35,6 +35,8 @@ dependencies:
   flutter_compass: ^0.5.1
   permission_handler: ^5.1.0+2
   compasstools: ^0.1.0
+  geolocator: ^6.2.1
+  flutter_qiblah: ^1.0.3+2
 
 dependency_overrides:
   flutter_svg: 0.18.0
@@ -57,6 +59,7 @@ flutter:
   uses-material-design: true
   assets:
     - assets/data/languages/
+    - assets/images/
   fonts:
     - family: Courier-Prime
       fonts:

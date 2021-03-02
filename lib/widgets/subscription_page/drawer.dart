@@ -75,7 +75,7 @@ class SubscriptionPageDrawer extends ConsumerWidget {
                           FontAwesomeIcons.globe,
                           size: 28,
                         ),
-                        title: Text('${_languagePack.selectLanguage}'),
+                        title: Text('${_languagePack.language}'),
                         onTap: () {
                           filteringController.resetFilter();
                           _selectedSubsItemProvider.updateSelectedSubsItem('');
@@ -130,6 +130,7 @@ class SubscriptionPageDrawer extends ConsumerWidget {
                         ),
                         title: Text('${_languagePack.compass}'),
                         onTap: () {
+                          Navigator.pop(context);
                           Navigator.pushNamed(context, '/compass');
                         },
                       ),

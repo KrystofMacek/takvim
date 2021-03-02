@@ -63,7 +63,7 @@ class MosqueSettingPageDrawer extends ConsumerWidget {
                           FontAwesomeIcons.globe,
                           size: 28,
                         ),
-                        title: Text('${_languagePack.selectLanguage}'),
+                        title: Text('${_languagePack.language}'),
                         onTap: () {
                           filteringController.resetFilter();
                           Navigator.popAndPushNamed(context, '/lang');
@@ -123,6 +123,7 @@ class MosqueSettingPageDrawer extends ConsumerWidget {
                         ),
                         title: Text('${_languagePack.compass}'),
                         onTap: () {
+                          Navigator.pop(context);
                           Navigator.pushNamed(context, '/compass');
                         },
                       ),

@@ -67,7 +67,7 @@ class DrawerLangPage extends StatelessWidget {
                           FontAwesomeIcons.globe,
                           size: 28,
                         ),
-                        title: Text('${_languagePack.selectLanguage}'),
+                        title: Text('${_languagePack.language}'),
                         onTap: () {
                           Navigator.popAndPushNamed(context, '/lang');
                         },
@@ -123,6 +123,7 @@ class DrawerLangPage extends StatelessWidget {
                         ),
                         title: Text('${_languagePack.compass}'),
                         onTap: () {
+                          Navigator.pop(context);
                           Navigator.pushNamed(context, '/compass');
                         },
                       ),

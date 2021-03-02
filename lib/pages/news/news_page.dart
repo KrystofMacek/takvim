@@ -231,18 +231,19 @@ class NewsListView extends ConsumerWidget {
                             NewsPost data = newsPosts[index];
                             String timestamp =
                                 DateFormat('dd.MM.yyyy').format(data.createdAt);
-                            return GestureDetector(
-                              onTap: () async {
-                                if (await canLaunch('http://${data.url}')) {
-                                  await launch(
-                                    'http://${data.url}',
-                                    forceSafariVC: false,
-                                  );
-                                } else {
-                                  throw 'Could not launch ${data.url}';
-                                }
-                              },
-                              child: Card(
+                            return Card(
+                              child: InkWell(
+                                splashColor: CustomColors.highlightColor,
+                                onTap: () async {
+                                  if (await canLaunch('http://${data.url}')) {
+                                    await launch(
+                                      'http://${data.url}',
+                                      forceSafariVC: false,
+                                    );
+                                  } else {
+                                    throw 'Could not launch ${data.url}';
+                                  }
+                                },
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [

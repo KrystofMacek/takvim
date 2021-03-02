@@ -79,6 +79,7 @@ ThemeData buildLightThemeData() {
     primaryColor: Colors.tealAccent[700],
     primarySwatch: CustomColors.swatch,
     canvasColor: Colors.grey[100],
+    dividerColor: Colors.grey[200],
     floatingActionButtonTheme: ThemeData.light()
         .floatingActionButtonTheme
         .copyWith(foregroundColor: Colors.white),
@@ -129,6 +130,7 @@ ThemeData buildDarkThemeData() {
     primarySwatch: CustomColors.swatch,
     scaffoldBackgroundColor: Color(0xFF09111F),
     cardColor: Color(0xFF283142),
+    dividerColor: Color(0xFF283142),
     floatingActionButtonTheme: ThemeData.light()
         .floatingActionButtonTheme
         .copyWith(foregroundColor: CustomColors.mainColor),

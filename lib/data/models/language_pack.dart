@@ -39,7 +39,7 @@ class LanguagePack {
     @required this.sa,
     @required this.sabah,
     @required this.search,
-    @required this.selectLanguage,
+    // @required this.selectLanguage,
     @required this.selectMosque,
     @required this.so,
     @required this.sunrise,
@@ -49,6 +49,7 @@ class LanguagePack {
     @required this.news,
     @required this.noInternet,
     @required this.compass,
+    @required this.errorSensor,
   });
 
   final String address;
@@ -78,7 +79,7 @@ class LanguagePack {
   final String sa;
   final String sabah;
   final String search;
-  final String selectLanguage;
+  // final String selectLanguage;
   final String selectMosque;
   final String so;
   final String sunrise;
@@ -88,6 +89,7 @@ class LanguagePack {
   final String news;
   final String noInternet;
   final String compass;
+  final String errorSensor;
 
   LanguagePack copyWith({
     String address,
@@ -117,7 +119,7 @@ class LanguagePack {
     String sa,
     String sabah,
     String search,
-    String selectLanguage,
+    // String selectLanguage,
     String selectMosque,
     String so,
     String sunrise,
@@ -126,6 +128,7 @@ class LanguagePack {
     String subscribe,
     String noInternet,
     String compass,
+    String errorSensor,
   }) =>
       LanguagePack(
         address: address ?? this.address,
@@ -155,7 +158,7 @@ class LanguagePack {
         sa: sa ?? this.sa,
         sabah: sabah ?? this.sabah,
         search: search ?? this.search,
-        selectLanguage: selectLanguage ?? this.selectLanguage,
+        // selectLanguage: selectLanguage ?? this.selectLanguage,
         selectMosque: selectMosque ?? this.selectMosque,
         so: so ?? this.so,
         sunrise: sunrise ?? this.sunrise,
@@ -165,6 +168,7 @@ class LanguagePack {
         news: news ?? this.news,
         noInternet: noInternet ?? this.noInternet,
         compass: compass ?? this.compass,
+        errorSensor: errorSensor ?? this.errorSensor,
       );
 
   factory LanguagePack.fromJson(Map<String, dynamic> json) => LanguagePack(
@@ -195,7 +199,7 @@ class LanguagePack {
         sa: json["Sa"],
         sabah: json["Sabah"],
         search: json["Search"],
-        selectLanguage: json["SelectLanguage"],
+        // selectLanguage: json["SelectLanguage"],
         selectMosque: json["SelectMosque"],
         so: json["So"],
         sunrise: json["Sunrise"],
@@ -205,6 +209,7 @@ class LanguagePack {
         news: json["News"],
         noInternet: json["noInternet"],
         compass: json["Compass"],
+        errorSensor: json["errorSensor"],
       );
 
   factory LanguagePack.fromFirebase(Map<dynamic, dynamic> json) => LanguagePack(
@@ -235,7 +240,7 @@ class LanguagePack {
         sa: json["Sa"],
         sabah: json["Sabah"],
         search: json["Search"],
-        selectLanguage: json["SelectLanguage"],
+        // selectLanguage: json["SelectLanguage"],
         selectMosque: json["SelectMosque"],
         so: json["So"],
         sunrise: json["Sunrise"],
@@ -245,6 +250,7 @@ class LanguagePack {
         news: json["News"],
         noInternet: json["noInternet"],
         compass: json["Compass"],
+        errorSensor: json["errorSensor"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -275,7 +281,7 @@ class LanguagePack {
         "Sa": sa,
         "Sabah": sabah,
         "Search": search,
-        "SelectLanguage": selectLanguage,
+        // "SelectLanguage": selectLanguage,
         "SelectMosque": selectMosque,
         "So": so,
         "Sunrise": sunrise,
@@ -285,5 +291,6 @@ class LanguagePack {
         "News": news,
         "noInternet": noInternet,
         "Compass": compass,
+        "errorSensor": errorSensor,
       };
 }
