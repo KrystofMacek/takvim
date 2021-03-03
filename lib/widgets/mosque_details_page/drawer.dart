@@ -50,7 +50,7 @@ class MosqueDetailsDrawer extends StatelessWidget {
                           size: 22,
                         ),
                         title: Text(
-                          '${_languagePack.selectMosque}',
+                          '${_languagePack.mosque}',
                           style: !snapshot.data
                               ? TextStyle(color: Colors.grey)
                               : TextStyle(),

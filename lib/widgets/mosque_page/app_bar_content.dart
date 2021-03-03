@@ -49,7 +49,7 @@ class MosqueSettingsAppBarContent extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                '${_appLang.selectMosque}',
+                '${_appLang.mosque}',
                 style: Theme.of(context).textTheme.headline1,
               ),
             ],

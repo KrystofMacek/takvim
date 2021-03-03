@@ -40,7 +40,7 @@ class LanguagePack {
     @required this.sabah,
     @required this.search,
     // @required this.selectLanguage,
-    @required this.selectMosque,
+    // @required this.selectMosque,
     @required this.so,
     @required this.sunrise,
     @required this.telefon,
@@ -80,7 +80,7 @@ class LanguagePack {
   final String sabah;
   final String search;
   // final String selectLanguage;
-  final String selectMosque;
+  // final String selectMosque;
   final String so;
   final String sunrise;
   final String telefon;
@@ -120,7 +120,7 @@ class LanguagePack {
     String sabah,
     String search,
     // String selectLanguage,
-    String selectMosque,
+    // String selectMosque,
     String so,
     String sunrise,
     String telefon,
@@ -159,7 +159,7 @@ class LanguagePack {
         sabah: sabah ?? this.sabah,
         search: search ?? this.search,
         // selectLanguage: selectLanguage ?? this.selectLanguage,
-        selectMosque: selectMosque ?? this.selectMosque,
+        // selectMosque: selectMosque ?? this.selectMosque,
         so: so ?? this.so,
         sunrise: sunrise ?? this.sunrise,
         telefon: telefon ?? this.telefon,
@@ -200,7 +200,7 @@ class LanguagePack {
         sabah: json["Sabah"],
         search: json["Search"],
         // selectLanguage: json["SelectLanguage"],
-        selectMosque: json["SelectMosque"],
+        // selectMosque: json["SelectMosque"],
         so: json["So"],
         sunrise: json["Sunrise"],
         telefon: json["Telefon"],
@@ -241,7 +241,7 @@ class LanguagePack {
         sabah: json["Sabah"],
         search: json["Search"],
         // selectLanguage: json["SelectLanguage"],
-        selectMosque: json["SelectMosque"],
+        // selectMosque: json["SelectMosque"],
         so: json["So"],
         sunrise: json["Sunrise"],
         telefon: json["Telefon"],
@@ -282,7 +282,7 @@ class LanguagePack {
         "Sabah": sabah,
         "Search": search,
         // "SelectLanguage": selectLanguage,
-        "SelectMosque": selectMosque,
+        // "SelectMosque": selectMosque,
         "So": so,
         "Sunrise": sunrise,
         "Telefon": telefon,

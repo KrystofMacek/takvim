@@ -45,7 +45,7 @@ class NewsPageDrawer extends ConsumerWidget {
                     FontAwesomeIcons.mosque,
                     size: 22,
                   ),
-                  title: Text('${_languagePack.selectMosque}'),
+                  title: Text('${_languagePack.mosque}'),
                   onTap: () {
                     // filteringController.resetFilter();
                     Navigator.popAndPushNamed(context, '/mosque');

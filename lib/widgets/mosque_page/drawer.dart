@@ -51,7 +51,7 @@ class MosqueSettingPageDrawer extends ConsumerWidget {
                           FontAwesomeIcons.mosque,
                           size: 22,
                         ),
-                        title: Text('${_languagePack.selectMosque}'),
+                        title: Text('${_languagePack.mosque}'),
                         onTap: () {
                           Navigator.pop(context);
                         },
