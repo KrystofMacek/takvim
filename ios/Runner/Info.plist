@@ -22,10 +22,22 @@
 	<string>$(CURRENT_PROJECT_VERSION)</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>NSAppleMusicUsageDescription</key>
+	<string>App does not access Apple Music</string>
+	<key>NSCalendarsUsageDescription</key>
+	<string>App does not access users Calendar</string>
+	<key>NSContactsUsageDescription</key>
+	<string>App does not require access to contact usage</string>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>To get location and direction</string>
 	<key>NSLocationAlwaysUsageDescription</key>
-	<string>This app does NOT use or access users location. Or any other private-sensitive info</string>
+	<string>To get location and direction</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>This app does NOT use or access users location. Or any other private-sensitive info</string>
+	<string>To get location and direction</string>
+	<key>NSMotionUsageDescription</key>
+	<string>To get direction for compass</string>
+	<key>NSSpeechRecognitionUsageDescription</key>
+	<string>App does not use Speech Recognition</string>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>fetch</string>
