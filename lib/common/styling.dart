@@ -113,6 +113,7 @@ ThemeData buildLightThemeData() {
           ),
         ),
     colorScheme: ColorScheme.light(
+        onPrimary: Colors.black,
         surface: Color(0xffb2dfdb),
         primary: Color(0xFF00bfa5),
         primaryVariant: Color(0xffb2dfdb),
@@ -165,6 +166,7 @@ ThemeData buildDarkThemeData() {
           ),
         ),
     colorScheme: ColorScheme.dark(
+      onPrimary: Colors.white,
       surface: Color(0xFF283142),
       primary: Color(0xFF283142),
       primaryVariant: Color(0xff80BFBA),

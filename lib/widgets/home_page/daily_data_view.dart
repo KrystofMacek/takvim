@@ -10,6 +10,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import './prayer_time_item.dart';
 import '../../common/utils.dart';
 import '../../providers/home_page/time_provider.dart';
+import 'package:linkwell/linkwell.dart';
 
 class DailyDataView extends StatelessWidget {
   const DailyDataView({
@@ -48,73 +49,69 @@ class DailyDataView extends StatelessWidget {
               return watch(timeProvider).when(
                   data: (timeData) {
                     return Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        ListView.separated(
-                          shrinkWrap: true,
-                          itemCount: PRAYER_TIMES.length,
-                          itemBuilder: (context, index) {
-                            Map<String, String> dataMap =
-                                _getTimeName(index, _appLang, data);
+                        Container(
+                          child: ListView.separated(
+                            shrinkWrap: true,
+                            itemCount: PRAYER_TIMES.length,
+                            itemBuilder: (context, index) {
+                              Map<String, String> dataMap =
+                                  _getTimeName(index, _appLang, data);
 
-                            bool isUpcoming = upcoming == index;
+                              bool isUpcoming = upcoming == index;
 
-                            bool minor = false;
+                              bool minor = false;
 
-                            if (index == 0 ||
-                                index == 3 ||
-                                index == 2 ||
-                                index == 7) {
-                              if (isUpcoming) {
-                                isUpcoming = false;
-                                upcoming += 1;
+                              if (index == 0 ||
+                                  index == 3 ||
+                                  index == 2 ||
+                                  index == 7) {
+                                if (isUpcoming) {
+                                  isUpcoming = false;
+                                  upcoming += 1;
+                                }
+                                minor = true;
                               }
-                              minor = true;
-                            }
 
-                            if (index == 7 && skipIshaTime) {
-                              return SizedBox();
-                            }
-                            if (index == 3 && skipDhuhrTime) {
-                              return SizedBox();
-                            }
-                            return PrayerTimeItem(
-                                dataMap: dataMap,
-                                minor: minor,
-                                isUpcoming: isUpcoming,
-                                timeData: timeData);
-                          },
-                          separatorBuilder: (context, index) {
-                            return SizedBox(
-                              height: 2,
-                            );
-                          },
+                              if (index == 7 && skipIshaTime) {
+                                return SizedBox();
+                              }
+                              if (index == 3 && skipDhuhrTime) {
+                                return SizedBox();
+                              }
+                              return PrayerTimeItem(
+                                  dataMap: dataMap,
+                                  minor: minor,
+                                  isUpcoming: isUpcoming,
+                                  timeData: timeData);
+                            },
+                            separatorBuilder: (context, index) {
+                              return SizedBox(
+                                height: 2,
+                              );
+                            },
+                          ),
                         ),
                         SizedBox(
                           height: 18,
                         ),
-                        Container(
-                          padding: EdgeInsets.symmetric(horizontal: 4),
-                          child: Center(
-                            child: ConstrainedBox(
-                              constraints: BoxConstraints(maxHeight: 115),
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  color: data.notes.isNotEmpty
-                                      ? Theme.of(context).colorScheme.surface
-                                      : Colors.transparent,
-                                  borderRadius: BorderRadius.circular(10),
-                                ),
-                                padding: EdgeInsets.symmetric(
-                                    vertical: 5, horizontal: 10),
-                                child: SingleChildScrollView(
-                                  child: Text(
-                                    '${data.notes}',
-                                    style:
-                                        Theme.of(context).textTheme.headline3,
-                                    textAlign: TextAlign.center,
-                                  ),
-                                ),
+                        Flexible(
+                          fit: FlexFit.loose,
+                          child: Container(
+                            decoration: BoxDecoration(
+                              color: data.notes.isNotEmpty
+                                  ? Theme.of(context).colorScheme.surface
+                                  : Colors.transparent,
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            padding: EdgeInsets.symmetric(
+                                vertical: 5, horizontal: 10),
+                            child: SingleChildScrollView(
+                              child: LinkWell(
+                                '${data.notes}',
+                                style: Theme.of(context).textTheme.headline3,
+                                textAlign: TextAlign.center,
                               ),
                             ),
                           ),

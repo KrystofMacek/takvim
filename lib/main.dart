@@ -10,7 +10,6 @@ import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 import 'package:takvim/pages/lang_settings_page.dart';
-import 'package:takvim/pages/mosque_detail_page.dart';
 import 'package:takvim/pages/mosque_settings_page.dart';
 import 'package:takvim/pages/news/news_mosques_page.dart';
 import 'package:takvim/pages/news/news_page.dart';
@@ -20,6 +19,10 @@ import './pages/compass_page.dart';
 import './data/models/subsTopic.dart';
 import './common/styling.dart';
 import 'pages/pages.dart';
+import './pages/contact.dart';
+import './pages/map.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:takvim/providers/language_page/language_provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -33,23 +36,9 @@ void main() async {
 
   FirebaseMessaging fcm = FirebaseMessaging();
   await _fcmPermission(fcm);
-  fcm.configure(
-    onMessage: (message) async {
-      /*String url = '';
-      if (Platform.isIOS) {
-        url = message['URL'];
-      }
-      if (Platform.isAndroid) {
-        url = message['data']['URL'];
-      }
-      print(url);
 
-      if (await canLaunch('http://$url')) {
-        await launch('http://$url');
-      } else {
-        throw 'Could not launch $url';
-      }*/
-    },
+  fcm.configure(
+    onMessage: (message) async {},
     onLaunch: (message) async {
       String url = '';
       if (Platform.isIOS) {
@@ -149,6 +138,9 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
+    // refresh languages
+    context.read(languagePackController).updateAppLanguage();
+
     return MaterialApp(
       builder: (context, child) => ResponsiveWrapper.builder(
         ScrollConfiguration(
@@ -182,6 +174,8 @@ class _MyAppState extends State<MyApp> {
         '/newsPage': (context) => NewsPage(),
         '/newsMosquesPage': (context) => NewsMosquesPage(),
         '/compass': (context) => CompassPage(),
+        '/map': (context) => MapPage(),
+        '/contact': (context) => ContactPage(),
       },
       home: HomePage(),
     );

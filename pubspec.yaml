@@ -3,7 +3,7 @@ description: A new Flutter project.
 
 publish_to: "none" # Remove this line if you wish to publish to pub.dev
 
-version: 1.1.2+19
+version: 1.1.2+20
 
 
 environment:
@@ -37,6 +37,7 @@ dependencies:
   compasstools: ^0.1.0
   geolocator: ^6.2.1
   flutter_qiblah: ^1.0.3+2
+  linkwell: ^0.1.9
 
 dependency_overrides:
   flutter_svg: 0.18.0

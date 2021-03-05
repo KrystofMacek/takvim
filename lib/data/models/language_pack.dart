@@ -50,6 +50,7 @@ class LanguagePack {
     @required this.noInternet,
     @required this.compass,
     @required this.errorSensor,
+    @required this.map,
   });
 
   final String address;
@@ -90,6 +91,7 @@ class LanguagePack {
   final String noInternet;
   final String compass;
   final String errorSensor;
+  final String map;
 
   LanguagePack copyWith({
     String address,
@@ -129,6 +131,7 @@ class LanguagePack {
     String noInternet,
     String compass,
     String errorSensor,
+    String map,
   }) =>
       LanguagePack(
         address: address ?? this.address,
@@ -169,6 +172,7 @@ class LanguagePack {
         noInternet: noInternet ?? this.noInternet,
         compass: compass ?? this.compass,
         errorSensor: errorSensor ?? this.errorSensor,
+        map: map ?? this.map,
       );
 
   factory LanguagePack.fromJson(Map<String, dynamic> json) => LanguagePack(
@@ -210,6 +214,7 @@ class LanguagePack {
         noInternet: json["noInternet"],
         compass: json["Compass"],
         errorSensor: json["errorSensor"],
+        map: json["map"],
       );
 
   factory LanguagePack.fromFirebase(Map<dynamic, dynamic> json) => LanguagePack(
@@ -251,6 +256,7 @@ class LanguagePack {
         noInternet: json["noInternet"],
         compass: json["Compass"],
         errorSensor: json["errorSensor"],
+        map: json["map"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -292,5 +298,6 @@ class LanguagePack {
         "noInternet": noInternet,
         "Compass": compass,
         "errorSensor": errorSensor,
+        "map": map,
       };
 }

@@ -4,8 +4,9 @@ import 'package:flutter/semantics.dart';
 import 'package:flutter_riverpod/all.dart';
 import 'package:hive/hive.dart';
 import 'package:takvim/data/models/mosque_data.dart';
+import 'package:takvim/providers/common/geolocator_provider.dart';
 import 'package:takvim/providers/firestore_provider.dart';
-import '../../data/models/day_data.dart';
+import 'package:geolocator/geolocator.dart';
 
 final selectedMosque = StateNotifierProvider<SelectedMosque>((ref) {
   return SelectedMosque();
@@ -66,12 +67,25 @@ class FilterTextField extends StateNotifier<String> {
   }
 }
 
+final sortByDistanceToggle = StateNotifierProvider<SortByDistanceToggle>((ref) {
+  return SortByDistanceToggle();
+});
+
+class SortByDistanceToggle extends StateNotifier<bool> {
+  SortByDistanceToggle() : super(false);
+
+  void toggle() {
+    state = !state;
+  }
+}
+
 final mosqueController = StateNotifierProvider<MosqueController>((ref) {
   SelectedMosque _selectedMosque = ref.watch(selectedMosque);
   MosqueList _listOfMosques = ref.watch(mosqueList);
   FilteredMosqueList _filteredMosqueList = ref.watch(filteredMosqueList);
   FirebaseFirestore _firebaseFirestore = ref.watch(firestoreProvider);
   FilterTextField _filterTextField = ref.watch(filterTextField);
+  UsersPosition _usersPosition = ref.watch(usersPosition);
 
   return MosqueController(
     FirebaseDatabase.instance.reference(),
@@ -80,6 +94,7 @@ final mosqueController = StateNotifierProvider<MosqueController>((ref) {
     _filteredMosqueList,
     _firebaseFirestore,
     _filterTextField,
+    _usersPosition,
   );
 });
 
@@ -91,6 +106,7 @@ class MosqueController extends StateNotifier<MosqueController> {
     this._filteredMosqueList,
     this._firebaseFirestore,
     this._filterTextField,
+    this._usersPosition,
   ) : super(null);
 
   final SelectedMosque _selectedMosque;
@@ -99,9 +115,9 @@ class MosqueController extends StateNotifier<MosqueController> {
   final DatabaseReference _databaseReference;
   final FirebaseFirestore _firebaseFirestore;
   final FilterTextField _filterTextField;
+  final UsersPosition _usersPosition;
 
   final Box _prefBox = Hive.box('pref');
-
 
   Stream<List<MosqueData>> watchPrayerTimeFirestoreMosques() {
     List<MosqueData> mosqueList = [];
@@ -113,9 +129,12 @@ class MosqueController extends StateNotifier<MosqueController> {
       if (event.docs != null && event.docs.isNotEmpty) {
         mosqueList = [];
         event.docs.forEach((element) {
-          mosqueList.add(MosqueData.fromJson(element.data()));
+          MosqueData _newMosque = MosqueData.fromJson(element.data());
+
+          mosqueList.add(_newMosque);
         });
-        mosqueList.sort((a, b) => a.ort.compareTo(b.ort));
+
+        mosqueList = updateDistances(mosqueList);
         _mosqueList.updateList(mosqueList);
 
         if (_filterTextField.state.isEmpty) {
@@ -125,6 +144,27 @@ class MosqueController extends StateNotifier<MosqueController> {
     });
 
     return Stream.value(mosqueList);
+  }
+
+  List<MosqueData> updateDistances(List<MosqueData> data) {
+    List<MosqueData> newList = [];
+
+    if (_usersPosition.state != null) {
+      data.forEach((element) {
+        double dist = Geolocator.distanceBetween(
+                _usersPosition.state.latitude,
+                _usersPosition.state.longitude,
+                element.coords['lat'],
+                element.coords['lng']) /
+            1000;
+
+        MosqueData _newMosque = element.copyWith(distance: dist);
+        newList.add(_newMosque);
+      });
+    } else {
+      newList = data;
+    }
+    return newList;
   }
 
   Stream<List<MosqueData>> watchSubscribableFirestoreMosques() {
@@ -208,6 +248,7 @@ class MosqueController extends StateNotifier<MosqueController> {
     Stream<Event> ref;
     if (_selectedMosque.state == null) {
       String id = Hive.box('pref').get('mosque');
+      print(id);
       ref =
           _databaseReference.child('prayerTimes').child(id).child(date).onValue;
     } else {

@@ -79,6 +79,7 @@ class NewsListView extends ConsumerWidget {
     List<SubsTopic> subscribedMosquesTopics = subscribedTopics
         .where((element) => element.mosqueId == _mosqueId)
         .toList();
+    final LanguagePack _appLang = watch(appLanguagePackProvider.state);
 
     subscribedMosquesTopics.sort((a, b) => a.label.compareTo(b.label));
 
@@ -235,9 +236,10 @@ class NewsListView extends ConsumerWidget {
                               child: InkWell(
                                 splashColor: CustomColors.highlightColor,
                                 onTap: () async {
-                                  if (await canLaunch('http://${data.url}')) {
+                                  if (await canLaunch(
+                                      'http://${data.url}?languageId=${_appLang.languageId}')) {
                                     await launch(
-                                      'http://${data.url}',
+                                      'http://${data.url}?languageId=${_appLang.languageId}',
                                       forceSafariVC: false,
                                     );
                                   } else {

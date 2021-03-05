@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/all.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:hive/hive.dart';
 import 'package:takvim/common/utils.dart';
-import 'package:takvim/data/models/language_pack.dart';
-import 'package:cross_connectivity/cross_connectivity.dart';
-import '../../providers/news_page/selected_mosque_news_provider.dart';
+import 'package:takvim/providers/news_page/selected_mosque_news_provider.dart';
+import '../../data/models/language_pack.dart';
 import '../../common/styling.dart';
+import 'package:hive/hive.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:cross_connectivity/cross_connectivity.dart';
 
-class DrawerHomePage extends StatelessWidget {
-  const DrawerHomePage({
+class MapDrawer extends ConsumerWidget {
+  const MapDrawer({
     Key key,
     LanguagePack languagePack,
   })  : _languagePack = languagePack,
@@ -18,7 +18,9 @@ class DrawerHomePage extends StatelessWidget {
   final LanguagePack _languagePack;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, ScopedReader watch) {
+    // SubsFilteringController filteringController =
+    //     watch(subsFilteringController);
     return StreamBuilder<bool>(
         stream: Connectivity().isConnected,
         initialData: false,
@@ -56,6 +58,7 @@ class DrawerHomePage extends StatelessWidget {
                               : TextStyle(),
                         ),
                         onTap: () {
+                          // filteringController.resetFilter();
                           if (snapshot.data)
                             Navigator.popAndPushNamed(context, '/mosque');
                         },
@@ -69,6 +72,7 @@ class DrawerHomePage extends StatelessWidget {
                         ),
                         title: Text('${_languagePack.language}'),
                         onTap: () {
+                          // filteringController.resetFilter();
                           Navigator.popAndPushNamed(context, '/lang');
                         },
                       ),
@@ -124,29 +128,20 @@ class DrawerHomePage extends StatelessWidget {
                         title: Text('${_languagePack.compass}'),
                         onTap: () {
                           Navigator.pop(context);
-                          Navigator.pushNamed(context, '/compass');
                         },
                       ),
-                      // ListTile(
-                      //   contentPadding:
-                      //       EdgeInsets.symmetric(horizontal: 15, vertical: 8),
-                      //   leading: FaIcon(
-                      //     FontAwesomeIcons.map,
-                      //     size: 28,
-                      //   ),
-                      //   title: Text(
-                      //     '${_languagePack.map}',
-                      //     style: !snapshot.data
-                      //         ? TextStyle(color: Colors.grey)
-                      //         : TextStyle(),
-                      //   ),
-                      //   onTap: () {
-                      //     if (snapshot.data) {
-                      //       Navigator.pop(context);
-                      //       Navigator.pushNamed(context, '/map');
-                      //     }
-                      //   },
-                      // ),
+                      ListTile(
+                        contentPadding:
+                            EdgeInsets.symmetric(horizontal: 15, vertical: 8),
+                        leading: FaIcon(
+                          FontAwesomeIcons.map,
+                          size: 28,
+                        ),
+                        title: Text('${_languagePack.map}'),
+                        onTap: () {
+                          Navigator.pop(context);
+                        },
+                      ),
                       ListTile(
                         contentPadding:
                             EdgeInsets.symmetric(horizontal: 15, vertical: 8),
@@ -163,7 +158,7 @@ class DrawerHomePage extends StatelessWidget {
                         onTap: () {
                           if (snapshot.data) {
                             Navigator.pop(context);
-                            Navigator.pushNamed(context, '/contact');
+                            Navigator.popAndPushNamed(context, '/contact');
                           }
                         },
                       ),
@@ -174,13 +169,9 @@ class DrawerHomePage extends StatelessWidget {
                           Icons.wb_sunny,
                           size: 28,
                         ),
-                        title: Text(
-                          '${_languagePack.appTheme}',
-                        ),
+                        title: Text('${_languagePack.appTheme}'),
                         onTap: () {
-                          currentTheme.switchTheme(
-                            Hive.box('pref'),
-                          );
+                          currentTheme.switchTheme(Hive.box('pref'));
                           // Navigator.pop(context);
                         },
                       ),

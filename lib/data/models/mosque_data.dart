@@ -22,6 +22,8 @@ class MosqueData {
     @required this.strasse,
     @required this.telefon,
     @required this.website,
+    @required this.distance,
+    @required this.coords,
   });
 
   final String email;
@@ -34,6 +36,8 @@ class MosqueData {
   final String strasse;
   final String telefon;
   final String website;
+  final Map<String, dynamic> coords;
+  final double distance;
 
   MosqueData copyWith({
     String email,
@@ -46,6 +50,8 @@ class MosqueData {
     String strasse,
     String telefon,
     String website,
+    Map<String, dynamic> coords,
+    double distance,
   }) =>
       MosqueData(
         email: email ?? this.email,
@@ -58,6 +64,8 @@ class MosqueData {
         strasse: strasse ?? this.strasse,
         telefon: telefon ?? this.telefon,
         website: website ?? this.website,
+        distance: distance ?? this.distance,
+        coords: coords ?? this.coords,
       );
 
   factory MosqueData.fromJson(Map<String, dynamic> json) => MosqueData(
@@ -71,7 +79,10 @@ class MosqueData {
         strasse: json["Strasse"],
         telefon: json["Telefon"],
         website: json["Website"],
+        coords: json["coords"],
+        distance: 0.0,
       );
+
   factory MosqueData.fromFirebase(Map<dynamic, dynamic> json) => MosqueData(
         email: json["Email"],
         kanton: json["Kanton"],
@@ -83,6 +94,8 @@ class MosqueData {
         strasse: json["Strasse"],
         telefon: json["Telefon"],
         website: json["Website"],
+        coords: json["coords"],
+        distance: 0.0,
       );
 
   Map<String, dynamic> toJson() => {
@@ -96,5 +109,6 @@ class MosqueData {
         "Strasse": strasse,
         "Telefon": telefon,
         "Website": website,
+        "coords": coords,
       };
 }

@@ -7,6 +7,8 @@ import 'package:url_launcher/url_launcher.dart';
 import '../../providers/mosque_page/mosque_provider.dart';
 import '../../data/models/mosque_data.dart';
 import '../../common/styling.dart';
+import '../../data/models/language_pack.dart';
+import '../../providers/language_page/language_provider.dart';
 
 class MosqueItem extends ConsumerWidget {
   const MosqueItem({
@@ -21,7 +23,9 @@ class MosqueItem extends ConsumerWidget {
   @override
   Widget build(BuildContext context, ScopedReader watch) {
     SelectedMosque _mosqueSelector = watch(selectedMosque);
+    final LanguagePack _appLang = watch(appLanguagePackProvider.state);
 
+    bool dist = watch(sortByDistanceToggle.state);
     if (isSelected) {
       return GestureDetector(
         onTap: () {},
@@ -35,10 +39,27 @@ class MosqueItem extends ConsumerWidget {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      '${data.ort} ${data.kanton}',
-                      style: CustomTextFonts.mosqueListOther.copyWith(
-                          color: CustomColors.cityNameColor, fontSize: 18),
+                    Row(
+                      children: [
+                        Text(
+                          '${data.ort} ${data.kanton}',
+                          style: CustomTextFonts.mosqueListOther.copyWith(
+                              color: CustomColors.cityNameColor, fontSize: 18),
+                        ),
+                        dist
+                            ? Text(
+                                ' (${data.distance.toStringAsFixed(1)} km)',
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .subtitle1
+                                    .copyWith(
+                                      fontStyle: FontStyle.normal,
+                                      color: Colors.black,
+                                      fontSize: 14,
+                                    ),
+                              )
+                            : SizedBox(),
+                      ],
                     ),
                     SizedBox(
                       height: 10,
@@ -71,9 +92,9 @@ class MosqueItem extends ConsumerWidget {
                       ),
                       onPressed: () async {
                         if (await canLaunch(
-                            'https://news.takvim.ch/mosque/${data.mosqueId}?integratedView=true')) {
+                            'https://news.takvim.ch/mosque/${data.mosqueId}?integratedView=true&languageId=${_appLang.languageId}')) {
                           await launch(
-                            'https://news.takvim.ch/mosque/${data.mosqueId}?integratedView=true',
+                            'https://news.takvim.ch/mosque/${data.mosqueId}?integratedView=true&languageId=${_appLang.languageId}',
                             forceSafariVC: false,
                           );
                         } else {
@@ -118,10 +139,26 @@ class MosqueItem extends ConsumerWidget {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      '${data.ort} ${data.kanton}',
-                      style: CustomTextFonts.mosqueListOther.copyWith(
-                          color: CustomColors.cityNameColor, fontSize: 18),
+                    Row(
+                      children: [
+                        Text(
+                          '${data.ort} ${data.kanton}',
+                          style: CustomTextFonts.mosqueListOther.copyWith(
+                              color: CustomColors.cityNameColor, fontSize: 18),
+                        ),
+                        dist
+                            ? Text(
+                                ' (${data.distance.toStringAsFixed(1)} km)',
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .subtitle1
+                                    .copyWith(
+                                      fontStyle: FontStyle.normal,
+                                      fontSize: 14,
+                                    ),
+                              )
+                            : SizedBox(),
+                      ],
                     ),
                     SizedBox(
                       height: 10,
@@ -153,9 +190,9 @@ class MosqueItem extends ConsumerWidget {
                       ),
                       onPressed: () async {
                         if (await canLaunch(
-                            'https://news.takvim.ch/mosque/${data.mosqueId}?integratedView=true')) {
+                            'https://news.takvim.ch/mosque/${data.mosqueId}?integratedView=true&languageId=${_appLang.languageId}')) {
                           await launch(
-                            'https://news.takvim.ch/mosque/${data.mosqueId}?integratedView=true',
+                            'https://news.takvim.ch/mosque/${data.mosqueId}?integratedView=true&languageId=${_appLang.languageId}',
                             forceSafariVC: false,
                           );
                         } else {

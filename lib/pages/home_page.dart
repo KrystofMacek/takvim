@@ -51,48 +51,68 @@ class HomePage extends StatelessWidget {
                 languagePack: _appLang,
               ),
               body: Container(
-                padding: EdgeInsets.only(top: 15, left: 20, right: 20),
+                padding:
+                    EdgeInsets.only(top: 15, left: 20, right: 20, bottom: 15),
                 child: Center(
                   child: FutureBuilder(
                     future: _langPackController.getAppLangPack(),
                     builder: (BuildContext context, AsyncSnapshot snapshot) {
                       if (snapshot.hasData) {
                         return ConstrainedBox(
-                          constraints: BoxConstraints(maxWidth: colWidth),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Consumer(
-                                builder: (context, watch, child) {
-                                  watch(selectedDate.state);
-                                  return Column(
+                            constraints: BoxConstraints(maxWidth: colWidth),
+                            child: Flex(
+                              direction: Axis.vertical,
+                              children: [
+                                Expanded(
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.start,
                                     crossAxisAlignment:
                                         CrossAxisAlignment.center,
                                     children: [
-                                      CalendarDayPicker(
-                                          selectedDate: _selectedDate),
-                                      SizedBox(
-                                        height: 12,
-                                      ),
-                                      DateSelectorRow(
-                                          selectedDate: _selectedDate,
-                                          appLang: _appLang),
-                                      SizedBox(
-                                        height: 15,
-                                      ),
-                                      DailyDataView(
-                                        mosqueController: _mosqueController,
-                                        selectedDate: _selectedDate,
-                                        appLang: _appLang,
+                                      Consumer(
+                                        builder: (context, watch, child) {
+                                          watch(selectedDate.state);
+                                          return Expanded(
+                                            child: Container(
+                                              child: Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.center,
+                                                children: [
+                                                  CalendarDayPicker(
+                                                      selectedDate:
+                                                          _selectedDate),
+                                                  SizedBox(
+                                                    height: 12,
+                                                  ),
+                                                  DateSelectorRow(
+                                                      selectedDate:
+                                                          _selectedDate,
+                                                      appLang: _appLang),
+                                                  SizedBox(
+                                                    height: 15,
+                                                  ),
+                                                  Expanded(
+                                                    child: Container(
+                                                      child: DailyDataView(
+                                                        mosqueController:
+                                                            _mosqueController,
+                                                        selectedDate:
+                                                            _selectedDate,
+                                                        appLang: _appLang,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          );
+                                        },
                                       ),
                                     ],
-                                  );
-                                },
-                              ),
-                            ],
-                          ),
-                        );
+                                  ),
+                                ),
+                              ],
+                            ));
                       } else {
                         return CircularProgressIndicator();
                       }
