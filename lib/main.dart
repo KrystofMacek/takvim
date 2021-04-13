@@ -13,6 +13,7 @@ import 'package:takvim/pages/lang_settings_page.dart';
 import 'package:takvim/pages/mosque_settings_page.dart';
 import 'package:takvim/pages/news/news_mosques_page.dart';
 import 'package:takvim/pages/news/news_page.dart';
+import 'package:takvim/pages/notification_config_page.dart';
 import 'package:takvim/pages/subscribtion_page.dart';
 import 'package:url_launcher/url_launcher.dart';
 import './pages/compass_page.dart';
@@ -21,7 +22,6 @@ import './common/styling.dart';
 import 'pages/pages.dart';
 import './pages/contact.dart';
 import './pages/map.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:takvim/providers/language_page/language_provider.dart';
 
 void main() async {
@@ -31,6 +31,7 @@ void main() async {
   await Hive.initFlutter();
   Hive.registerAdapter(SubsTopicAdapter());
   await Hive.openBox('pref');
+  await Hive.openBox('notificationConfig');
   await Firebase.initializeApp();
   FirebaseDatabase.instance.setPersistenceEnabled(true);
 
@@ -176,6 +177,7 @@ class _MyAppState extends State<MyApp> {
         '/compass': (context) => CompassPage(),
         '/map': (context) => MapPage(),
         '/contact': (context) => ContactPage(),
+        '/notificationConfig': (context) => NotificationConfigPage(),
       },
       home: HomePage(),
     );

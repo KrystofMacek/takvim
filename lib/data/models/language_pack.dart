@@ -51,6 +51,7 @@ class LanguagePack {
     @required this.compass,
     @required this.errorSensor,
     @required this.map,
+    @required this.prayerTimeNotification,
   });
 
   final String address;
@@ -92,6 +93,7 @@ class LanguagePack {
   final String compass;
   final String errorSensor;
   final String map;
+  final String prayerTimeNotification;
 
   LanguagePack copyWith({
     String address,
@@ -132,6 +134,7 @@ class LanguagePack {
     String compass,
     String errorSensor,
     String map,
+    String prayerTimeNotification,
   }) =>
       LanguagePack(
         address: address ?? this.address,
@@ -173,6 +176,8 @@ class LanguagePack {
         compass: compass ?? this.compass,
         errorSensor: errorSensor ?? this.errorSensor,
         map: map ?? this.map,
+        prayerTimeNotification:
+            prayerTimeNotification ?? this.prayerTimeNotification,
       );
 
   factory LanguagePack.fromJson(Map<String, dynamic> json) => LanguagePack(
@@ -215,6 +220,7 @@ class LanguagePack {
         compass: json["Compass"],
         errorSensor: json["errorSensor"],
         map: json["map"],
+        prayerTimeNotification: json["prayerTimeNotification"],
       );
 
   factory LanguagePack.fromFirebase(Map<dynamic, dynamic> json) => LanguagePack(
@@ -257,6 +263,7 @@ class LanguagePack {
         compass: json["Compass"],
         errorSensor: json["errorSensor"],
         map: json["map"],
+        prayerTimeNotification: json["prayerTimeNotification"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -299,5 +306,6 @@ class LanguagePack {
         "Compass": compass,
         "errorSensor": errorSensor,
         "map": map,
+        "prayerTimeNotification": prayerTimeNotification,
       };
 }

@@ -100,7 +100,6 @@ class NewsListView extends ConsumerWidget {
               .toList();
 
           // ORDER SUBTOPICS FROM GENERAL
-
           try {
             if (subTopicList.length > 1) {
               int generalIndex = subTopicList.indexWhere(

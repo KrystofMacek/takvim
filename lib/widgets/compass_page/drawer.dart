@@ -122,6 +122,22 @@ class CompassDrawer extends ConsumerWidget {
                         contentPadding:
                             EdgeInsets.symmetric(horizontal: 15, vertical: 8),
                         leading: FaIcon(
+                          FontAwesomeIcons.clock,
+                          size: 28,
+                        ),
+                        title: Text('${_languagePack.prayerTimeNotification}'),
+                        onTap: () {
+                          // filteringController.resetFilter();
+                          Navigator.popAndPushNamed(
+                            context,
+                            '/notificationConfig',
+                          );
+                        },
+                      ),
+                      ListTile(
+                        contentPadding:
+                            EdgeInsets.symmetric(horizontal: 15, vertical: 8),
+                        leading: FaIcon(
                           FontAwesomeIcons.compass,
                           size: 28,
                         ),

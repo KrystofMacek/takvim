@@ -41,8 +41,7 @@ class LanguageItem extends ConsumerWidget {
                   children: [
                     Container(
                       padding: EdgeInsets.all(10),
-                      child:
-                          Flags.getFlag(country: flag, height: 30, width: 40),
+                      child: Flag(flag, height: 30, width: 40),
                     ),
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -76,7 +75,7 @@ class LanguageItem extends ConsumerWidget {
               children: [
                 Container(
                   padding: EdgeInsets.all(10),
-                  child: Flags.getFlag(country: flag, height: 30, width: 40),
+                  child: Flag(flag, height: 30, width: 40),
                 ),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
