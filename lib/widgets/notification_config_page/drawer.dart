@@ -121,8 +121,8 @@ class DrawerNotificationConfigPage extends ConsumerWidget {
                       ListTile(
                         contentPadding:
                             EdgeInsets.symmetric(horizontal: 15, vertical: 8),
-                        leading: FaIcon(
-                          FontAwesomeIcons.clock,
+                        leading: Icon(
+                          Icons.access_alarm,
                           size: 28,
                         ),
                         title: Text('${_languagePack.prayerTimeNotification}'),

@@ -1,23 +1,28 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/all.dart';
 import 'package:takvim/common/styling.dart';
+import 'package:takvim/providers/home_page/date_provider.dart';
+import 'package:takvim/providers/notification_config_page/notification_config_providers.dart';
 import '../../common/utils.dart';
 
-class PrayerTimeItem extends StatelessWidget {
+class PrayerTimeItem extends ConsumerWidget {
   const PrayerTimeItem({
     Key key,
     @required this.minor,
     @required this.dataMap,
     @required this.isUpcoming,
     @required this.timeData,
+    @required this.timeIndex,
   }) : super(key: key);
 
   final Map<String, String> dataMap;
   final bool minor;
   final bool isUpcoming;
   final DateTime timeData;
+  final int timeIndex;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, ScopedReader watch) {
     DateTime timeOfPrayer = getDateTimeOfParyer(dataMap['time']);
 
     int diff = timeOfPrayer.difference(timeData).inSeconds;
@@ -40,15 +45,32 @@ class PrayerTimeItem extends StatelessWidget {
                     .bodyText2
                     .copyWith(color: CustomColors.mainColor, fontSize: 18),
               ),
-              Text(
-                '${dataMap['time']}',
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                        fontFamily: 'Courier-Prime',
-                        fontSize: 18,
-                        letterSpacing: .3,
-                        fontStyle: FontStyle.italic)
-                    .copyWith(color: CustomColors.mainColor),
+              Row(
+                children: [
+                  NotificationLabel(
+                    dataMap: dataMap,
+                    timeIndex: timeIndex,
+                  ),
+                  SizedBox(width: 10),
+                  Container(
+                    width: 70,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        Text(
+                          '${dataMap['time']}',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                                  fontFamily: 'Courier-Prime',
+                                  fontSize: 18,
+                                  letterSpacing: .3,
+                                  fontStyle: FontStyle.italic)
+                              .copyWith(color: CustomColors.mainColor),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
               ),
             ],
           ),
@@ -86,18 +108,31 @@ class PrayerTimeItem extends StatelessWidget {
                         )
                       : SizedBox(),
                   SizedBox(
-                    width: 20,
+                    width: 10,
                   ),
-                  Text(
-                    '${dataMap['time']}',
-                    textAlign: TextAlign.center,
-                    // style: Theme.of(context).textTheme.bodyText1,
-                    style: TextStyle(
-                        fontFamily: 'Noto-Mono',
-                        fontSize: 20,
-                        letterSpacing: .3,
-                        fontWeight: FontWeight.normal,
-                        fontStyle: FontStyle.normal),
+                  NotificationLabel(
+                    dataMap: dataMap,
+                    timeIndex: timeIndex,
+                  ),
+                  SizedBox(width: 10),
+                  Container(
+                    width: 70,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        Text(
+                          '${dataMap['time']}',
+                          textAlign: TextAlign.center,
+                          // style: Theme.of(context).textTheme.bodyText1,
+                          style: TextStyle(
+                              fontFamily: 'Noto-Mono',
+                              fontSize: 20,
+                              letterSpacing: .3,
+                              fontWeight: FontWeight.normal,
+                              fontStyle: FontStyle.normal),
+                        ),
+                      ],
+                    ),
                   ),
                 ],
               ),
@@ -106,5 +141,50 @@ class PrayerTimeItem extends StatelessWidget {
         ),
       );
     }
+  }
+}
+
+class NotificationLabel extends StatelessWidget {
+  const NotificationLabel({
+    Key key,
+    @required this.dataMap,
+    @required this.timeIndex,
+  }) : super(key: key);
+
+  final Map<String, String> dataMap;
+  final int timeIndex;
+
+  @override
+  Widget build(BuildContext context) {
+    return Consumer(
+      builder: (context, watch, child) {
+        DateTime _selectedDate = watch(selectedDate.state);
+        bool _showScheduled = false;
+        // String scheduledLabel = '';
+        List<int> _activeTimes = watch(activeTimesProvider.state);
+        // List<int> _minutesBefore = watch(notificationMinutesProvider.state);
+
+        if (formatDateToID(_selectedDate) == formatDateToID(DateTime.now()) ||
+            formatDateToID(_selectedDate) ==
+                formatDateToID(
+                  DateTime.now().add(
+                    Duration(days: 1),
+                  ),
+                )) {
+          if (_activeTimes.isNotEmpty) {
+            if (_activeTimes.contains(timeIndex)) {
+              _showScheduled = true;
+            }
+          }
+        }
+        return _showScheduled
+            ? Icon(
+                Icons.access_alarm,
+                color: CustomColors.mainColor,
+                size: 18,
+              )
+            : SizedBox();
+      },
+    );
   }
 }

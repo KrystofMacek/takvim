@@ -31,6 +31,7 @@ class _DateSelectorRowState extends State<DateSelectorRow>
         _resumed = true;
       });
     }
+    print(state);
     super.didChangeAppLifecycleState(state);
   }
 

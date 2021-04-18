@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/all.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:takvim/data/models/day_data.dart';
 import 'package:takvim/data/models/language_pack.dart';
+import 'package:takvim/providers/common/notification_provider.dart';
 import 'package:takvim/providers/language_page/language_provider.dart';
 import 'package:takvim/widgets/home_page/app_bar.dart';
 import 'package:takvim/widgets/language_page/app_bar_content.dart';
@@ -38,10 +40,15 @@ class NotificationConfigPage extends ConsumerWidget {
             backgroundColor: Theme.of(context).primaryColor,
             onPressed: () {
               Navigator.popUntil(context, ModalRoute.withName('/home'));
+              Map<String, DayData> map =
+                  context.read(daysToScheduleProvider.state);
+              context
+                  .read(notificationController)
+                  .scheduleNotification(map['today'], map['tomorrow']);
             },
           ),
           body: Container(
-            padding: EdgeInsets.only(top: 5),
+            padding: EdgeInsets.only(top: 5, left: 20, right: 20),
             child: Center(
               child: ConfigTimesView(),
             ),

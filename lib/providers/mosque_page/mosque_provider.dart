@@ -7,6 +7,7 @@ import 'package:takvim/data/models/mosque_data.dart';
 import 'package:takvim/providers/common/geolocator_provider.dart';
 import 'package:takvim/providers/firestore_provider.dart';
 import 'package:geolocator/geolocator.dart';
+import 'dart:async' as dsync;
 
 final selectedMosque = StateNotifierProvider<SelectedMosque>((ref) {
   return SelectedMosque();
@@ -246,6 +247,7 @@ class MosqueController extends StateNotifier<MosqueController> {
 
   Stream<Event> getPrayersForDate(String date) {
     Stream<Event> ref;
+
     if (_selectedMosque.state == null) {
       String id = Hive.box('pref').get('mosque');
       print(id);

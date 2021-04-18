@@ -15,6 +15,7 @@ import 'package:takvim/pages/news/news_mosques_page.dart';
 import 'package:takvim/pages/news/news_page.dart';
 import 'package:takvim/pages/notification_config_page.dart';
 import 'package:takvim/pages/subscribtion_page.dart';
+import 'package:takvim/providers/common/notification_provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 import './pages/compass_page.dart';
 import './data/models/subsTopic.dart';
@@ -80,6 +81,7 @@ void main() async {
     },
     onBackgroundMessage: Platform.isAndroid ? myBackgroundMessageHandler : null,
   );
+
   runApp(
     ProviderScope(
       child: MyApp(),
@@ -127,6 +129,7 @@ class _MyAppState extends State<MyApp> {
       firstOpen = true;
     }
     prefBox.put('firstOpen', firstOpen);
+    context.read(notificationProvider).initialize(context);
   }
 
   String _getInitialRoute() {
