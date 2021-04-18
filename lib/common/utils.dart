@@ -1,5 +1,6 @@
 import 'package:intl/intl.dart';
 import 'package:hive/hive.dart';
+import 'package:takvim/data/models/day_data.dart';
 import '../providers/news_page/selected_mosque_news_provider.dart';
 
 String formatDateToID(DateTime date) {
@@ -45,4 +46,29 @@ String newsNavigator(SelectedMosuqeNewsProvider provider) {
   } else {
     return '/newsMosquesPage';
   }
+}
+
+bool skipTime(DayData data, String time) {
+  bool skip = false;
+  switch (time) {
+    case 'IshaTime':
+      String isha = data.isha.replaceFirst(":", "");
+      String ishaTime = data.ishaTime.replaceFirst(":", "");
+
+      if (int.tryParse(ishaTime) >= int.tryParse(isha)) {
+        skip = true;
+      }
+      break;
+    case 'DhuhrTime':
+      String dhuhr = data.dhuhr.replaceFirst(":", "");
+      String dhuhrTime = data.dhuhrTime.replaceFirst(":", "");
+
+      if (int.tryParse(dhuhrTime) >= int.tryParse(dhuhr)) {
+        skip = true;
+      }
+      break;
+    default:
+  }
+
+  return skip;
 }

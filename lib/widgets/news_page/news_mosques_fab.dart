@@ -17,8 +17,7 @@ class NewsMosquesPageFab extends ConsumerWidget {
         padding: const EdgeInsets.all(4.0),
         child: IconButton(
           icon: FaIcon(
-            FontAwesomeIcons.times,
-            size: 28,
+            FontAwesomeIcons.check,
           ),
           onPressed: () {
             Navigator.popUntil(context, ModalRoute.withName('/home'));

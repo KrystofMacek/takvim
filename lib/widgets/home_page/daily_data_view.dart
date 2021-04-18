@@ -1,9 +1,11 @@
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:takvim/common/constants.dart';
 import 'package:takvim/data/models/day_data.dart';
 import 'package:takvim/data/models/language_pack.dart';
+import 'package:takvim/providers/common/notification_provider.dart';
 import 'package:takvim/providers/home_page/date_provider.dart';
 import 'package:takvim/providers/mosque_page/mosque_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -12,7 +14,7 @@ import '../../common/utils.dart';
 import '../../providers/home_page/time_provider.dart';
 import 'package:linkwell/linkwell.dart';
 
-class DailyDataView extends StatelessWidget {
+class DailyDataView extends ConsumerWidget {
   const DailyDataView({
     Key key,
     @required MosqueController mosqueController,
@@ -28,101 +30,133 @@ class DailyDataView extends StatelessWidget {
   final LanguagePack _appLang;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, ScopedReader watch) {
+    final dateFormat = DateFormat('yyyyMMdd');
+    String tomorrowFormed =
+        dateFormat.format(DateTime.now().add(Duration(days: 1)));
+
     return StreamBuilder<Event>(
-      stream: _mosqueController.getPrayersForDate(_selectedDate.getDateId()),
+      stream: _mosqueController.getPrayersForDate(tomorrowFormed),
       builder: (BuildContext context, AsyncSnapshot<Event> snapshot) {
         if (snapshot.hasData &&
             !snapshot.hasError &&
             snapshot.data.snapshot.value != null) {
-          DayData data = DayData.fromFirebase(snapshot.data.snapshot.value);
+          DayData tomorrow = DayData.fromFirebase(snapshot.data.snapshot.value);
 
-          bool skipIshaTime = _skipTime(data, PRAYER_TIMES[7]);
-          bool skipDhuhrTime = _skipTime(data, PRAYER_TIMES[3]);
+          context.read(daysToScheduleProvider).updateTomorrow(tomorrow);
 
-          return Consumer(
-            builder: (context, watch, child) {
-              int upcoming = _findUpcoming(data);
-              if (_selectedDate.getDateId() != formatDateToID(DateTime.now())) {
-                upcoming = 20;
-              }
-              return watch(timeProvider).when(
-                  data: (timeData) {
-                    return Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Container(
-                          child: ListView.separated(
-                            shrinkWrap: true,
-                            itemCount: PRAYER_TIMES.length,
-                            itemBuilder: (context, index) {
-                              Map<String, String> dataMap =
-                                  _getTimeName(index, _appLang, data);
+          return StreamBuilder<Event>(
+            stream:
+                _mosqueController.getPrayersForDate(_selectedDate.getDateId()),
+            builder: (BuildContext context, AsyncSnapshot<Event> snapshot) {
+              if (snapshot.hasData &&
+                  !snapshot.hasError &&
+                  snapshot.data.snapshot.value != null) {
+                DayData data =
+                    DayData.fromFirebase(snapshot.data.snapshot.value);
+                print(
+                    'load today ${data.day} and tomorrow ${tomorrow.date} --- ${DateTime.now().toString()}');
 
-                              bool isUpcoming = upcoming == index;
+                context.read(daysToScheduleProvider).updateToday(data);
+                context
+                    .read(notificationController)
+                    .scheduleNotification(data, tomorrow);
 
-                              bool minor = false;
+                bool skipIshaTime = skipTime(data, PRAYER_TIMES[7]);
+                bool skipDhuhrTime = skipTime(data, PRAYER_TIMES[3]);
 
-                              if (index == 0 ||
-                                  index == 3 ||
-                                  index == 2 ||
-                                  index == 7) {
-                                if (isUpcoming) {
-                                  isUpcoming = false;
-                                  upcoming += 1;
-                                }
-                                minor = true;
-                              }
+                return Consumer(
+                  builder: (context, watch, child) {
+                    int upcoming = _findUpcoming(data);
+                    if (_selectedDate.getDateId() !=
+                        formatDateToID(DateTime.now())) {
+                      upcoming = 20;
+                    }
+                    return watch(timeProvider).when(
+                        data: (timeData) {
+                          return Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Container(
+                                child: ListView.separated(
+                                  shrinkWrap: true,
+                                  itemCount: PRAYER_TIMES.length,
+                                  itemBuilder: (context, index) {
+                                    Map<String, String> dataMap =
+                                        _getTimeName(index, _appLang, data);
 
-                              if (index == 7 && skipIshaTime) {
-                                return SizedBox();
-                              }
-                              if (index == 3 && skipDhuhrTime) {
-                                return SizedBox();
-                              }
-                              return PrayerTimeItem(
-                                  dataMap: dataMap,
-                                  minor: minor,
-                                  isUpcoming: isUpcoming,
-                                  timeData: timeData);
-                            },
-                            separatorBuilder: (context, index) {
-                              return SizedBox(
-                                height: 2,
-                              );
-                            },
-                          ),
-                        ),
-                        SizedBox(
-                          height: 18,
-                        ),
-                        Flexible(
-                          fit: FlexFit.loose,
-                          child: Container(
-                            decoration: BoxDecoration(
-                              color: data.notes.isNotEmpty
-                                  ? Theme.of(context).colorScheme.surface
-                                  : Colors.transparent,
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                            padding: EdgeInsets.symmetric(
-                                vertical: 5, horizontal: 10),
-                            child: SingleChildScrollView(
-                              child: LinkWell(
-                                '${data.notes}',
-                                style: Theme.of(context).textTheme.headline3,
-                                textAlign: TextAlign.center,
+                                    bool isUpcoming = upcoming == index;
+
+                                    bool minor = false;
+
+                                    if (index == 0 ||
+                                        index == 3 ||
+                                        index == 2 ||
+                                        index == 7) {
+                                      if (isUpcoming) {
+                                        isUpcoming = false;
+                                        upcoming += 1;
+                                      }
+                                      minor = true;
+                                    }
+
+                                    if (index == 7 && skipIshaTime) {
+                                      return SizedBox();
+                                    }
+                                    if (index == 3 && skipDhuhrTime) {
+                                      return SizedBox();
+                                    }
+                                    return PrayerTimeItem(
+                                      dataMap: dataMap,
+                                      minor: minor,
+                                      isUpcoming: isUpcoming,
+                                      timeData: timeData,
+                                      timeIndex: index,
+                                    );
+                                  },
+                                  separatorBuilder: (context, index) {
+                                    return SizedBox(
+                                      height: 2,
+                                    );
+                                  },
+                                ),
                               ),
+                              SizedBox(
+                                height: 18,
+                              ),
+                              Flexible(
+                                fit: FlexFit.loose,
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    color: data.notes.isNotEmpty
+                                        ? Theme.of(context).colorScheme.surface
+                                        : Colors.transparent,
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+                                  padding: EdgeInsets.symmetric(
+                                      vertical: 5, horizontal: 10),
+                                  child: SingleChildScrollView(
+                                    child: LinkWell(
+                                      '${data.notes}',
+                                      style:
+                                          Theme.of(context).textTheme.headline3,
+                                      textAlign: TextAlign.center,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          );
+                        },
+                        loading: () => Center(
+                              child: CircularProgressIndicator(),
                             ),
-                          ),
-                        ),
-                      ],
-                    );
+                        error: (_, __) => Text('Timer Error'));
                   },
-                  loading: () => Center(
-                        child: CircularProgressIndicator(),
-                      ),
-                  error: (_, __) => Text('Timer Error'));
+                );
+              } else {
+                return CircularProgressIndicator();
+              }
             },
           );
         } else {
@@ -130,31 +164,6 @@ class DailyDataView extends StatelessWidget {
         }
       },
     );
-  }
-
-  bool _skipTime(DayData data, String time) {
-    bool skip = false;
-    switch (time) {
-      case 'IshaTime':
-        String isha = data.isha.replaceFirst(":", "");
-        String ishaTime = data.ishaTime.replaceFirst(":", "");
-
-        if (int.tryParse(ishaTime) >= int.tryParse(isha)) {
-          skip = true;
-        }
-        break;
-      case 'DhuhrTime':
-        String dhuhr = data.dhuhr.replaceFirst(":", "");
-        String dhuhrTime = data.dhuhrTime.replaceFirst(":", "");
-
-        if (int.tryParse(dhuhrTime) >= int.tryParse(dhuhr)) {
-          skip = true;
-        }
-        break;
-      default:
-    }
-
-    return skip;
   }
 
   int _findUpcoming(DayData data) {

@@ -32,13 +32,6 @@ class CustomCheckBox extends StatelessWidget {
           color: Colors.grey[500],
           borderRadius: BorderRadius.circular(5),
         ),
-        // child: Center(
-        //   child: Icon(
-        //     Icons.close,
-        //     size: _iconSize,
-        //     color: Colors.white,
-        //   ),
-        // ),
       );
     }
     if (!_isClickable) {
