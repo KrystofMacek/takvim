@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/all.dart';
 import 'package:takvim/common/constants.dart';
@@ -6,6 +7,7 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:takvim/data/models/language_pack.dart';
 import 'package:takvim/data/models/localNotification.dart';
 import 'package:takvim/providers/language_page/language_provider.dart';
+import 'package:takvim/providers/mosque_page/mosque_provider.dart';
 import 'package:takvim/providers/notification_config_page/notification_config_providers.dart';
 
 final notificationController = StateNotifierProvider<NotificationController>(
@@ -15,6 +17,7 @@ final notificationController = StateNotifierProvider<NotificationController>(
     ref.watch(notificationMinutesProvider),
     ref.watch(appLanguagePackProvider.state),
     ref.watch(pendingNotificationList),
+    ref.watch(mosqueController),
   ),
 );
 
@@ -25,11 +28,13 @@ class NotificationController extends StateNotifier<NotificationController> {
     TimesNotificationMinutes timesNotificationMinutes,
     LanguagePack activeLanguage,
     PendingNotificationList pendingNotificationList,
+    MosqueController mosqueController,
   )   : _notificationProvider = notificationProvider,
         _timesNotificationMinutes = timesNotificationMinutes,
         _activeTimes = activeTimes,
         _activeLanguage = activeLanguage,
         _pendingNotificationList = pendingNotificationList,
+        _mosqueController = mosqueController,
         super(null);
 
   final NotificationProvider _notificationProvider;
@@ -37,18 +42,27 @@ class NotificationController extends StateNotifier<NotificationController> {
   final ActiveTimes _activeTimes;
   final LanguagePack _activeLanguage;
   final PendingNotificationList _pendingNotificationList;
+  final MosqueController _mosqueController;
 
   void scheduleNotification(DayData today, DayData tomorrow) async {
-    print('schedule notifications');
     List<LocalNotification> _notifications = [];
 
     final Map<String, dynamic> dataMap = _activeLanguage.toJson();
 
+    DayData thridDay = await _mosqueController
+        .getThridDay(DateTime.now().add(Duration(days: 2)));
+
     if (_activeTimes.state.isNotEmpty) {
-      for (var i = 1; i < 3; i++) {
+      for (var i = 1; i < 4; i++) {
         for (var j = 0; j < PRAYER_TIMES.length; j++) {
           Map<String, dynamic> map;
-          i == 1 ? map = today.toJson() : map = tomorrow.toJson();
+          if (i == 1) {
+            map = today.toJson();
+          } else if (i == 2) {
+            map = tomorrow.toJson();
+          } else {
+            map = thridDay.toJson();
+          }
           String timeData = map[PRAYER_TIMES[j]].toString();
           String dateData = map['Date'].toString();
 
@@ -91,23 +105,14 @@ class NotificationController extends StateNotifier<NotificationController> {
           }
           if (!skip) {
             String name = dataMap['${PRAYER_TIMES[notification.nameOfTime]}'];
-            if (notification.dateOfNotification.day > DateTime.now().day) {
-              _notificationProvider.scheduleNotification(
-                '$name ${notification.timeDisplayed}',
-                '',
-                notification.dateOfNotification,
-                '${notification.minutesBefore.toString()},${notification.nameOfTime}',
-                _notifications.indexOf(notification),
-              );
-            } else {
-              _notificationProvider.scheduleNotification(
-                '$name ${notification.timeDisplayed}',
-                '',
-                notification.dateOfNotification,
-                '${notification.minutesBefore.toString()},${notification.nameOfTime}',
-                _notifications.indexOf(notification),
-              );
-            }
+            print('scheduled: ${notification.dateOfNotification}');
+            _notificationProvider.scheduleNotification(
+              '$name ${notification.timeDisplayed}',
+              '',
+              notification.dateOfNotification,
+              '${notification.minutesBefore.toString()},${notification.nameOfTime}',
+              _notifications.indexOf(notification),
+            );
           }
         }
       });

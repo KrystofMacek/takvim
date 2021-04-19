@@ -54,8 +54,6 @@ class DailyDataView extends ConsumerWidget {
                   snapshot.data.snapshot.value != null) {
                 DayData data =
                     DayData.fromFirebase(snapshot.data.snapshot.value);
-                print(
-                    'load today ${data.day} and tomorrow ${tomorrow.date} --- ${DateTime.now().toString()}');
 
                 context.read(daysToScheduleProvider).updateToday(data);
                 context

@@ -3,6 +3,8 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/semantics.dart';
 import 'package:flutter_riverpod/all.dart';
 import 'package:hive/hive.dart';
+import 'package:takvim/common/utils.dart';
+import 'package:takvim/data/models/day_data.dart';
 import 'package:takvim/data/models/mosque_data.dart';
 import 'package:takvim/providers/common/geolocator_provider.dart';
 import 'package:takvim/providers/firestore_provider.dart';
@@ -262,5 +264,27 @@ class MosqueController extends StateNotifier<MosqueController> {
     }
 
     return ref;
+  }
+
+  Future<DayData> getThridDay(DateTime date) async {
+    DataSnapshot data;
+
+    if (_selectedMosque.state == null) {
+      String id = Hive.box('pref').get('mosque');
+      print(id);
+      data = await _databaseReference
+          .child('prayerTimes')
+          .child(id)
+          .child(formatDateToID(date))
+          .once();
+    } else {
+      data = await _databaseReference
+          .child('prayerTimes')
+          .child(_selectedMosque.state)
+          .child(formatDateToID(date))
+          .once();
+    }
+
+    return DayData.fromFirebase(data.value);
   }
 }
