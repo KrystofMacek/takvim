@@ -104,7 +104,7 @@ class MapDrawer extends ConsumerWidget {
                         contentPadding:
                             EdgeInsets.symmetric(horizontal: 15, vertical: 8),
                         leading: FaIcon(
-                          FontAwesomeIcons.bell,
+                          FontAwesomeIcons.checkSquare,
                           size: 28,
                         ),
                         title: Text(
@@ -121,8 +121,8 @@ class MapDrawer extends ConsumerWidget {
                       ListTile(
                         contentPadding:
                             EdgeInsets.symmetric(horizontal: 15, vertical: 8),
-                        leading: Icon(
-                          Icons.access_alarm,
+                        leading: FaIcon(
+                          FontAwesomeIcons.bell,
                           size: 28,
                         ),
                         title: Text('${_languagePack.prayerTimeNotification}'),

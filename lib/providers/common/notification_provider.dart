@@ -91,13 +91,23 @@ class NotificationController extends StateNotifier<NotificationController> {
           }
           if (!skip) {
             String name = dataMap['${PRAYER_TIMES[notification.nameOfTime]}'];
-            _notificationProvider.scheduleNotification(
-              '$name ${notification.timeDisplayed}',
-              '',
-              notification.dateOfNotification,
-              '${notification.minutesBefore.toString()},${notification.nameOfTime}',
-              _notifications.indexOf(notification),
-            );
+            if (notification.dateOfNotification.day > DateTime.now().day) {
+              _notificationProvider.scheduleNotification(
+                '$name ${notification.timeDisplayed}',
+                '',
+                notification.dateOfNotification,
+                '${notification.minutesBefore.toString()},${notification.nameOfTime}',
+                _notifications.indexOf(notification),
+              );
+            } else {
+              _notificationProvider.scheduleNotification(
+                '$name ${notification.timeDisplayed}',
+                '',
+                notification.dateOfNotification,
+                '${notification.minutesBefore.toString()},${notification.nameOfTime}',
+                _notifications.indexOf(notification),
+              );
+            }
           }
         }
       });
@@ -147,8 +157,8 @@ class NotificationProvider
     int id,
   ) async {
     AndroidNotificationDetails androidDetails = AndroidNotificationDetails(
-      'moscheewil_channel_0',
-      'moscheewil_channel',
+      'takvim_0',
+      'takvim_channel',
       'custom_notif_channel',
       importance: Importance.max,
     );
@@ -162,6 +172,42 @@ class NotificationProvider
       androidAllowWhileIdle: true,
       payload: payload,
     );
+  }
+
+  Future<void> schedulePeriodically(
+    String title,
+    String body,
+    DateTime scheduledDate,
+    String payload,
+    int id,
+  ) {
+    const AndroidNotificationDetails androidPlatformChannelSpecifics =
+        AndroidNotificationDetails(
+      'takvim_1',
+      'takvim_channel',
+      'takvim_repeating',
+      importance: Importance.max,
+    );
+    const NotificationDetails platformChannelSpecifics = NotificationDetails(
+      android: androidPlatformChannelSpecifics,
+      iOS: IOSNotificationDetails(),
+    );
+    // state.zonedSchedule(
+    //   id,
+    //   title,
+    //   body,
+    //   scheduledDate,
+    //   notificationDetails,
+    //   uiLocalNotificationDateInterpretation:
+    //       uiLocalNotificationDateInterpretation,
+    //   androidAllowWhileIdle: androidAllowWhileIdle,
+    // );
+    state.showDailyAtTime(
+        id,
+        title,
+        body,
+        Time(scheduledDate.hour, scheduledDate.hour, scheduledDate.minute),
+        platformChannelSpecifics);
   }
 
   Future<List<Map<String, String>>> getPendingNotifications() async {

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/all.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:takvim/common/styling.dart';
 import 'package:takvim/providers/home_page/date_provider.dart';
 import 'package:takvim/providers/notification_config_page/notification_config_providers.dart';
@@ -164,22 +165,14 @@ class NotificationLabel extends StatelessWidget {
         List<int> _activeTimes = watch(activeTimesProvider.state);
         // List<int> _minutesBefore = watch(notificationMinutesProvider.state);
 
-        if (formatDateToID(_selectedDate) == formatDateToID(DateTime.now()) ||
-            formatDateToID(_selectedDate) ==
-                formatDateToID(
-                  DateTime.now().add(
-                    Duration(days: 1),
-                  ),
-                )) {
-          if (_activeTimes.isNotEmpty) {
-            if (_activeTimes.contains(timeIndex)) {
-              _showScheduled = true;
-            }
+        if (_activeTimes.isNotEmpty) {
+          if (_activeTimes.contains(timeIndex)) {
+            _showScheduled = true;
           }
         }
         return _showScheduled
-            ? Icon(
-                Icons.access_alarm,
+            ? FaIcon(
+                FontAwesomeIcons.bell,
                 color: CustomColors.mainColor,
                 size: 18,
               )

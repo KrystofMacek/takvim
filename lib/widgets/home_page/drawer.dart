@@ -100,7 +100,7 @@ class DrawerHomePage extends StatelessWidget {
                         contentPadding:
                             EdgeInsets.symmetric(horizontal: 15, vertical: 8),
                         leading: FaIcon(
-                          FontAwesomeIcons.bell,
+                          FontAwesomeIcons.checkSquare,
                           size: 28,
                         ),
                         title: Text(
@@ -117,8 +117,8 @@ class DrawerHomePage extends StatelessWidget {
                       ListTile(
                         contentPadding:
                             EdgeInsets.symmetric(horizontal: 15, vertical: 8),
-                        leading: Icon(
-                          Icons.access_alarm,
+                        leading: FaIcon(
+                          FontAwesomeIcons.bell,
                           size: 28,
                         ),
                         title: Text('${_languagePack.prayerTimeNotification}'),

@@ -168,7 +168,8 @@ class NewsListView extends ConsumerWidget {
                                               .hideTopic(subTopicList[i].topic);
                                     },
                                     child: ConstrainedBox(
-                                      constraints: BoxConstraints(maxWidth: 80),
+                                      constraints: BoxConstraints(
+                                          maxWidth: 80, minHeight: 32),
                                       child: Container(
                                         decoration: BoxDecoration(
                                           borderRadius:

@@ -12,17 +12,32 @@ import 'package:takvim/providers/notification_config_page/notification_config_pr
 import 'package:takvim/widgets/subscription_page/checkbox.dart';
 // import './custom_dropdown.dart' as custom;
 
-class ConfigTimesView extends StatelessWidget {
+class ConfigTimesView extends ConsumerWidget {
   const ConfigTimesView({
     Key key,
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, ScopedReader watch) {
+    final LanguagePack _langPack = watch(appLanguagePackProvider.state);
     return Column(
       children: [
         SizedBox(
           height: 20,
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Container(
+                padding: EdgeInsets.only(left: 8),
+                child: Text(_langPack.activate)),
+            Container(
+                padding: EdgeInsets.only(right: 8),
+                child: Text(_langPack.minutesBeforehand))
+          ],
+        ),
+        SizedBox(
+          height: 10,
         ),
         ListView.separated(
             shrinkWrap: true,
@@ -166,6 +181,8 @@ class ConfigTimesItem extends ConsumerWidget {
                                           NumberPicker(
                                             minValue: 0,
                                             maxValue: 59,
+                                            itemCount: 5,
+                                            itemHeight: 35,
                                             value: mins[_index],
                                             onChanged: (c) {
                                               context
@@ -175,12 +192,14 @@ class ConfigTimesItem extends ConsumerWidget {
                                             },
                                             itemWidth: 40,
                                             textStyle: TextStyle(
-                                                fontSize: 18,
-                                                fontStyle: FontStyle.normal),
+                                              fontSize: 18,
+                                              fontStyle: FontStyle.normal,
+                                            ),
                                             selectedTextStyle: TextStyle(
-                                                fontSize: 18,
-                                                color: CustomColors.mainColor,
-                                                fontStyle: FontStyle.normal),
+                                              fontSize: 18,
+                                              color: CustomColors.mainColor,
+                                              fontStyle: FontStyle.normal,
+                                            ),
                                           ),
                                         ],
                                       ),
@@ -202,7 +221,7 @@ class ConfigTimesItem extends ConsumerWidget {
                 ),
               ),
               SizedBox(
-                height: 10,
+                height: 2,
               ),
             ],
           );
