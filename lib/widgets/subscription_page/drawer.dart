@@ -82,6 +82,34 @@ class SubscriptionPageDrawer extends ConsumerWidget {
                           Navigator.popAndPushNamed(context, '/lang');
                         },
                       ),
+                      ListTile(
+                        contentPadding:
+                            EdgeInsets.symmetric(horizontal: 15, vertical: 8),
+                        leading: FaIcon(
+                          FontAwesomeIcons.checkSquare,
+                          size: 28,
+                        ),
+                        title: Text('${_languagePack.subscribe}'),
+                        onTap: () {
+                          Navigator.pop(context);
+                        },
+                      ),
+                      ListTile(
+                        contentPadding:
+                            EdgeInsets.symmetric(horizontal: 15, vertical: 8),
+                        leading: FaIcon(
+                          FontAwesomeIcons.bell,
+                          size: 28,
+                        ),
+                        title: Text('${_languagePack.prayerTimeNotification}'),
+                        onTap: () {
+                          // filteringController.resetFilter();
+                          Navigator.popAndPushNamed(
+                            context,
+                            '/notificationConfig',
+                          );
+                        },
+                      ),
                       Consumer(builder: (context, watch, child) {
                         SelectedMosuqeNewsProvider prov =
                             watch(selectedMosuqeNewsProvider);
@@ -113,34 +141,6 @@ class SubscriptionPageDrawer extends ConsumerWidget {
                         contentPadding:
                             EdgeInsets.symmetric(horizontal: 15, vertical: 8),
                         leading: FaIcon(
-                          FontAwesomeIcons.checkSquare,
-                          size: 28,
-                        ),
-                        title: Text('${_languagePack.subscribe}'),
-                        onTap: () {
-                          Navigator.pop(context);
-                        },
-                      ),
-                      ListTile(
-                        contentPadding:
-                            EdgeInsets.symmetric(horizontal: 15, vertical: 8),
-                        leading: FaIcon(
-                          FontAwesomeIcons.bell,
-                          size: 28,
-                        ),
-                        title: Text('${_languagePack.prayerTimeNotification}'),
-                        onTap: () {
-                          // filteringController.resetFilter();
-                          Navigator.popAndPushNamed(
-                            context,
-                            '/notificationConfig',
-                          );
-                        },
-                      ),
-                      ListTile(
-                        contentPadding:
-                            EdgeInsets.symmetric(horizontal: 15, vertical: 8),
-                        leading: FaIcon(
                           FontAwesomeIcons.compass,
                           size: 28,
                         ),
@@ -148,46 +148,6 @@ class SubscriptionPageDrawer extends ConsumerWidget {
                         onTap: () {
                           Navigator.pop(context);
                           Navigator.pushNamed(context, '/compass');
-                        },
-                      ),
-                      // ListTile(
-                      //   contentPadding:
-                      //       EdgeInsets.symmetric(horizontal: 15, vertical: 8),
-                      //   leading: FaIcon(
-                      //     FontAwesomeIcons.map,
-                      //     size: 28,
-                      //   ),
-                      //   title: Text(
-                      //     '${_languagePack.map}',
-                      //     style: !snapshot.data
-                      //         ? TextStyle(color: Colors.grey)
-                      //         : TextStyle(),
-                      //   ),
-                      //   onTap: () {
-                      //     if (snapshot.data) {
-                      //       Navigator.pop(context);
-                      //       Navigator.pushNamed(context, '/map');
-                      //     }
-                      //   },
-                      // ),
-                      ListTile(
-                        contentPadding:
-                            EdgeInsets.symmetric(horizontal: 15, vertical: 8),
-                        leading: FaIcon(
-                          FontAwesomeIcons.envelope,
-                          size: 28,
-                        ),
-                        title: Text(
-                          '${_languagePack.contact}',
-                          style: !snapshot.data
-                              ? TextStyle(color: Colors.grey)
-                              : TextStyle(),
-                        ),
-                        onTap: () {
-                          if (snapshot.data) {
-                            Navigator.pop(context);
-                            Navigator.pushNamed(context, '/contact');
-                          }
                         },
                       ),
                       ListTile(
@@ -201,6 +161,26 @@ class SubscriptionPageDrawer extends ConsumerWidget {
                         onTap: () {
                           currentTheme.switchTheme(Hive.box('pref'));
                           // Navigator.pop(context);
+                        },
+                      ),
+                      ListTile(
+                        contentPadding:
+                            EdgeInsets.symmetric(horizontal: 15, vertical: 8),
+                        leading: FaIcon(
+                          FontAwesomeIcons.envelope,
+                          size: 28,
+                        ),
+                        title: Text(
+                          '${_languagePack.contactUs}',
+                          style: !snapshot.data
+                              ? TextStyle(color: Colors.grey)
+                              : TextStyle(),
+                        ),
+                        onTap: () {
+                          if (snapshot.data) {
+                            Navigator.pop(context);
+                            Navigator.pushNamed(context, '/contact');
+                          }
                         },
                       ),
                       !snapshot.data

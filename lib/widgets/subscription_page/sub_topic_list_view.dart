@@ -138,18 +138,7 @@ class SubTopicListView extends ConsumerWidget {
           currentMosqueSubsController
               .addMosqueToSubsList(subtopics[index].mosqueId);
       } else {
-        Permission.notification.request().then((value) {
-          if (value.isGranted) {
-            // Add to sub list
-            currentSubsListController.addToSubsList(
-              subtopics[index],
-            );
-            // if its first sub to this mosque add it to his list
-            if (!isMosqueSub)
-              currentMosqueSubsController
-                  .addMosqueToSubsList(subtopics[index].mosqueId);
-          }
-        });
+        openAppSettings();
       }
     }
   }

@@ -178,7 +178,7 @@ class _MyAppState extends State<MyApp> {
         '/newsPage': (context) => NewsPage(),
         '/newsMosquesPage': (context) => NewsMosquesPage(),
         '/compass': (context) => CompassPage(),
-        '/map': (context) => MapPage(),
+        // '/map': (context) => MapPage(),
         '/contact': (context) => ContactPage(),
         '/notificationConfig': (context) => NotificationConfigPage(),
       },

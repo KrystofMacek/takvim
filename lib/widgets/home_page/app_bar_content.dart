@@ -1,7 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/all.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:takvim/common/styling.dart';
+import 'package:takvim/data/models/language_pack.dart';
+import 'package:takvim/providers/language_page/language_provider.dart';
+import 'package:takvim/providers/mosque_page/mosque_detail_provider.dart';
 import 'package:takvim/providers/mosque_page/mosque_provider.dart';
 import 'package:takvim/widgets/home_page/home_page_widgets.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class HomePageAppBarContent extends StatelessWidget {
   const HomePageAppBarContent({
@@ -52,7 +58,31 @@ class HomePageAppBarContent extends StatelessWidget {
         Flexible(
           flex: 1,
           fit: FlexFit.tight,
-          child: SizedBox(),
+          child: Consumer(
+            builder: (context, watch, child) {
+              LanguagePack _appLang = watch(appLanguagePackProvider.state);
+
+              return IconButton(
+                hoverColor: Colors.transparent,
+                icon: FaIcon(
+                  FontAwesomeIcons.info,
+                  color: Colors.white,
+                  size: 20,
+                ),
+                onPressed: () async {
+                  if (await canLaunch(
+                      'https://news.takvim.ch/mosque/$_selectedMosque?integratedView=true&languageId=${_appLang.languageId}')) {
+                    await launch(
+                      'https://news.takvim.ch/mosque/$_selectedMosque?integratedView=true&languageId=${_appLang.languageId}',
+                      forceSafariVC: false,
+                    );
+                  } else {
+                    throw 'Could not launch $_selectedMosque';
+                  }
+                },
+              );
+            },
+          ),
         ),
       ],
     );

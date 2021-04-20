@@ -44,7 +44,7 @@ class ContactAppBarContent extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                '${_appLang.contact}',
+                '${_appLang.contactUs}',
                 style: Theme.of(context).textTheme.headline1,
               ),
             ],

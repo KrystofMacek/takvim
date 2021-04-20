@@ -55,6 +55,12 @@ class LanguagePack {
     @required this.minutes,
     @required this.activate,
     @required this.minutesBeforehand,
+    @required this.send,
+    @required this.nothingFound,
+    @required this.message,
+    @required this.contactUs,
+    @required this.contactSuccessMessage,
+    @required this.contactErrorMessage,
   });
 
   final String address;
@@ -100,6 +106,12 @@ class LanguagePack {
   final String minutes;
   final String activate;
   final String minutesBeforehand;
+  final String send;
+  final String nothingFound;
+  final String message;
+  final String contactUs;
+  final String contactSuccessMessage;
+  final String contactErrorMessage;
 
   LanguagePack copyWith({
     String address,
@@ -144,6 +156,12 @@ class LanguagePack {
     String minutes,
     String activate,
     String minutesBeforehand,
+    String send,
+    String nothingFound,
+    String message,
+    String contactUs,
+    String contactSuccessMessage,
+    String contactErrorMessage,
   }) =>
       LanguagePack(
         address: address ?? this.address,
@@ -191,6 +209,12 @@ class LanguagePack {
 
         activate: activate ?? activate,
         minutesBeforehand: minutesBeforehand ?? minutesBeforehand,
+        send: send ?? send,
+        nothingFound: nothingFound ?? nothingFound,
+        message: message ?? message,
+        contactUs: contactUs ?? contactUs,
+        contactSuccessMessage: contactSuccessMessage ?? contactSuccessMessage,
+        contactErrorMessage: contactErrorMessage ?? contactErrorMessage,
       );
 
   factory LanguagePack.fromJson(Map<String, dynamic> json) => LanguagePack(
@@ -237,6 +261,12 @@ class LanguagePack {
         minutes: json["minutes"],
         activate: json["activate"],
         minutesBeforehand: json["minutesBeforehand"],
+        send: json["send"],
+        nothingFound: json["nothingFound"],
+        message: json["message"],
+        contactUs: json["contactUs"],
+        contactSuccessMessage: json["contactSuccessMessage"],
+        contactErrorMessage: json["contactErrorMessage"],
       );
 
   factory LanguagePack.fromFirebase(Map<dynamic, dynamic> json) => LanguagePack(
@@ -283,6 +313,12 @@ class LanguagePack {
         minutes: json["minutes"],
         activate: json["activate"],
         minutesBeforehand: json["minutesBeforehand"],
+        send: json["send"],
+        nothingFound: json["nothingFound"],
+        message: json["message"],
+        contactUs: json["contactUs"],
+        contactSuccessMessage: json["contactSuccessMessage"],
+        contactErrorMessage: json["contactErrorMessage"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -329,5 +365,11 @@ class LanguagePack {
         "minutes": minutes,
         "activate": activate,
         "minutesBeforehand": minutesBeforehand,
+        "send": send,
+        "nothingFound": nothingFound,
+        "message": message,
+        "contactUs": contactUs,
+        "contactSuccessMessage": contactSuccessMessage,
+        "contactErrorMessage": contactErrorMessage,
       };
 }

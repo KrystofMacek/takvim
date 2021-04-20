@@ -121,16 +121,6 @@ class ConfigTimesItem extends ConsumerWidget {
                                       .toggleTime(_index);
                                 } else {
                                   openAppSettings();
-                                  // Permission.notification
-                                  //     .request()
-                                  //     .then((value) {
-                                  //   print('notif p granted ? $value');
-                                  //   if (value.isGranted) {
-                                  //     context
-                                  //         .read(activeTimesProvider)
-                                  //         .toggleTime(_index);
-                                  //   }
-                                  // });
                                 }
                               },
                               child: CustomCheckBox(

@@ -98,15 +98,7 @@ class SingleTopicSubsItem extends ConsumerWidget {
                         currentMosqueSubsController
                             .addMosqueToSubsList(_mosqueData.mosqueId);
                       } else {
-                        Permission.notification.request().then((value) {
-                          if (value.isGranted) {
-                            currentSubsListController.addToSubsList(
-                              _topic,
-                            );
-                            currentMosqueSubsController
-                                .addMosqueToSubsList(_mosqueData.mosqueId);
-                          }
-                        });
+                        openAppSettings();
                       }
                     }
                   },

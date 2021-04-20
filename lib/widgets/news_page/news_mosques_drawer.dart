@@ -75,25 +75,11 @@ class NewsMosquesDrawer extends ConsumerWidget {
                           Navigator.popAndPushNamed(context, '/lang');
                         },
                       ),
-                      Consumer(builder: (context, watch, child) {
-                        return ListTile(
-                          contentPadding:
-                              EdgeInsets.symmetric(horizontal: 15, vertical: 8),
-                          leading: FaIcon(
-                            FontAwesomeIcons.newspaper,
-                            size: 28,
-                          ),
-                          title: Text('${_languagePack.news}'),
-                          onTap: () {
-                            Navigator.pop(context);
-                          },
-                        );
-                      }),
                       ListTile(
                         contentPadding:
                             EdgeInsets.symmetric(horizontal: 15, vertical: 8),
                         leading: FaIcon(
-                          FontAwesomeIcons.bell,
+                          FontAwesomeIcons.checkSquare,
                           size: 28,
                         ),
                         title: Text(
@@ -110,8 +96,8 @@ class NewsMosquesDrawer extends ConsumerWidget {
                       ListTile(
                         contentPadding:
                             EdgeInsets.symmetric(horizontal: 15, vertical: 8),
-                        leading: Icon(
-                          Icons.access_alarm,
+                        leading: FaIcon(
+                          FontAwesomeIcons.bell,
                           size: 28,
                         ),
                         title: Text('${_languagePack.prayerTimeNotification}'),
@@ -123,6 +109,20 @@ class NewsMosquesDrawer extends ConsumerWidget {
                           );
                         },
                       ),
+                      Consumer(builder: (context, watch, child) {
+                        return ListTile(
+                          contentPadding:
+                              EdgeInsets.symmetric(horizontal: 15, vertical: 8),
+                          leading: FaIcon(
+                            FontAwesomeIcons.newspaper,
+                            size: 28,
+                          ),
+                          title: Text('${_languagePack.news}'),
+                          onTap: () {
+                            Navigator.pop(context);
+                          },
+                        );
+                      }),
                       ListTile(
                         contentPadding:
                             EdgeInsets.symmetric(horizontal: 15, vertical: 8),
@@ -147,6 +147,26 @@ class NewsMosquesDrawer extends ConsumerWidget {
                         onTap: () {
                           currentTheme.switchTheme(Hive.box('pref'));
                           // Navigator.pop(context);
+                        },
+                      ),
+                      ListTile(
+                        contentPadding:
+                            EdgeInsets.symmetric(horizontal: 15, vertical: 8),
+                        leading: FaIcon(
+                          FontAwesomeIcons.envelope,
+                          size: 28,
+                        ),
+                        title: Text(
+                          '${_languagePack.contactUs}',
+                          style: !snapshot.data
+                              ? TextStyle(color: Colors.grey)
+                              : TextStyle(),
+                        ),
+                        onTap: () {
+                          if (snapshot.data) {
+                            Navigator.pop(context);
+                            Navigator.pushNamed(context, '/contact');
+                          }
                         },
                       ),
                       !snapshot.data

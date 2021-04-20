@@ -1,5 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/material.dart';
+import 'package:takvim/widgets/contact_page/body.dart';
 import 'package:takvim/widgets/home_page/app_bar.dart';
 import 'package:cross_connectivity/cross_connectivity.dart';
 import 'package:webview_flutter/webview_flutter.dart';
@@ -25,22 +26,11 @@ class ContactPage extends ConsumerWidget {
             languagePack: _appLang,
           ),
           floatingActionButton: ContactFab(),
-          body: StreamBuilder(
-            stream: _connectivity.isConnected,
-            initialData: false,
-            builder: (BuildContext context, AsyncSnapshot snapshot) {
-              if (snapshot.hasData && snapshot.data) {
-                return WebView(
-                  initialUrl:
-                      'https://news.takvim.ch/contact?integratedView=true&languageId=${_appLang.languageId}',
-                  javascriptMode: JavascriptMode.unrestricted,
-                );
-              } else {
-                return Center(
-                  child: CircularProgressIndicator(),
-                );
-              }
-            },
+          body: SingleChildScrollView(
+            child: Container(
+              padding: EdgeInsets.symmetric(horizontal: 20, vertical: 50),
+              child: EmailForm(),
+            ),
           ),
         ),
       ),
