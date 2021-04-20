@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/all.dart';
 import 'package:numberpicker/numberpicker.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:takvim/common/constants.dart';
 import 'package:takvim/common/styling.dart';
 import 'package:takvim/common/utils.dart';
 import 'package:takvim/data/models/day_data.dart';
 import 'package:takvim/data/models/language_pack.dart';
 import 'package:takvim/providers/common/notification_provider.dart';
+import 'package:takvim/providers/common/permission.dart';
 import 'package:takvim/providers/language_page/language_provider.dart';
 import 'package:takvim/providers/notification_config_page/notification_config_providers.dart';
 import 'package:takvim/widgets/subscription_page/checkbox.dart';
@@ -109,9 +111,28 @@ class ConfigTimesItem extends ConsumerWidget {
                         child: Row(
                           children: [
                             GestureDetector(
-                              onTap: () => context
-                                  .read(activeTimesProvider)
-                                  .toggleTime(_index),
+                              onTap: () async {
+                                bool isGranted = await Permission
+                                    .notification.status.isGranted;
+
+                                if (isGranted) {
+                                  context
+                                      .read(activeTimesProvider)
+                                      .toggleTime(_index);
+                                } else {
+                                  openAppSettings();
+                                  // Permission.notification
+                                  //     .request()
+                                  //     .then((value) {
+                                  //   print('notif p granted ? $value');
+                                  //   if (value.isGranted) {
+                                  //     context
+                                  //         .read(activeTimesProvider)
+                                  //         .toggleTime(_index);
+                                  //   }
+                                  // });
+                                }
+                              },
                               child: CustomCheckBox(
                                 size: 25,
                                 iconSize: 20,

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:takvim/common/styling.dart';
 import '../../providers/subscription/selected_subs_item_provider.dart';
 import '../../providers/subscription/subs_list_provider.dart';
@@ -78,7 +79,7 @@ class SingleTopicSubsItem extends ConsumerWidget {
               Container(
                 padding: EdgeInsets.only(right: 10),
                 child: GestureDetector(
-                  onTap: () {
+                  onTap: () async {
                     if (subscribed) {
                       // remove from sub list
                       currentSubsListController.removeFromSubsList(
@@ -87,11 +88,26 @@ class SingleTopicSubsItem extends ConsumerWidget {
                       currentMosqueSubsController
                           .removeMosqueFromSubsList(_mosqueData.mosqueId);
                     } else {
-                      currentSubsListController.addToSubsList(
-                        _topic,
-                      );
-                      currentMosqueSubsController
-                          .addMosqueToSubsList(_mosqueData.mosqueId);
+                      bool isGranted =
+                          await Permission.notification.status.isGranted;
+
+                      if (isGranted) {
+                        currentSubsListController.addToSubsList(
+                          _topic,
+                        );
+                        currentMosqueSubsController
+                            .addMosqueToSubsList(_mosqueData.mosqueId);
+                      } else {
+                        Permission.notification.request().then((value) {
+                          if (value.isGranted) {
+                            currentSubsListController.addToSubsList(
+                              _topic,
+                            );
+                            currentMosqueSubsController
+                                .addMosqueToSubsList(_mosqueData.mosqueId);
+                          }
+                        });
+                      }
                     }
                   },
                   child: CustomCheckBox(

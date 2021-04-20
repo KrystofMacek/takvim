@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:permission_handler/permission_handler.dart';
 import '../../providers/subscription/subs_list_provider.dart';
 import '../../data/models/subsTopic.dart';
 import '../../common/styling.dart';
@@ -66,8 +67,8 @@ class SubTopicListView extends ConsumerWidget {
               Container(
                 padding: EdgeInsets.only(right: 10),
                 child: GestureDetector(
-                  onTap: () {
-                    _subscribe(
+                  onTap: () async {
+                    await _subscribe(
                       context,
                       subscribed,
                       currentSubsList,
@@ -94,7 +95,7 @@ class SubTopicListView extends ConsumerWidget {
     );
   }
 
-  void _subscribe(
+  Future<void> _subscribe(
     BuildContext context,
     bool subscribed,
     List<SubsTopic> currentSubsList,
@@ -103,7 +104,7 @@ class SubTopicListView extends ConsumerWidget {
     List<SubsTopic> subtopics,
     int index,
     bool isMosqueSub,
-  ) {
+  ) async {
     // If the user is subscribed
     if (subscribed) {
       // remove from sub list
@@ -125,14 +126,31 @@ class SubTopicListView extends ConsumerWidget {
             .removeMosqueFromSubsList(subtopics[index].mosqueId);
       // If the user is not subscribed
     } else {
-      // Add to sub list
-      currentSubsListController.addToSubsList(
-        subtopics[index],
-      );
-      // if its first sub to this mosque add it to his list
-      if (!isMosqueSub)
-        currentMosqueSubsController
-            .addMosqueToSubsList(subtopics[index].mosqueId);
+      bool isGranted = await Permission.notification.status.isGranted;
+
+      if (isGranted) {
+        // Add to sub list
+        currentSubsListController.addToSubsList(
+          subtopics[index],
+        );
+        // if its first sub to this mosque add it to his list
+        if (!isMosqueSub)
+          currentMosqueSubsController
+              .addMosqueToSubsList(subtopics[index].mosqueId);
+      } else {
+        Permission.notification.request().then((value) {
+          if (value.isGranted) {
+            // Add to sub list
+            currentSubsListController.addToSubsList(
+              subtopics[index],
+            );
+            // if its first sub to this mosque add it to his list
+            if (!isMosqueSub)
+              currentMosqueSubsController
+                  .addMosqueToSubsList(subtopics[index].mosqueId);
+          }
+        });
+      }
     }
   }
 }
