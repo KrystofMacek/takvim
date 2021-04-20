@@ -191,7 +191,7 @@ class ConfigTimesItem extends ConsumerWidget {
                                         children: <Widget>[
                                           NumberPicker(
                                             minValue: 0,
-                                            maxValue: 59,
+                                            maxValue: 60,
                                             itemCount: 5,
                                             itemHeight: 35,
                                             value: mins[_index],

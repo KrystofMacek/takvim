@@ -40,7 +40,7 @@ class _EmailFormState extends State<EmailForm> {
       final message = Message()
         ..from = Address(sender)
         ..recipients.add(reciever)
-        ..subject = 'Contact form'
+        ..subject = 'Contact form (App)'
         ..html =
             "<p>Name: ${_nameController.text}</p><p>Email: ${_emailController.text}</p><p>Message: ${_messageController.text}</p>";
       send(message, smtpServer)
@@ -106,7 +106,7 @@ class _EmailFormState extends State<EmailForm> {
                 children: [
                   Text(
                     _activeLang.name,
-                    style: TextStyle(fontStyle: FontStyle.normal),
+                    style: TextStyle(fontStyle: FontStyle.normal, fontSize: 20),
                   )
                 ],
               ),
@@ -114,10 +114,10 @@ class _EmailFormState extends State<EmailForm> {
                 height: 5,
               ),
               TextFormField(
-                style: TextStyle(color: Colors.black),
+                style: TextStyle(color: Colors.black, fontSize: 20),
                 validator: (value) {
                   if (value.isEmpty) {
-                    return _activeLang.nothingFound;
+                    return _activeLang.formValidationEmpty;
                   }
                   return null;
                 },
@@ -132,7 +132,7 @@ class _EmailFormState extends State<EmailForm> {
                 children: [
                   Text(
                     _activeLang.email,
-                    style: TextStyle(fontStyle: FontStyle.normal),
+                    style: TextStyle(fontStyle: FontStyle.normal, fontSize: 20),
                   )
                 ],
               ),
@@ -140,14 +140,16 @@ class _EmailFormState extends State<EmailForm> {
                 height: 5,
               ),
               TextFormField(
-                style: TextStyle(color: Colors.black),
+                style: TextStyle(color: Colors.black, fontSize: 20),
                 validator: (value) {
-                  if (value.isEmpty ||
-                      RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
-                          .hasMatch(value)) {
-                    return null;
+                  if (value.isEmpty) {
+                    return _activeLang.formValidationEmpty;
+                  } else if (!RegExp(
+                          r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+                      .hasMatch(value)) {
+                    return "";
                   }
-                  return _activeLang.nothingFound;
+                  return null;
                 },
                 controller: _emailController,
                 decoration:
@@ -160,7 +162,7 @@ class _EmailFormState extends State<EmailForm> {
                 children: [
                   Text(
                     _activeLang.message,
-                    style: TextStyle(fontStyle: FontStyle.normal),
+                    style: TextStyle(fontStyle: FontStyle.normal, fontSize: 20),
                   )
                 ],
               ),
@@ -168,10 +170,10 @@ class _EmailFormState extends State<EmailForm> {
                 height: 5,
               ),
               TextFormField(
-                style: TextStyle(color: Colors.black),
+                style: TextStyle(color: Colors.black, fontSize: 20),
                 validator: (value) {
                   if (value.isEmpty) {
-                    return _activeLang.nothingFound;
+                    return _activeLang.formValidationEmpty;
                   }
                   return null;
                 },

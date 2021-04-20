@@ -11,57 +11,57 @@ LanguagePack languagePackFromJson(String str) =>
 String languagePackToJson(LanguagePack data) => json.encode(data.toJson());
 
 class LanguagePack {
-  LanguagePack({
-    @required this.address,
-    @required this.app,
-    @required this.appTheme,
-    @required this.asr,
-    @required this.contact,
-    @required this.dhuhr,
-    @required this.dhuhrTime,
-    @required this.di,
-    @required this.languagePackDo,
-    @required this.email,
-    @required this.fajr,
-    @required this.flagName,
-    @required this.fr,
-    @required this.isha,
-    @required this.ishaTime,
-    @required this.language,
-    @required this.languageId,
-    @required this.languageName,
-    @required this.maghrib,
-    @required this.mi,
-    @required this.mo,
-    @required this.mosque,
-    @required this.name,
-    @required this.prayerTimes,
-    @required this.sa,
-    @required this.sabah,
-    @required this.search,
-    // @required this.selectLanguage,
-    // @required this.selectMosque,
-    @required this.so,
-    @required this.sunrise,
-    @required this.telefon,
-    @required this.website,
-    @required this.subscribe,
-    @required this.news,
-    @required this.noInternet,
-    @required this.compass,
-    @required this.errorSensor,
-    @required this.map,
-    @required this.prayerTimeNotification,
-    @required this.minutes,
-    @required this.activate,
-    @required this.minutesBeforehand,
-    @required this.send,
-    @required this.nothingFound,
-    @required this.message,
-    @required this.contactUs,
-    @required this.contactSuccessMessage,
-    @required this.contactErrorMessage,
-  });
+  LanguagePack(
+      {@required this.address,
+      @required this.app,
+      @required this.appTheme,
+      @required this.asr,
+      @required this.contact,
+      @required this.dhuhr,
+      @required this.dhuhrTime,
+      @required this.di,
+      @required this.languagePackDo,
+      @required this.email,
+      @required this.fajr,
+      @required this.flagName,
+      @required this.fr,
+      @required this.isha,
+      @required this.ishaTime,
+      @required this.language,
+      @required this.languageId,
+      @required this.languageName,
+      @required this.maghrib,
+      @required this.mi,
+      @required this.mo,
+      @required this.mosque,
+      @required this.name,
+      @required this.prayerTimes,
+      @required this.sa,
+      @required this.sabah,
+      @required this.search,
+      // @required this.selectLanguage,
+      // @required this.selectMosque,
+      @required this.so,
+      @required this.sunrise,
+      @required this.telefon,
+      @required this.website,
+      @required this.subscribe,
+      @required this.news,
+      @required this.noInternet,
+      @required this.compass,
+      @required this.errorSensor,
+      @required this.map,
+      @required this.prayerTimeNotification,
+      @required this.minutes,
+      @required this.activate,
+      @required this.minutesBeforehand,
+      @required this.send,
+      @required this.nothingFound,
+      @required this.message,
+      @required this.contactUs,
+      @required this.contactSuccessMessage,
+      @required this.contactErrorMessage,
+      @required this.formValidationEmpty});
 
   final String address;
   final String app;
@@ -112,6 +112,7 @@ class LanguagePack {
   final String contactUs;
   final String contactSuccessMessage;
   final String contactErrorMessage;
+  final String formValidationEmpty;
 
   LanguagePack copyWith({
     String address,
@@ -162,6 +163,7 @@ class LanguagePack {
     String contactUs,
     String contactSuccessMessage,
     String contactErrorMessage,
+    String formValidationEmpty,
   }) =>
       LanguagePack(
         address: address ?? this.address,
@@ -215,6 +217,7 @@ class LanguagePack {
         contactUs: contactUs ?? contactUs,
         contactSuccessMessage: contactSuccessMessage ?? contactSuccessMessage,
         contactErrorMessage: contactErrorMessage ?? contactErrorMessage,
+        formValidationEmpty: formValidationEmpty ?? formValidationEmpty,
       );
 
   factory LanguagePack.fromJson(Map<String, dynamic> json) => LanguagePack(
@@ -267,6 +270,7 @@ class LanguagePack {
         contactUs: json["contactUs"],
         contactSuccessMessage: json["contactSuccessMessage"],
         contactErrorMessage: json["contactErrorMessage"],
+        formValidationEmpty: json["formValidationEmpty"],
       );
 
   factory LanguagePack.fromFirebase(Map<dynamic, dynamic> json) => LanguagePack(
@@ -319,6 +323,7 @@ class LanguagePack {
         contactUs: json["contactUs"],
         contactSuccessMessage: json["contactSuccessMessage"],
         contactErrorMessage: json["contactErrorMessage"],
+        formValidationEmpty: json["formValidationEmpty"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -371,5 +376,6 @@ class LanguagePack {
         "contactUs": contactUs,
         "contactSuccessMessage": contactSuccessMessage,
         "contactErrorMessage": contactErrorMessage,
+        "formValidationEmpty": formValidationEmpty,
       };
 }

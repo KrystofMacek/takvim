@@ -17,7 +17,7 @@ class ContactFab extends ConsumerWidget {
         padding: const EdgeInsets.all(4.0),
         child: IconButton(
           icon: FaIcon(
-            FontAwesomeIcons.check,
+            FontAwesomeIcons.arrowLeft,
           ),
           onPressed: () {
             Navigator.pop(context);

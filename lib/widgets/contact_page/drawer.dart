@@ -146,6 +146,7 @@ class ContactDrawer extends ConsumerWidget {
                         title: Text('${_languagePack.compass}'),
                         onTap: () {
                           Navigator.pop(context);
+                          Navigator.pushNamed(context, '/compass');
                         },
                       ),
                       // ListTile(

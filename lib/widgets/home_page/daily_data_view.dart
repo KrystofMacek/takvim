@@ -125,20 +125,26 @@ class DailyDataView extends ConsumerWidget {
                               Flexible(
                                 fit: FlexFit.loose,
                                 child: Container(
-                                  decoration: BoxDecoration(
-                                    color: data.notes.isNotEmpty
-                                        ? Theme.of(context).colorScheme.surface
-                                        : Colors.transparent,
-                                    borderRadius: BorderRadius.circular(10),
-                                  ),
-                                  padding: EdgeInsets.symmetric(
-                                      vertical: 5, horizontal: 10),
-                                  child: SingleChildScrollView(
-                                    child: LinkWell(
-                                      '${data.notes}',
-                                      style:
-                                          Theme.of(context).textTheme.headline3,
-                                      textAlign: TextAlign.center,
+                                  padding: EdgeInsets.symmetric(horizontal: 4),
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                      color: data.notes.isNotEmpty
+                                          ? Theme.of(context)
+                                              .colorScheme
+                                              .surface
+                                          : Colors.transparent,
+                                      borderRadius: BorderRadius.circular(10),
+                                    ),
+                                    padding: EdgeInsets.symmetric(
+                                        vertical: 5, horizontal: 10),
+                                    child: SingleChildScrollView(
+                                      child: LinkWell(
+                                        '${data.notes}',
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .headline3,
+                                        textAlign: TextAlign.center,
+                                      ),
                                     ),
                                   ),
                                 ),
