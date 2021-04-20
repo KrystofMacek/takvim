@@ -86,18 +86,6 @@ class SubscriptionPageDrawer extends ConsumerWidget {
                         contentPadding:
                             EdgeInsets.symmetric(horizontal: 15, vertical: 8),
                         leading: FaIcon(
-                          FontAwesomeIcons.checkSquare,
-                          size: 28,
-                        ),
-                        title: Text('${_languagePack.subscribe}'),
-                        onTap: () {
-                          Navigator.pop(context);
-                        },
-                      ),
-                      ListTile(
-                        contentPadding:
-                            EdgeInsets.symmetric(horizontal: 15, vertical: 8),
-                        leading: FaIcon(
                           FontAwesomeIcons.bell,
                           size: 28,
                         ),
@@ -108,6 +96,18 @@ class SubscriptionPageDrawer extends ConsumerWidget {
                             context,
                             '/notificationConfig',
                           );
+                        },
+                      ),
+                      ListTile(
+                        contentPadding:
+                            EdgeInsets.symmetric(horizontal: 15, vertical: 8),
+                        leading: FaIcon(
+                          FontAwesomeIcons.checkSquare,
+                          size: 28,
+                        ),
+                        title: Text('${_languagePack.subscribe}'),
+                        onTap: () {
+                          Navigator.pop(context);
                         },
                       ),
                       Consumer(builder: (context, watch, child) {

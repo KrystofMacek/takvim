@@ -23,47 +23,52 @@ class _EmailFormState extends State<EmailForm> {
 
   final _formKey = GlobalKey<FormState>();
 
-  final String sender = 'takvim.ch@gmail.com';
-  final String reciever = 'takvim.ch@gmail.com';
+  final String sender = 'takvim.ch@hotmail.com';
+  final String reciever = 'takvim.ch@hotmail.com';
 
   Future<void> _send() async {
-    String username = 'takvim.ch@gmail.com';
-    String password = '16f11e!_9a17';
+    String username = 'takvim.ch@hotmail.com';
+    String password = 'vqWsK6bDYMi1qQzfDfw3';
 
-    final smtp = gmail(username, password);
+    final smtpServer = SmtpServer(
+      'smtp.office365.com',
+      username: username,
+      password: password,
+    );
 
     try {
       final message = Message()
-        ..from = Address('takvim.ch@gmail.com')
-        ..recipients.add('takvim.ch@gmail.com')
+        ..from = Address(sender)
+        ..recipients.add(reciever)
         ..subject = 'Contact form'
         ..html =
             "<p>Name: ${_nameController.text}</p><p>Email: ${_emailController.text}</p><p>Message: ${_messageController.text}</p>";
-      send(message, smtp)
+      send(message, smtpServer)
           .then(
-            (value) => Scaffold.of(context).showSnackBar(
-              SnackBar(
-                content: Consumer(
-                  builder: (context, watch, child) {
-                    LanguagePack lang = watch(appLanguagePackProvider.state);
-                    return Text('${lang.contactSuccessMessage}');
-                  },
-                ),
-              ),
+        (value) => Scaffold.of(context).showSnackBar(
+          SnackBar(
+            content: Consumer(
+              builder: (context, watch, child) {
+                LanguagePack lang = watch(appLanguagePackProvider.state);
+                return Text('${lang.contactSuccessMessage}');
+              },
             ),
-          )
-          .onError(
-            (error, stackTrace) => Scaffold.of(context).showSnackBar(
-              SnackBar(
-                content: Consumer(
-                  builder: (context, watch, child) {
-                    LanguagePack lang = watch(appLanguagePackProvider.state);
-                    return Text('${lang.contactErrorMessage}');
-                  },
-                ),
-              ),
+          ),
+        ),
+      )
+          .onError((error, stackTrace) {
+        print(error);
+        return Scaffold.of(context).showSnackBar(
+          SnackBar(
+            content: Consumer(
+              builder: (context, watch, child) {
+                LanguagePack lang = watch(appLanguagePackProvider.state);
+                return Text('${lang.contactErrorMessage}');
+              },
             ),
-          );
+          ),
+        );
+      });
     } catch (error) {
       print(error);
     }
@@ -109,6 +114,7 @@ class _EmailFormState extends State<EmailForm> {
                 height: 5,
               ),
               TextFormField(
+                style: TextStyle(color: Colors.black),
                 validator: (value) {
                   if (value.isEmpty) {
                     return _activeLang.nothingFound;
@@ -134,14 +140,14 @@ class _EmailFormState extends State<EmailForm> {
                 height: 5,
               ),
               TextFormField(
+                style: TextStyle(color: Colors.black),
                 validator: (value) {
                   if (value.isEmpty ||
-                      !RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+                      RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
                           .hasMatch(value)) {
-                    return _activeLang.nothingFound;
+                    return null;
                   }
-
-                  return null;
+                  return _activeLang.nothingFound;
                 },
                 controller: _emailController,
                 decoration:
@@ -162,6 +168,7 @@ class _EmailFormState extends State<EmailForm> {
                 height: 5,
               ),
               TextFormField(
+                style: TextStyle(color: Colors.black),
                 validator: (value) {
                   if (value.isEmpty) {
                     return _activeLang.nothingFound;
@@ -178,9 +185,8 @@ class _EmailFormState extends State<EmailForm> {
               SizedBox(
                 height: 10,
               ),
-              Container(
-                width: 100,
-                height: 50,
+              ConstrainedBox(
+                constraints: BoxConstraints(maxWidth: 150, minHeight: 50),
                 child: MaterialButton(
                   minWidth: double.infinity,
                   elevation: 2,

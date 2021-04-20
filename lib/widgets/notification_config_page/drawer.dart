@@ -81,6 +81,19 @@ class DrawerNotificationConfigPage extends ConsumerWidget {
                         contentPadding:
                             EdgeInsets.symmetric(horizontal: 15, vertical: 8),
                         leading: FaIcon(
+                          FontAwesomeIcons.bell,
+                          size: 28,
+                        ),
+                        title: Text('${_languagePack.prayerTimeNotification}'),
+                        onTap: () {
+                          // filteringController.resetFilter();
+                          Navigator.pop(context);
+                        },
+                      ),
+                      ListTile(
+                        contentPadding:
+                            EdgeInsets.symmetric(horizontal: 15, vertical: 8),
+                        leading: FaIcon(
                           FontAwesomeIcons.checkSquare,
                           size: 28,
                         ),
@@ -93,19 +106,6 @@ class DrawerNotificationConfigPage extends ConsumerWidget {
                         onTap: () {
                           if (snapshot.data)
                             Navigator.popAndPushNamed(context, '/sub');
-                        },
-                      ),
-                      ListTile(
-                        contentPadding:
-                            EdgeInsets.symmetric(horizontal: 15, vertical: 8),
-                        leading: FaIcon(
-                          FontAwesomeIcons.bell,
-                          size: 28,
-                        ),
-                        title: Text('${_languagePack.prayerTimeNotification}'),
-                        onTap: () {
-                          // filteringController.resetFilter();
-                          Navigator.pop(context);
                         },
                       ),
                       Consumer(builder: (context, watch, child) {

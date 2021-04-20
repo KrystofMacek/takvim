@@ -174,7 +174,7 @@ class NotificationLabel extends StatelessWidget {
             ? FaIcon(
                 FontAwesomeIcons.bell,
                 color: CustomColors.mainColor,
-                size: 18,
+                size: 14,
               )
             : SizedBox();
       },

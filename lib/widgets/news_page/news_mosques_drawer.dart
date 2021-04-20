@@ -79,6 +79,22 @@ class NewsMosquesDrawer extends ConsumerWidget {
                         contentPadding:
                             EdgeInsets.symmetric(horizontal: 15, vertical: 8),
                         leading: FaIcon(
+                          FontAwesomeIcons.bell,
+                          size: 28,
+                        ),
+                        title: Text('${_languagePack.prayerTimeNotification}'),
+                        onTap: () {
+                          // filteringController.resetFilter();
+                          Navigator.popAndPushNamed(
+                            context,
+                            '/notificationConfig',
+                          );
+                        },
+                      ),
+                      ListTile(
+                        contentPadding:
+                            EdgeInsets.symmetric(horizontal: 15, vertical: 8),
+                        leading: FaIcon(
                           FontAwesomeIcons.checkSquare,
                           size: 28,
                         ),
@@ -91,22 +107,6 @@ class NewsMosquesDrawer extends ConsumerWidget {
                         onTap: () {
                           if (snapshot.data)
                             Navigator.popAndPushNamed(context, '/sub');
-                        },
-                      ),
-                      ListTile(
-                        contentPadding:
-                            EdgeInsets.symmetric(horizontal: 15, vertical: 8),
-                        leading: FaIcon(
-                          FontAwesomeIcons.bell,
-                          size: 28,
-                        ),
-                        title: Text('${_languagePack.prayerTimeNotification}'),
-                        onTap: () {
-                          // filteringController.resetFilter();
-                          Navigator.popAndPushNamed(
-                            context,
-                            '/notificationConfig',
-                          );
                         },
                       ),
                       Consumer(builder: (context, watch, child) {
