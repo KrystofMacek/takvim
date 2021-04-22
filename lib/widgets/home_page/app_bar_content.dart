@@ -62,6 +62,8 @@ class HomePageAppBarContent extends StatelessWidget {
             builder: (context, watch, child) {
               LanguagePack _appLang = watch(appLanguagePackProvider.state);
 
+              String _selectedMosqueId = watch(selectedMosque.state);
+
               return IconButton(
                 hoverColor: Colors.transparent,
                 icon: FaIcon(
@@ -71,9 +73,9 @@ class HomePageAppBarContent extends StatelessWidget {
                 ),
                 onPressed: () async {
                   if (await canLaunch(
-                      'https://news.takvim.ch/mosque/$_selectedMosque?integratedView=true&languageId=${_appLang.languageId}')) {
+                      'https://news.takvim.ch/mosque/$_selectedMosqueId?integratedView=true&languageId=${_appLang.languageId}')) {
                     await launch(
-                      'https://news.takvim.ch/mosque/$_selectedMosque?integratedView=true&languageId=${_appLang.languageId}',
+                      'https://news.takvim.ch/mosque/$_selectedMosqueId?integratedView=true&languageId=${_appLang.languageId}',
                       forceSafariVC: false,
                     );
                   } else {

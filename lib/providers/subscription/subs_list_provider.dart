@@ -82,9 +82,11 @@ class CurrentSubsList extends StateNotifier<List<SubsTopic>> {
     });
 
     List<SubsTopic> toUnsub = [];
+    String unsubMosqueId = '';
     // UNSUB from NON W-Listed
     for (var topic in state) {
       if (!_whitelist.state.contains(topic)) {
+        unsubMosqueId = topic.mosqueId;
         toUnsub.add(topic);
       }
     }
@@ -94,6 +96,11 @@ class CurrentSubsList extends StateNotifier<List<SubsTopic>> {
       _prefBox.put('subsList', state);
 
       await _fcm.unsubscribeFromTopic(topic.topic);
+    }
+    if (state
+        .where((element) => element.mosqueId == unsubMosqueId)
+        .isNotEmpty) {
+      _currentMosqueSubs.removeMosqueFromSubsList(unsubMosqueId);
     }
 
     List<SubsTopic> toSub = [];
