@@ -6,17 +6,16 @@ import 'package:takvim/data/models/language_pack.dart';
 import 'package:takvim/data/models/mosque_data.dart';
 import 'package:takvim/providers/language_page/language_provider.dart';
 import 'package:takvim/providers/mosque_page/mosque_provider.dart';
+import 'package:takvim/providers/subscription/subs_list_provider.dart';
 import 'package:takvim/widgets/home_page/app_bar.dart';
 import 'package:takvim/widgets/mosque_page/app_bar_content.dart';
 import 'package:cross_connectivity/cross_connectivity.dart';
-import 'package:url_launcher/url_launcher.dart';
 import '../widgets/mosque_page/mosque_page_widgets.dart';
 import '../providers/home_page/date_provider.dart';
 import 'package:firebase_database/firebase_database.dart';
 import '../widgets/mosque_page/drawer.dart';
 import '../providers/common/geolocator_provider.dart';
 import 'package:geolocator/geolocator.dart';
-import '../common/styling.dart';
 
 class MosqueSettingsPage extends ConsumerWidget {
   @override
@@ -30,7 +29,7 @@ class MosqueSettingsPage extends ConsumerWidget {
       _langPackController.updateAppLanguage();
     }
 
-    SelectedMosque _selectedMosque = watch(selectedMosque);
+    TempSelectedMosque _tempSelectedMosque = watch(tempSelectedMosque);
     // String _selectedMosqueId = watch(selectedMosque.state);
     final MosqueController _mosqueController = watch(
       mosqueController,
@@ -71,22 +70,30 @@ class MosqueSettingsPage extends ConsumerWidget {
                 ),
                 onPressed: () {
                   final prefBox = Hive.box('pref');
+                  String mosqueId;
 
-                  if (_selectedMosque.getSelectedMosqueId() == null) {
+                  if (_tempSelectedMosque.getTempSelectedMosqueId() == null) {
                     String prefSelect = prefBox.get('mosque');
                     if (prefSelect == null) {
-                      _selectedMosque.updateSelectedMosque('1001');
+                      _tempSelectedMosque.updateTempSelectedMosque('1001');
                     } else {
-                      _selectedMosque.updateSelectedMosque(prefSelect);
+                      _tempSelectedMosque.updateTempSelectedMosque(prefSelect);
                     }
                   }
 
-                  prefBox.put('mosque', _selectedMosque.getSelectedMosqueId());
+                  mosqueId = _tempSelectedMosque.getTempSelectedMosqueId();
+
+                  context.read(selectedMosque).updateSelectedMosque(mosqueId);
+
+                  prefBox.put(
+                    'mosque',
+                    mosqueId,
+                  );
 
                   FirebaseDatabase.instance
                       .reference()
                       .child('prayerTimes')
-                      .child(_selectedMosque.getSelectedMosqueId())
+                      .child(mosqueId)
                       .keepSynced(true);
 
                   if (prefBox.get('firstOpen')) {
@@ -97,6 +104,7 @@ class MosqueSettingsPage extends ConsumerWidget {
                     Navigator.popUntil(context, ModalRoute.withName('/home'));
                   }
                   filteringController.resetFilter();
+                  context.read(currentSubsListProvider).autoSubscribe(mosqueId);
                 },
               ),
             ),
@@ -119,11 +127,11 @@ class MosqueSettingsPage extends ConsumerWidget {
                           ),
                           Consumer(
                             builder: (context, watch, child) {
-                              String selectedMosqueId =
-                                  watch(selectedMosque.state);
+                              String tempSelectedMosqueId =
+                                  watch(tempSelectedMosque.state);
                               return SelectedMosqueView(
                                 mosqueController: _mosqueController,
-                                selectedMosqueController: selectedMosqueId,
+                                selectedMosqueController: tempSelectedMosqueId,
                               );
                             },
                           ),
@@ -155,21 +163,6 @@ class MosqueSettingsPage extends ConsumerWidget {
                                   if (snapshot.data) {
                                     return StreamPrayerTimeMosques(
                                         mosqueController: _mosqueController);
-                                    // return Consumer(
-                                    //   builder: (context, watch, child) =>
-                                    //       watch(locationProvider).when(
-                                    //     data: (position) {
-                                    //       return StreamPrayerTimeMosques(mosqueController: _mosqueController);
-                                    //     },
-                                    //     loading: () => Expanded(
-                                    //       child: Center(
-                                    //         child: CircularProgressIndicator(),
-                                    //       ),
-                                    //     ),
-                                    //     error: (error, stackTrace) =>
-                                    //         Text('$error'),
-                                    //   ),
-                                    // );
                                   } else {
                                     return Expanded(
                                       child: !snapshot.data
@@ -233,7 +226,7 @@ class StreamPrayerTimeMosques extends StatelessWidget {
               Position position = watch(usersPosition.state);
               List<MosqueData> filteredList = watch(filteredMosqueList.state);
 
-              String selectedId = watch(selectedMosque.state);
+              String selectedId = watch(tempSelectedMosque.state);
 
               if (watch(sortByDistanceToggle.state)) {
                 filteredList = _mosqueController.updateDistances(filteredList);

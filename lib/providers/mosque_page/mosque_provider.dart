@@ -9,7 +9,20 @@ import 'package:takvim/data/models/mosque_data.dart';
 import 'package:takvim/providers/common/geolocator_provider.dart';
 import 'package:takvim/providers/firestore_provider.dart';
 import 'package:geolocator/geolocator.dart';
-import 'dart:async' as dsync;
+
+final tempSelectedMosque = StateNotifierProvider<TempSelectedMosque>((ref) {
+  return TempSelectedMosque(ref.watch(selectedMosque.state));
+});
+
+class TempSelectedMosque extends StateNotifier<String> {
+  TempSelectedMosque(String id) : super(id);
+
+  String getTempSelectedMosqueId() => state;
+
+  void updateTempSelectedMosque(String id) {
+    state = id;
+  }
+}
 
 final selectedMosque = StateNotifierProvider<SelectedMosque>((ref) {
   return SelectedMosque();

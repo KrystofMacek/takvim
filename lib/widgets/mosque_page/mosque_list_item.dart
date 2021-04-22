@@ -128,7 +128,9 @@ class MosqueItem extends ConsumerWidget {
     } else {
       return GestureDetector(
         onTap: () {
-          _mosqueSelector.updateSelectedMosque(data.mosqueId);
+          context
+              .read(tempSelectedMosque)
+              .updateTempSelectedMosque(data.mosqueId);
         },
         child: Card(
           child: Container(
