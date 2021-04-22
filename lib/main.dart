@@ -16,6 +16,7 @@ import 'package:takvim/pages/news/news_page.dart';
 import 'package:takvim/pages/notification_config_page.dart';
 import 'package:takvim/pages/subscribtion_page.dart';
 import 'package:takvim/providers/common/notification_provider.dart';
+import 'package:takvim/providers/subscription/subs_list_provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 import './pages/compass_page.dart';
 import './data/models/subsTopic.dart';
@@ -128,6 +129,7 @@ class _MyAppState extends State<MyApp> {
       prefBox.put('appLang', '101');
       firstOpen = true;
     }
+    context.read(currentSubsListProvider).autoSubscribe(mosque ?? '1001');
     prefBox.put('firstOpen', firstOpen);
     context.read(notificationProvider).initialize(context);
   }
