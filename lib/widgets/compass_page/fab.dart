@@ -20,7 +20,7 @@ class CompassFab extends ConsumerWidget {
             FontAwesomeIcons.arrowLeft,
           ),
           onPressed: () {
-            Navigator.pop(context);
+            Navigator.popUntil(context, ModalRoute.withName('/home'));
           },
         ),
       ),

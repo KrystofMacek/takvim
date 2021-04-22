@@ -97,9 +97,7 @@ class CurrentSubsList extends StateNotifier<List<SubsTopic>> {
 
       await _fcm.unsubscribeFromTopic(topic.topic);
     }
-    if (state
-        .where((element) => element.mosqueId == unsubMosqueId)
-        .isNotEmpty) {
+    if (state.where((element) => element.mosqueId == unsubMosqueId).isEmpty) {
       _currentMosqueSubs.removeMosqueFromSubsList(unsubMosqueId);
     }
 

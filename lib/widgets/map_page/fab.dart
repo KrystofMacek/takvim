@@ -21,7 +21,7 @@ class MapFab extends ConsumerWidget {
             size: 28,
           ),
           onPressed: () {
-            Navigator.pop(context);
+            Navigator.popUntil(context, ModalRoute.withName('/home'));
           },
         ),
       ),

@@ -142,6 +142,7 @@ class DrawerNotificationConfigPage extends ConsumerWidget {
                         title: Text('${_languagePack.compass}'),
                         onTap: () {
                           Navigator.pop(context);
+                          Navigator.pushNamed(context, '/compass');
                         },
                       ),
                       // ListTile(
@@ -188,6 +189,7 @@ class DrawerNotificationConfigPage extends ConsumerWidget {
                         title: Text('${_languagePack.contactUs}'),
                         onTap: () {
                           Navigator.pop(context);
+                          Navigator.pushNamed(context, '/contact');
                         },
                       ),
                       !snapshot.data

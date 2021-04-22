@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:takvim/providers/subscription/subs_list_provider.dart';
 
 class NewsPageFab extends ConsumerWidget {
   const NewsPageFab({
@@ -9,6 +10,7 @@ class NewsPageFab extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, ScopedReader watch) {
+    final mosqueList = watch(currentMosqueSubs.state);
     return Material(
       borderRadius: BorderRadius.circular(50),
       elevation: 2,
@@ -20,7 +22,11 @@ class NewsPageFab extends ConsumerWidget {
             FontAwesomeIcons.arrowLeft,
           ),
           onPressed: () {
-            Navigator.pop(context);
+            if (mosqueList.length > 1) {
+              Navigator.pop(context);
+            } else {
+              Navigator.popUntil(context, ModalRoute.withName('/home'));
+            }
           },
         ),
       ),
