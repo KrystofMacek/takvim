@@ -159,12 +159,16 @@ class DailyDataView extends ConsumerWidget {
                   },
                 );
               } else {
-                return CircularProgressIndicator();
+                return Center(
+                  child: CircularProgressIndicator(),
+                );
               }
             },
           );
         } else {
-          return CircularProgressIndicator();
+          return Center(
+            child: CircularProgressIndicator(),
+          );
         }
       },
     );
