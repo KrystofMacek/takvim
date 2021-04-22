@@ -6,14 +6,14 @@ import 'package:takvim/providers/firestore_provider.dart';
 
 import '../../data/models/subsTopic.dart';
 
-final currentSubsListProvider = StateNotifierProvider(
-  (ref) => CurrentSubsList(
+final currentSubsListProvider = StateNotifierProvider((ref) => CurrentSubsList(
       Hive.box('pref'),
       FirebaseMessaging(),
       ref.watch(subsBlacklistProvider),
       ref.watch(subsWhitelistProvider),
-      ref.watch(firestoreProvider)),
-);
+      ref.watch(firestoreProvider),
+      ref.watch(currentMosqueSubs),
+    ));
 
 class CurrentSubsList extends StateNotifier<List<SubsTopic>> {
   CurrentSubsList(
@@ -22,11 +22,13 @@ class CurrentSubsList extends StateNotifier<List<SubsTopic>> {
     SubsBlacklist blacklist,
     SubsWhitelist whitelist,
     FirebaseFirestore firestore,
+    CurrentMosqueSubs currentMosqueSubs,
   )   : _prefBox = prefBox,
         _fcm = fcm,
         _blacklist = blacklist,
         _whitelist = whitelist,
         _firestore = firestore,
+        _currentMosqueSubs = currentMosqueSubs,
         super(prefBox
             .get('subsList', defaultValue: <SubsTopic>[]).cast<SubsTopic>());
 
@@ -35,6 +37,7 @@ class CurrentSubsList extends StateNotifier<List<SubsTopic>> {
   final SubsBlacklist _blacklist;
   final SubsWhitelist _whitelist;
   final FirebaseFirestore _firestore;
+  final CurrentMosqueSubs _currentMosqueSubs;
 
   Future<void> addToSubsList(SubsTopic subsTopic) async {
     if (!state.contains(subsTopic)) {
@@ -107,6 +110,8 @@ class CurrentSubsList extends StateNotifier<List<SubsTopic>> {
 
       await _fcm.subscribeToTopic(topic.topic);
     }
+
+    _currentMosqueSubs.addMosqueToSubsList(mosqueId);
   }
 }
 
