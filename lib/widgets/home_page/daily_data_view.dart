@@ -78,6 +78,7 @@ class DailyDataView extends ConsumerWidget {
                               Container(
                                 child: ListView.separated(
                                   shrinkWrap: true,
+                                  physics: const NeverScrollableScrollPhysics(),
                                   itemCount: PRAYER_TIMES.length,
                                   itemBuilder: (context, index) {
                                     Map<String, String> dataMap =

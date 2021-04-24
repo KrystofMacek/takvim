@@ -44,6 +44,7 @@ class LangSettingsPage extends ConsumerWidget {
               bool firstOpen = prefBox.get('firstOpen');
               if (firstOpen) {
                 Navigator.pushReplacementNamed(context, '/mosque');
+                // Navigator.popAndPushNamed(context, '/mosque');
               } else {
                 Navigator.popUntil(context, ModalRoute.withName('/home'));
               }
