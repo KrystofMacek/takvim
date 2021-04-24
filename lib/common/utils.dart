@@ -39,7 +39,7 @@ String newsNavigator(SelectedMosuqeNewsProvider provider) {
   print('news Navigator list: $listOfMosques');
   if (listOfMosques == null || listOfMosques.isEmpty) {
     prefBox.put('mosqueSubsList', <String>[]);
-    return '/newsMosquesPage';
+    return '/sub';
   } else if (listOfMosques.length == 1) {
     provider.updateSelectedMosqueNews(listOfMosques.first);
     return '/newsPage';

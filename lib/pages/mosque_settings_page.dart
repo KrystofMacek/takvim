@@ -99,7 +99,7 @@ class MosqueSettingsPage extends ConsumerWidget {
                   if (prefBox.get('firstOpen')) {
                     prefBox.put('firstOpen', false);
 
-                    Navigator.popAndPushNamed(context, '/home');
+                    Navigator.pushReplacementNamed(context, '/home');
                   } else {
                     _selectedDateController.updateSelectedDate(DateTime.now());
                     Navigator.popUntil(context, ModalRoute.withName('/home'));

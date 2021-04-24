@@ -106,7 +106,7 @@ class _EmailFormState extends State<EmailForm> {
                 children: [
                   Text(
                     _activeLang.name,
-                    style: TextStyle(fontStyle: FontStyle.normal, fontSize: 20),
+                    style: TextStyle(fontStyle: FontStyle.normal, fontSize: 18),
                   )
                 ],
               ),
@@ -114,7 +114,7 @@ class _EmailFormState extends State<EmailForm> {
                 height: 5,
               ),
               TextFormField(
-                style: TextStyle(color: Colors.black, fontSize: 20),
+                style: TextStyle(color: Colors.black, fontSize: 18),
                 validator: (value) {
                   if (value.isEmpty) {
                     return _activeLang.formValidationEmpty;
@@ -132,7 +132,7 @@ class _EmailFormState extends State<EmailForm> {
                 children: [
                   Text(
                     _activeLang.email,
-                    style: TextStyle(fontStyle: FontStyle.normal, fontSize: 20),
+                    style: TextStyle(fontStyle: FontStyle.normal, fontSize: 18),
                   )
                 ],
               ),
@@ -140,7 +140,7 @@ class _EmailFormState extends State<EmailForm> {
                 height: 5,
               ),
               TextFormField(
-                style: TextStyle(color: Colors.black, fontSize: 20),
+                style: TextStyle(color: Colors.black, fontSize: 18),
                 validator: (value) {
                   if (value.isEmpty) {
                     return _activeLang.formValidationEmpty;
@@ -162,7 +162,7 @@ class _EmailFormState extends State<EmailForm> {
                 children: [
                   Text(
                     _activeLang.message,
-                    style: TextStyle(fontStyle: FontStyle.normal, fontSize: 20),
+                    style: TextStyle(fontStyle: FontStyle.normal, fontSize: 18),
                   )
                 ],
               ),
@@ -170,7 +170,7 @@ class _EmailFormState extends State<EmailForm> {
                 height: 5,
               ),
               TextFormField(
-                style: TextStyle(color: Colors.black, fontSize: 20),
+                style: TextStyle(color: Colors.black, fontSize: 18),
                 validator: (value) {
                   if (value.isEmpty) {
                     return _activeLang.formValidationEmpty;
@@ -203,7 +203,7 @@ class _EmailFormState extends State<EmailForm> {
                   child: Text(
                     '${_activeLang.send}',
                     style:
-                        TextStyle(color: Colors.white, fontSize: ws ? 32 : 20),
+                        TextStyle(color: Colors.white, fontSize: ws ? 32 : 18),
                   ),
                 ),
               ),

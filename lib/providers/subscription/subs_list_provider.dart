@@ -47,6 +47,7 @@ class CurrentSubsList extends StateNotifier<List<SubsTopic>> {
 
       if (_blacklist.state.contains(subsTopic)) {
         _blacklist.removeFromBlacklist(subsTopic);
+        _whitelist.addToWhitelist(subsTopic);
       } else {
         _whitelist.addToWhitelist(subsTopic);
       }
@@ -63,6 +64,7 @@ class CurrentSubsList extends StateNotifier<List<SubsTopic>> {
 
       if (_whitelist.state.contains(subsTopic)) {
         _whitelist.removeFromWhitelist(subsTopic);
+        _blacklist.addToBlacklist(subsTopic);
       } else {
         _blacklist.addToBlacklist(subsTopic);
       }
@@ -115,8 +117,9 @@ class CurrentSubsList extends StateNotifier<List<SubsTopic>> {
 
       await _fcm.subscribeToTopic(topic.topic);
     }
-
-    _currentMosqueSubs.addMosqueToSubsList(mosqueId);
+    if (toSub.isNotEmpty) {
+      _currentMosqueSubs.addMosqueToSubsList(mosqueId);
+    }
   }
 }
 
@@ -140,9 +143,11 @@ class CurrentMosqueSubs extends StateNotifier<List<String>> {
 
   void removeMosqueFromSubsList(String id) {
     if (state.contains(id)) {
+      print('removing $id');
       state.remove(id);
       state = state;
       _prefBox.put('mosqueSubsList', state);
+      print('removed $state');
     }
   }
 }
