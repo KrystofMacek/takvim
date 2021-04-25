@@ -5,6 +5,7 @@ import 'package:mailer/smtp_server.dart';
 import 'package:mailer/smtp_server/gmail.dart';
 import 'package:takvim/common/styling.dart';
 import 'package:takvim/data/models/language_pack.dart';
+import 'package:takvim/providers/common/waiting_indicator_provider.dart';
 import 'package:takvim/providers/language_page/language_provider.dart';
 
 class EmailForm extends StatefulWidget {
@@ -36,6 +37,8 @@ class _EmailFormState extends State<EmailForm> {
       password: password,
     );
 
+    context.read(waitingIndicatorProvider).toggle();
+
     try {
       final message = Message()
         ..from = Address(sender)
@@ -43,9 +46,9 @@ class _EmailFormState extends State<EmailForm> {
         ..subject = 'Contact form (App)'
         ..html =
             "<p>Name: ${_nameController.text}</p><p>Email: ${_emailController.text}</p><p>Message: ${_messageController.text}</p>";
-      send(message, smtpServer)
-          .then(
-        (value) => Scaffold.of(context).showSnackBar(
+      send(message, smtpServer).then((value) {
+        context.read(waitingIndicatorProvider).toggle();
+        return Scaffold.of(context).showSnackBar(
           SnackBar(
             content: Consumer(
               builder: (context, watch, child) {
@@ -54,10 +57,10 @@ class _EmailFormState extends State<EmailForm> {
               },
             ),
           ),
-        ),
-      )
-          .onError((error, stackTrace) {
+        );
+      }).onError((error, stackTrace) {
         print(error);
+        context.read(waitingIndicatorProvider).toggle();
         return Scaffold.of(context).showSnackBar(
           SnackBar(
             content: Consumer(
@@ -142,11 +145,12 @@ class _EmailFormState extends State<EmailForm> {
               TextFormField(
                 style: TextStyle(color: Colors.black, fontSize: 18),
                 validator: (value) {
-                  if (value.isEmpty) {
+                  final String val = value.trim();
+                  if (val.isEmpty) {
                     return _activeLang.formValidationEmpty;
                   } else if (!RegExp(
-                          r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
-                      .hasMatch(value)) {
+                          r"^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$")
+                      .hasMatch(val)) {
                     return "";
                   }
                   return null;
@@ -187,25 +191,34 @@ class _EmailFormState extends State<EmailForm> {
               SizedBox(
                 height: 10,
               ),
-              ConstrainedBox(
-                constraints: BoxConstraints(maxWidth: 150, minHeight: 50),
-                child: MaterialButton(
-                  minWidth: double.infinity,
-                  elevation: 2,
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10)),
-                  color: CustomColors.mainColor,
-                  onPressed: () async {
-                    if (_formKey.currentState.validate()) {
-                      _send();
-                    }
-                  },
-                  child: Text(
-                    '${_activeLang.send}',
-                    style:
-                        TextStyle(color: Colors.white, fontSize: ws ? 32 : 18),
-                  ),
-                ),
+              Consumer(
+                builder: (context, watch, child) {
+                  return !watch(waitingIndicatorProvider.state)
+                      ? ConstrainedBox(
+                          constraints:
+                              BoxConstraints(maxWidth: 150, minHeight: 50),
+                          child: MaterialButton(
+                            minWidth: double.infinity,
+                            elevation: 2,
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10)),
+                            color: CustomColors.mainColor,
+                            onPressed: () async {
+                              if (_formKey.currentState.validate()) {
+                                _send();
+                              }
+                            },
+                            child: Text(
+                              '${_activeLang.send}',
+                              style: TextStyle(
+                                  color: Colors.white, fontSize: ws ? 32 : 18),
+                            ),
+                          ),
+                        )
+                      : Center(
+                          child: CircularProgressIndicator(),
+                        );
+                },
               ),
             ],
           ),
