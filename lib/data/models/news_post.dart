@@ -19,6 +19,7 @@ class NewsPost {
     @required this.updatedAt,
     @required this.topicId,
     @required this.url,
+    @required this.draft,
   });
 
   final String mosqueId;
@@ -29,6 +30,7 @@ class NewsPost {
   final DateTime updatedAt;
   final String topicId;
   final String url;
+  final bool draft;
 
   NewsPost copyWith({
     String mosqueId,
@@ -39,6 +41,7 @@ class NewsPost {
     DateTime updatedAt,
     String topicId,
     String url,
+    bool draft,
   }) =>
       NewsPost(
         mosqueId: mosqueId ?? this.mosqueId,
@@ -49,6 +52,7 @@ class NewsPost {
         updatedAt: updatedAt ?? this.updatedAt,
         topicId: topicId ?? this.topicId,
         url: url ?? this.url,
+        draft: draft ?? this.draft,
       );
 
   factory NewsPost.fromJson(Map<String, dynamic> json) => NewsPost(
@@ -60,6 +64,7 @@ class NewsPost {
         updatedAt: json["updatedAt"].toDate(),
         topicId: json["topicId"],
         url: json["url"],
+        draft: json["draft"] ?? false,
       );
 
   Map<String, dynamic> toJson() => {
@@ -71,5 +76,6 @@ class NewsPost {
         "updatedAt": updatedAt,
         "topicId": topicId,
         "url": url,
+        "draft": draft,
       };
 }

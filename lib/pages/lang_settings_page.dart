@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/all.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:hive/hive.dart';
 import 'package:takvim/data/models/language_pack.dart';
+import 'package:takvim/providers/common/device_snapshot_provider.dart';
 import 'package:takvim/providers/common/version_check_provider.dart';
 import 'package:takvim/providers/language_page/language_provider.dart';
 import 'package:takvim/widgets/home_page/app_bar.dart';
@@ -50,6 +51,7 @@ class LangSettingsPage extends ConsumerWidget {
                 // Navigator.popAndPushNamed(context, '/mosque');
               } else {
                 Navigator.popUntil(context, ModalRoute.withName('/home'));
+                context.read(deviceSnapshotProvider).updateSnapshot(true);
               }
             },
           ),

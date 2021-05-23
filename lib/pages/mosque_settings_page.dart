@@ -4,6 +4,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:hive/hive.dart';
 import 'package:takvim/data/models/language_pack.dart';
 import 'package:takvim/data/models/mosque_data.dart';
+import 'package:takvim/providers/common/device_snapshot_provider.dart';
 import 'package:takvim/providers/language_page/language_provider.dart';
 import 'package:takvim/providers/mosque_page/mosque_provider.dart';
 import 'package:takvim/providers/subscription/subs_list_provider.dart';
@@ -103,6 +104,7 @@ class MosqueSettingsPage extends ConsumerWidget {
                   } else {
                     _selectedDateController.updateSelectedDate(DateTime.now());
                     Navigator.popUntil(context, ModalRoute.withName('/home'));
+                    context.read(deviceSnapshotProvider).updateSnapshot(true);
                   }
                   filteringController.resetFilter();
                   context.read(currentSubsListProvider).autoSubscribe(mosqueId);

@@ -34,8 +34,10 @@ export const writeNewsPostNotification = functions.firestore
                         URL: newPost.url
                     }
                 }
+                
+                const isDraft = (newPost.draft);
             
-                if(newPost.sendNotification == true) {
+                if(newPost.sendNotification == true && !isDraft) {
                     console.log(`${newPost.title} ${newPost.url} ${admin.database.ServerValue.TIMESTAMP}`);
                     return fcm.sendToTopic(newPost.topicId, payload);
                 } else {

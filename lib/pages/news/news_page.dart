@@ -135,11 +135,10 @@ class NewsListView extends ConsumerWidget {
                 data: (value) {
                   List<NewsPost> newsPosts = [];
                   value.docs.forEach((element) {
-                    print(element.id);
                     NewsPost post = NewsPost.fromJson(element.data());
                     for (var topic in subscribedMosquesTopics) {
                       if (topic.topic == post.topicId) {
-                        if (!newsPosts.contains(post)) {
+                        if (!newsPosts.contains(post) && !post.draft) {
                           newsPosts.add(post);
                         }
                       }

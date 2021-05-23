@@ -38,7 +38,7 @@ class HomePage extends StatelessWidget {
           mosqueController,
         );
 
-        context.read(deviceSnapshotProvider).updateSnapshot();
+        context.read(deviceSnapshotProvider).updateSnapshot(false);
 
         return Container(
           color: Theme.of(context).primaryColor,

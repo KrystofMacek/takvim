@@ -34,11 +34,8 @@ class DeviceSnapshot extends StateNotifier<DateTime> {
   SelectedMosque _selectedMosque;
   CurrentSubsList _currentSubsList;
 
-  void updateSnapshot() async {
-    print('update Snap ${state.difference(DateTime.now()).inSeconds}');
-    if (state.difference(DateTime.now()).inSeconds.abs() >= 30) {
-      print('updating');
-
+  void updateSnapshot(bool configChange) async {
+    if (state.difference(DateTime.now()).inHours.abs() >= 12 || configChange) {
       Hive.box('pref').put('lastCheckIn', DateTime.now());
       FieldValue _timestamp = FieldValue.serverTimestamp();
 
