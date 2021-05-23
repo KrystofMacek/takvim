@@ -13,6 +13,7 @@ import './prayer_time_item.dart';
 import '../../common/utils.dart';
 import '../../providers/home_page/time_provider.dart';
 import 'package:linkwell/linkwell.dart';
+import 'package:takvim/providers/home_page/pager.dart';
 
 class DailyDataView extends ConsumerWidget {
   const DailyDataView({
@@ -121,7 +122,30 @@ class DailyDataView extends ConsumerWidget {
                                 ),
                               ),
                               SizedBox(
-                                height: 18,
+                                height: 4,
+                              ),
+                              Consumer(
+                                builder: (context, watch, child) {
+                                  int page = watch(pageViewProvider.state);
+                                  int length = data.notes.split('//').length;
+
+                                  if (length > 1) {
+                                    return Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Text(
+                                          '$page / $length',
+                                        ),
+                                      ],
+                                    );
+                                  } else {
+                                    return SizedBox();
+                                  }
+                                },
+                              ),
+                              SizedBox(
+                                height: 4,
                               ),
                               NotePager(data: data),
                             ],
@@ -247,6 +271,9 @@ class NotePager extends StatelessWidget {
       return Flexible(
         fit: FlexFit.loose,
         child: PageView.builder(
+          controller: _pageController,
+          onPageChanged: (value) =>
+              context.read(pageViewProvider).update(value),
           itemCount: _notePages.length,
           itemBuilder: (context, index) {
             return SingleChildScrollView(
