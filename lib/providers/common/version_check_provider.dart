@@ -4,31 +4,22 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/all.dart';
 import 'package:store_redirect/store_redirect.dart';
 import 'package:takvim/common/constants.dart';
+import 'package:takvim/data/models/language_pack.dart';
 import 'package:takvim/providers/firestore_provider.dart';
+import 'package:takvim/providers/language_page/language_provider.dart';
 
-final versionCheckProvider = StateNotifierProvider<VersionCheck>(
-    (ref) => VersionCheck(ref.watch(firestoreProvider)));
+final versionCheckProvider = StateNotifierProvider<VersionCheck>((ref) =>
+    VersionCheck(ref.watch(firestoreProvider),
+        ref.watch(appLanguagePackProvider.state)));
 
 class VersionCheck extends StateNotifier<bool> {
-  VersionCheck(FirebaseFirestore firestore)
-      : _firestore = firestore,
+  VersionCheck(FirebaseFirestore firestore, LanguagePack langPack)
+      : _appLanguage = langPack,
+        _firestore = firestore,
         super(true);
 
-  // void update(bool showUpdateNotification) => state = showUpdateNotification;
-  // bool get state;
-
   FirebaseFirestore _firestore;
-
-  // Future<void> runVersionCheck() async {
-  //   DocumentSnapshot doc =
-  //       await _firestore.collection('settings').doc('appVersion').get();
-
-  //   String _version = doc.get('latest');
-
-  //   if (_version != CURRENT_VERSION) {
-  //     update(true);
-  //   }
-  // }
+  LanguagePack _appLanguage;
 
   void showUpdateAlert(BuildContext context) async {
     DocumentSnapshot doc =
@@ -41,10 +32,10 @@ class VersionCheck extends StateNotifier<bool> {
         context: context,
         builder: (context) {
           return AlertDialog(
-            title: const Text('New Version Available!'),
+            title: Text('${_appLanguage.updateMessage}'),
             actions: <Widget>[
               TextButton(
-                child: const Text('Cancel'),
+                child: Text('${_appLanguage.cancel}'),
                 onPressed: () {
                   Navigator.of(context).pop();
                   state = false;
@@ -56,8 +47,8 @@ class VersionCheck extends StateNotifier<bool> {
                   borderRadius: BorderRadius.circular(5),
                 ),
                 child: TextButton(
-                  child: const Text(
-                    'Update',
+                  child: Text(
+                    '${_appLanguage.update}',
                     style: TextStyle(color: Colors.white),
                   ),
                   onPressed: () {

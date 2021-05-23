@@ -7,7 +7,6 @@ import 'package:flutter_riverpod/all.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:hive/hive.dart';
 import 'package:takvim/providers/firestore_provider.dart';
-import 'package:takvim/providers/language_page/language_provider.dart';
 import 'package:takvim/providers/mosque_page/mosque_provider.dart';
 import 'package:takvim/providers/subscription/subs_list_provider.dart';
 import 'package:geocoder/geocoder.dart';
@@ -86,7 +85,7 @@ class DeviceSnapshot extends StateNotifier<DateTime> {
       } else if (Platform.isIOS) {
         await deviceInfo.iosInfo.then((info) {
           _deviceManufacturer = 'Apple';
-          _model = info.utsname.machine;
+          _model = info.model;
           _os = Platform.operatingSystem;
           _osVersion = Platform.operatingSystemVersion;
         });

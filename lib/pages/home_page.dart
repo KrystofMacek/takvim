@@ -34,9 +34,7 @@ class HomePage extends StatelessWidget {
 
         final SelectedDate _selectedDate = watch(selectedDate);
 
-        final MosqueController _mosqueController = watch(
-          mosqueController,
-        );
+        final MosqueController _mosqueController = watch(mosqueController);
 
         context.read(deviceSnapshotProvider).updateSnapshot(false);
 

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:takvim/providers/common/device_snapshot_provider.dart';
 import '../widgets/subscription_page/widgets.dart';
 import '../widgets/home_page/app_bar.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -68,6 +69,7 @@ class SubscriptionPageFab extends ConsumerWidget {
             filteringController.resetFilter();
             _selectedSubsItemProvider.updateSelectedSubsItem('');
             Navigator.popUntil(context, ModalRoute.withName('/home'));
+            context.read(deviceSnapshotProvider).updateSnapshot(true);
           },
         ),
       ),

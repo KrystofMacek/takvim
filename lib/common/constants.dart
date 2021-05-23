@@ -30,4 +30,4 @@ const PRAYER_TIMES = [
   'Isha'
 ];
 
-const CURRENT_VERSION = '1.1.14';
+const CURRENT_VERSION = '1.2.0';

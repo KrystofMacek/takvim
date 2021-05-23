@@ -74,6 +74,9 @@ class LanguagePack {
     @required this.hijri10,
     @required this.hijri11,
     @required this.hijri12,
+    @required this.updateMessage,
+    @required this.update,
+    @required this.cancel,
   });
 
   final String address;
@@ -138,6 +141,9 @@ class LanguagePack {
   final String hijri10;
   final String hijri11;
   final String hijri12;
+  final String updateMessage;
+  final String update;
+  final String cancel;
 
   LanguagePack copyWith({
     String address,
@@ -201,6 +207,9 @@ class LanguagePack {
     String hijri10,
     String hijri11,
     String hijri12,
+    String updateMessage,
+    String update,
+    String cancel,
   }) =>
       LanguagePack(
         address: address ?? this.address,
@@ -267,6 +276,9 @@ class LanguagePack {
         hijri10: hijri10 ?? this.hijri10,
         hijri11: hijri11 ?? this.hijri11,
         hijri12: hijri12 ?? this.hijri12,
+        updateMessage: updateMessage ?? this.updateMessage,
+        update: update ?? this.update,
+        cancel: cancel ?? this.cancel,
       );
 
   factory LanguagePack.fromJson(Map<String, dynamic> json) => LanguagePack(
@@ -332,6 +344,9 @@ class LanguagePack {
         hijri10: json["hijri10"],
         hijri11: json["hijri11"],
         hijri12: json["hijri12"],
+        update: json["update"],
+        cancel: json["cancel"],
+        updateMessage: json["updateMessage"],
       );
 
   factory LanguagePack.fromFirebase(Map<dynamic, dynamic> json) => LanguagePack(
@@ -397,6 +412,9 @@ class LanguagePack {
         hijri10: json["hijri10"],
         hijri11: json["hijri11"],
         hijri12: json["hijri12"],
+        update: json["update"],
+        cancel: json["cancel"],
+        updateMessage: json["updateMessage"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -461,5 +479,8 @@ class LanguagePack {
         "hijri10": hijri10,
         "hijri11": hijri11,
         "hijri12": hijri12,
+        "update": update,
+        "cancel": cancel,
+        "updateMessage": updateMessage,
       };
 }
