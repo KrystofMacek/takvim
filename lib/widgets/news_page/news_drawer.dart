@@ -6,6 +6,7 @@ import 'package:hive/hive.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../providers/firestore_provider.dart';
 import 'package:cross_connectivity/cross_connectivity.dart';
+import '../../common/constants.dart';
 
 class NewsDrawer extends ConsumerWidget {
   const NewsDrawer({
@@ -187,6 +188,15 @@ class NewsDrawer extends ConsumerWidget {
                           : SizedBox(),
                     ],
                   ),
+                ),
+                Row(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(left: 18.0, bottom: 10),
+                      child: Text('v $CURRENT_VERSION',
+                          style: Theme.of(context).textTheme.subtitle1),
+                    ),
+                  ],
                 ),
               ],
             ),

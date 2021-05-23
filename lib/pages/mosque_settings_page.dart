@@ -224,7 +224,6 @@ class StreamPrayerTimeMosques extends StatelessWidget {
         if (snapshot.hasData) {
           return Consumer(
             builder: (context, watch, child) {
-              Position position = watch(usersPosition.state);
               List<MosqueData> filteredList = watch(filteredMosqueList.state);
 
               String selectedId = watch(tempSelectedMosque.state);

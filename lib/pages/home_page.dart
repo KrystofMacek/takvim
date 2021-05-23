@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/all.dart';
 import 'package:takvim/data/models/language_pack.dart';
+import 'package:takvim/providers/common/device_snapshot_provider.dart';
+import 'package:takvim/providers/common/version_check_provider.dart';
 import 'package:takvim/providers/home_page/date_provider.dart';
 import 'package:takvim/providers/language_page/language_provider.dart';
 import 'package:takvim/providers/mosque_page/mosque_provider.dart';
@@ -12,6 +14,7 @@ import '../widgets/home_page/widgets_home.dart';
 class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    context.read(versionCheckProvider).showUpdateAlert(context);
     final size = MediaQuery.of(context).size;
     double baseSize = size.height;
 
@@ -34,6 +37,8 @@ class HomePage extends StatelessWidget {
         final MosqueController _mosqueController = watch(
           mosqueController,
         );
+
+        context.read(deviceSnapshotProvider).updateSnapshot();
 
         return Container(
           color: Theme.of(context).primaryColor,

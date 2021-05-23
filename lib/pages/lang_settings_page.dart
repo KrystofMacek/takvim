@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/all.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:hive/hive.dart';
 import 'package:takvim/data/models/language_pack.dart';
+import 'package:takvim/providers/common/version_check_provider.dart';
 import 'package:takvim/providers/language_page/language_provider.dart';
 import 'package:takvim/widgets/home_page/app_bar.dart';
 import 'package:takvim/widgets/language_page/app_bar_content.dart';
@@ -12,6 +13,8 @@ import '../widgets/language_page/language_page_widgets.dart';
 class LangSettingsPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, ScopedReader watch) {
+    context.read(versionCheckProvider).showUpdateAlert(context);
+
     final LanguagePack _appLang = watch(appLanguagePackProvider.state);
     final LanguagePackController _langPackController =
         watch(languagePackController);

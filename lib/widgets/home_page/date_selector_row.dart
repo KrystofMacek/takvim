@@ -78,11 +78,6 @@ class _DateSelectorRowState extends State<DateSelectorRow>
                 constraints: BoxConstraints(minWidth: 120),
                 child: Column(
                   children: [
-                    Text(
-                      '${widget._selectedDate.getDateFormatted()}',
-                      style: Theme.of(context).textTheme.bodyText1.copyWith(
-                          fontWeight: FontWeight.normal, fontSize: 20),
-                    ),
                     AutoSizeText(
                       '${widget._selectedDate.getDayOfTheWeek(widget._appLang)}',
                       maxLines: 1,
@@ -90,6 +85,31 @@ class _DateSelectorRowState extends State<DateSelectorRow>
                       style: Theme.of(context).textTheme.bodyText1.copyWith(
                           fontWeight: FontWeight.normal, fontSize: 20),
                     ),
+                    Text(
+                      '${widget._selectedDate.getDateFormatted()}',
+                      style: Theme.of(context).textTheme.bodyText1.copyWith(
+                          fontWeight: FontWeight.normal, fontSize: 20),
+                    ),
+                    FutureBuilder<String>(
+                        future: widget._selectedDate.getMoonDate(
+                          widget._selectedDate.getDateId(),
+                          widget._appLang,
+                        ),
+                        builder: (context, snapshot) {
+                          if (snapshot.hasData) {
+                            return Text(
+                              snapshot.data,
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .bodyText1
+                                  .copyWith(
+                                      fontWeight: FontWeight.normal,
+                                      fontSize: 14),
+                            );
+                          } else {
+                            return Text('');
+                          }
+                        }),
                   ],
                 ),
               ),

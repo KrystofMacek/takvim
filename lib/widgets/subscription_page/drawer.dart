@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:takvim/common/constants.dart';
 import '../../data/models/language_pack.dart';
 import '../../common/styling.dart';
 import 'package:hive/hive.dart';
@@ -201,6 +202,15 @@ class SubscriptionPageDrawer extends ConsumerWidget {
                           : SizedBox(),
                     ],
                   ),
+                ),
+                Row(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(left: 18.0, bottom: 10),
+                      child: Text('v $CURRENT_VERSION',
+                          style: Theme.of(context).textTheme.subtitle1),
+                    ),
+                  ],
                 ),
               ],
             ),

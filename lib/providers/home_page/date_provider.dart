@@ -17,6 +17,8 @@ class SelectedDate extends StateNotifier<DateTime> {
     this._firebaseFirestore,
   ) : super(DateTime.now());
 
+  DateTime get state;
+
   DatabaseReference db = FirebaseDatabase.instance.reference();
   final FirebaseFirestore _firebaseFirestore;
 
@@ -93,5 +95,61 @@ class SelectedDate extends StateNotifier<DateTime> {
         break;
     }
     return dayLan;
+  }
+
+  Future<String> getMoonDate(String id, LanguagePack lang) async {
+    DataSnapshot snapshot = await db.child('hijriCalendar').child(id).once();
+    String _val = snapshot.value;
+
+    String y = _val.substring(0, 4);
+    String m = _val.substring(4, 6);
+    String d = _val.substring(6);
+
+    String monthName = '';
+
+    switch (m) {
+      case '01':
+        monthName = lang.hijri01;
+        break;
+      case '02':
+        monthName = lang.hijri02;
+        break;
+      case '03':
+        monthName = lang.hijri03;
+        break;
+      case '04':
+        monthName = lang.hijri04;
+        break;
+      case '05':
+        monthName = lang.hijri05;
+        break;
+      case '06':
+        monthName = lang.hijri06;
+        break;
+      case '07':
+        monthName = lang.hijri07;
+        break;
+      case '08':
+        monthName = lang.hijri08;
+        break;
+      case '09':
+        monthName = lang.hijri09;
+        break;
+      case '10':
+        monthName = lang.hijri10;
+        break;
+      case '11':
+        monthName = lang.hijri11;
+        break;
+      case '12':
+        monthName = lang.hijri12;
+        break;
+      default:
+        monthName = '';
+    }
+
+    String mDate = '$d. $monthName $y';
+
+    return mDate;
   }
 }

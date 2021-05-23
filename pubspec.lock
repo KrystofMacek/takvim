@@ -162,6 +162,27 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.2.1+2"
+  cloud_functions:
+    dependency: "direct main"
+    description:
+      name: cloud_functions
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.7.0"
+  cloud_functions_platform_interface:
+    dependency: transitive
+    description:
+      name: cloud_functions_platform_interface
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "3.0.3"
+  cloud_functions_web:
+    dependency: transitive
+    description:
+      name: cloud_functions_web
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "3.1.1"
   code_builder:
     dependency: transitive
     description:
@@ -253,6 +274,20 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.5.0"
+  device_info:
+    dependency: "direct main"
+    description:
+      name: device_info
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.0.1"
+  device_info_platform_interface:
+    dependency: transitive
+    description:
+      name: device_info_platform_interface
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.0.0"
   equatable:
     dependency: "direct main"
     description:
@@ -302,6 +337,20 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.2.1+1"
+  firebase_crashlytics:
+    dependency: "direct main"
+    description:
+      name: firebase_crashlytics
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.2.4"
+  firebase_crashlytics_platform_interface:
+    dependency: transitive
+    description:
+      name: firebase_crashlytics_platform_interface
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.1.4"
   firebase_database:
     dependency: "direct main"
     description:
@@ -408,6 +457,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.12.0"
+  geocoder:
+    dependency: "direct main"
+    description:
+      name: geocoder
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.2.1"
   geolocator:
     dependency: "direct main"
     description:
@@ -765,6 +821,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.24.1"
+  share:
+    dependency: "direct main"
+    description:
+      name: share
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.6.5"
   shelf:
     dependency: transitive
     description:
@@ -812,6 +875,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.6.0"
+  store_redirect:
+    dependency: "direct main"
+    description:
+      name: store_redirect
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.0.0"
   stream_channel:
     dependency: transitive
     description:

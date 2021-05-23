@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:share/share.dart';
 import '../../providers/news_page/selected_mosque_news_provider.dart';
 import '../../providers/firestore_provider.dart';
 import '../../data/models/language_pack.dart';
@@ -134,10 +135,13 @@ class NewsListView extends ConsumerWidget {
                 data: (value) {
                   List<NewsPost> newsPosts = [];
                   value.docs.forEach((element) {
+                    print(element.id);
                     NewsPost post = NewsPost.fromJson(element.data());
                     for (var topic in subscribedMosquesTopics) {
                       if (topic.topic == post.topicId) {
-                        newsPosts.add(post);
+                        if (!newsPosts.contains(post)) {
+                          newsPosts.add(post);
+                        }
                       }
                     }
                   });
@@ -306,20 +310,37 @@ class NewsListView extends ConsumerWidget {
                                             : SizedBox(),
                                       ],
                                     ),
-                                    Container(
-                                      padding: EdgeInsets.all(5),
-                                      child: AutoSizeText(
-                                        '${data.title}',
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .headline3
-                                            .copyWith(
-                                              letterSpacing: .4,
-                                              fontWeight: FontWeight.w300,
-                                              fontSize: 16,
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Expanded(
+                                          child: Container(
+                                            padding: EdgeInsets.all(5),
+                                            child: AutoSizeText(
+                                              '${data.title}',
+                                              style: Theme.of(context)
+                                                  .textTheme
+                                                  .headline3
+                                                  .copyWith(
+                                                    letterSpacing: .4,
+                                                    fontWeight: FontWeight.w300,
+                                                    fontSize: 16,
+                                                  ),
+                                              maxLines: 2,
                                             ),
-                                        maxLines: 2,
-                                      ),
+                                          ),
+                                        ),
+                                        IconButton(
+                                          icon: Icon(
+                                            Icons.share,
+                                            color: Colors.black,
+                                          ),
+                                          onPressed: () {
+                                            Share.share(data.url);
+                                          },
+                                        ),
+                                      ],
                                     ),
                                   ],
                                 ),

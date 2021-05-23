@@ -11,57 +11,70 @@ LanguagePack languagePackFromJson(String str) =>
 String languagePackToJson(LanguagePack data) => json.encode(data.toJson());
 
 class LanguagePack {
-  LanguagePack(
-      {@required this.address,
-      @required this.app,
-      @required this.appTheme,
-      @required this.asr,
-      @required this.contact,
-      @required this.dhuhr,
-      @required this.dhuhrTime,
-      @required this.di,
-      @required this.languagePackDo,
-      @required this.email,
-      @required this.fajr,
-      @required this.flagName,
-      @required this.fr,
-      @required this.isha,
-      @required this.ishaTime,
-      @required this.language,
-      @required this.languageId,
-      @required this.languageName,
-      @required this.maghrib,
-      @required this.mi,
-      @required this.mo,
-      @required this.mosque,
-      @required this.name,
-      @required this.prayerTimes,
-      @required this.sa,
-      @required this.sabah,
-      @required this.search,
-      // @required this.selectLanguage,
-      // @required this.selectMosque,
-      @required this.so,
-      @required this.sunrise,
-      @required this.telefon,
-      @required this.website,
-      @required this.subscribe,
-      @required this.news,
-      @required this.noInternet,
-      @required this.compass,
-      @required this.errorSensor,
-      @required this.map,
-      @required this.prayerTimeNotification,
-      @required this.minutes,
-      @required this.activate,
-      @required this.minutesBeforehand,
-      @required this.send,
-      @required this.nothingFound,
-      @required this.message,
-      @required this.contactUs,
-      @required this.contactSuccessMessage,
-      @required this.contactErrorMessage,
-      @required this.formValidationEmpty});
+  LanguagePack({
+    @required this.address,
+    @required this.app,
+    @required this.appTheme,
+    @required this.asr,
+    @required this.contact,
+    @required this.dhuhr,
+    @required this.dhuhrTime,
+    @required this.di,
+    @required this.languagePackDo,
+    @required this.email,
+    @required this.fajr,
+    @required this.flagName,
+    @required this.fr,
+    @required this.isha,
+    @required this.ishaTime,
+    @required this.language,
+    @required this.languageId,
+    @required this.languageName,
+    @required this.maghrib,
+    @required this.mi,
+    @required this.mo,
+    @required this.mosque,
+    @required this.name,
+    @required this.prayerTimes,
+    @required this.sa,
+    @required this.sabah,
+    @required this.search,
+    // @required this.selectLanguage,
+    // @required this.selectMosque,
+    @required this.so,
+    @required this.sunrise,
+    @required this.telefon,
+    @required this.website,
+    @required this.subscribe,
+    @required this.news,
+    @required this.noInternet,
+    @required this.compass,
+    @required this.errorSensor,
+    @required this.map,
+    @required this.prayerTimeNotification,
+    @required this.minutes,
+    @required this.activate,
+    @required this.minutesBeforehand,
+    @required this.send,
+    @required this.nothingFound,
+    @required this.message,
+    @required this.contactUs,
+    @required this.contactSuccessMessage,
+    @required this.contactErrorMessage,
+    @required this.formValidationEmpty,
+    @required this.hijri01,
+    @required this.hijri02,
+    @required this.hijri03,
+    @required this.hijri04,
+    @required this.hijri05,
+    @required this.hijri06,
+    @required this.hijri07,
+    @required this.hijri08,
+    @required this.hijri09,
+    @required this.hijri10,
+    @required this.hijri11,
+    @required this.hijri12,
+  });
 
   final String address;
   final String app;
@@ -113,6 +126,18 @@ class LanguagePack {
   final String contactSuccessMessage;
   final String contactErrorMessage;
   final String formValidationEmpty;
+  final String hijri01;
+  final String hijri02;
+  final String hijri03;
+  final String hijri04;
+  final String hijri05;
+  final String hijri06;
+  final String hijri07;
+  final String hijri08;
+  final String hijri09;
+  final String hijri10;
+  final String hijri11;
+  final String hijri12;
 
   LanguagePack copyWith({
     String address,
@@ -164,6 +189,18 @@ class LanguagePack {
     String contactSuccessMessage,
     String contactErrorMessage,
     String formValidationEmpty,
+    String hijri01,
+    String hijri02,
+    String hijri03,
+    String hijri04,
+    String hijri05,
+    String hijri06,
+    String hijri07,
+    String hijri08,
+    String hijri09,
+    String hijri10,
+    String hijri11,
+    String hijri12,
   }) =>
       LanguagePack(
         address: address ?? this.address,
@@ -218,6 +255,18 @@ class LanguagePack {
         contactSuccessMessage: contactSuccessMessage ?? contactSuccessMessage,
         contactErrorMessage: contactErrorMessage ?? contactErrorMessage,
         formValidationEmpty: formValidationEmpty ?? formValidationEmpty,
+        hijri01: hijri01 ?? this.hijri01,
+        hijri02: hijri02 ?? this.hijri02,
+        hijri03: hijri03 ?? this.hijri03,
+        hijri04: hijri04 ?? this.hijri04,
+        hijri05: hijri05 ?? this.hijri05,
+        hijri06: hijri06 ?? this.hijri06,
+        hijri07: hijri07 ?? this.hijri07,
+        hijri08: hijri08 ?? this.hijri08,
+        hijri09: hijri09 ?? this.hijri09,
+        hijri10: hijri10 ?? this.hijri10,
+        hijri11: hijri11 ?? this.hijri11,
+        hijri12: hijri12 ?? this.hijri12,
       );
 
   factory LanguagePack.fromJson(Map<String, dynamic> json) => LanguagePack(
@@ -271,6 +320,18 @@ class LanguagePack {
         contactSuccessMessage: json["contactSuccessMessage"],
         contactErrorMessage: json["contactErrorMessage"],
         formValidationEmpty: json["formValidationEmpty"],
+        hijri01: json["hijri01"],
+        hijri02: json["hijri02"],
+        hijri03: json["hijri03"],
+        hijri04: json["hijri04"],
+        hijri05: json["hijri05"],
+        hijri06: json["hijri06"],
+        hijri07: json["hijri07"],
+        hijri08: json["hijri08"],
+        hijri09: json["hijri09"],
+        hijri10: json["hijri10"],
+        hijri11: json["hijri11"],
+        hijri12: json["hijri12"],
       );
 
   factory LanguagePack.fromFirebase(Map<dynamic, dynamic> json) => LanguagePack(
@@ -324,6 +385,18 @@ class LanguagePack {
         contactSuccessMessage: json["contactSuccessMessage"],
         contactErrorMessage: json["contactErrorMessage"],
         formValidationEmpty: json["formValidationEmpty"],
+        hijri01: json["hijri01"],
+        hijri02: json["hijri02"],
+        hijri03: json["hijri03"],
+        hijri04: json["hijri04"],
+        hijri05: json["hijri05"],
+        hijri06: json["hijri06"],
+        hijri07: json["hijri07"],
+        hijri08: json["hijri08"],
+        hijri09: json["hijri09"],
+        hijri10: json["hijri10"],
+        hijri11: json["hijri11"],
+        hijri12: json["hijri12"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -376,6 +449,17 @@ class LanguagePack {
         "contactUs": contactUs,
         "contactSuccessMessage": contactSuccessMessage,
         "contactErrorMessage": contactErrorMessage,
-        "formValidationEmpty": formValidationEmpty,
+        "formValidationEmpty": formValidationEmpty, "hijri01": hijri01,
+        "hijri02": hijri02,
+        "hijri03": hijri03,
+        "hijri04": hijri04,
+        "hijri05": hijri05,
+        "hijri06": hijri06,
+        "hijri07": hijri07,
+        "hijri08": hijri08,
+        "hijri09": hijri09,
+        "hijri10": hijri10,
+        "hijri11": hijri11,
+        "hijri12": hijri12,
       };
 }

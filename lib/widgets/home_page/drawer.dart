@@ -7,6 +7,7 @@ import 'package:takvim/data/models/language_pack.dart';
 import 'package:cross_connectivity/cross_connectivity.dart';
 import '../../providers/news_page/selected_mosque_news_provider.dart';
 import '../../common/styling.dart';
+import '../../common/constants.dart';
 
 class DrawerHomePage extends StatelessWidget {
   const DrawerHomePage({
@@ -198,6 +199,15 @@ class DrawerHomePage extends StatelessWidget {
                           : SizedBox(),
                     ],
                   ),
+                ),
+                Row(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(left: 18.0, bottom: 10),
+                      child: Text('v $CURRENT_VERSION',
+                          style: Theme.of(context).textTheme.subtitle1),
+                    ),
+                  ],
                 ),
               ],
             ),

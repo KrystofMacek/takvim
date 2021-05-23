@@ -3,7 +3,7 @@ description: A new Flutter project.
 
 publish_to: "none" # Remove this line if you wish to publish to pub.dev
 
-version: 1.1.4+31
+version: 1.2.0+33
 
 
 environment:
@@ -13,12 +13,8 @@ dependencies:
   flutter:
     sdk: flutter
   auto_size_text: ^2.1.0
-  cloud_firestore: ^0.14.4
-  firebase_core: ^0.5.3
-  firebase_messaging: 6.0.16
   cross_connectivity: ^1.1.0
   cupertino_icons: 1.0.0
-  firebase_database: ^4.4.0
   flag: ^3.2.2
   flutter_riverpod: ^0.12.1
   font_awesome_flutter: ^8.11.0
@@ -42,6 +38,16 @@ dependencies:
   numberpicker: ^2.1.0
   flutter_local_notifications: ^4.0.1+2
   mailer: ^3.3.0
+  firebase_crashlytics: 0.2.4
+  cloud_firestore: ^0.14.4
+  firebase_core: ^0.5.3
+  firebase_messaging: 6.0.16
+  firebase_database: ^4.4.0
+  share: 0.6.5
+  cloud_functions: 0.7.0
+  store_redirect: ^2.0.0
+  device_info: ^2.0.1
+  geocoder: ^0.2.1
 
 # dependency_overrides:
 #   flutter_svg: 0.18.0

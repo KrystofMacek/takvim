@@ -1,3 +1,4 @@
+import 'package:cloud_functions/cloud_functions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mailer/mailer.dart';
@@ -24,59 +25,18 @@ class _EmailFormState extends State<EmailForm> {
 
   final _formKey = GlobalKey<FormState>();
 
-  final String sender = 'takvim.ch@hotmail.com';
-  final String reciever = 'takvim.ch@hotmail.com';
-
   Future<void> _send() async {
-    String username = 'takvim.ch@hotmail.com';
-    String password = 'vqWsK6bDYMi1qQzfDfw3';
-
-    final smtpServer = SmtpServer(
-      'smtp.office365.com',
-      username: username,
-      password: password,
-    );
-
     context.read(waitingIndicatorProvider).toggle();
+    final data = {
+      'name': _nameController.text.toString(),
+      'email': _emailController.text.toString(),
+      'message': '[App] ${_messageController.text.toString()}',
+    };
 
-    try {
-      final message = Message()
-        ..from = Address(sender)
-        ..recipients.add(reciever)
-        ..subject = 'Contact form (App)'
-        ..html =
-            "<p>Name: ${_nameController.text}</p><p>Email: ${_emailController.text}</p><p>Message: ${_messageController.text}</p>";
-      send(message, smtpServer).then((value) {
-        context.read(waitingIndicatorProvider).toggle();
-        return Scaffold.of(context).showSnackBar(
-          SnackBar(
-            content: Consumer(
-              builder: (context, watch, child) {
-                LanguagePack lang = watch(appLanguagePackProvider.state);
-                return Text('${lang.contactSuccessMessage}');
-              },
-            ),
-          ),
-        );
-      }).onError((error, stackTrace) {
-        print(error);
-        context.read(waitingIndicatorProvider).toggle();
-        return Scaffold.of(context).showSnackBar(
-          SnackBar(
-            content: Consumer(
-              builder: (context, watch, child) {
-                LanguagePack lang = watch(appLanguagePackProvider.state);
-                return Text('${lang.contactErrorMessage}');
-              },
-            ),
-          ),
-        );
-      });
-    } catch (error) {
-      print(error);
-    }
-
-    if (!mounted) return;
+    FirebaseFunctions.instance
+        .httpsCallable('sendMail')
+        .call(data)
+        .then((value) => context.read(waitingIndicatorProvider).toggle());
   }
 
   @override

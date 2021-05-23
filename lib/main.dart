@@ -16,6 +16,7 @@ import 'package:takvim/pages/news/news_page.dart';
 import 'package:takvim/pages/notification_config_page.dart';
 import 'package:takvim/pages/subscribtion_page.dart';
 import 'package:takvim/providers/common/notification_provider.dart';
+import 'package:takvim/providers/common/version_check_provider.dart';
 import 'package:takvim/providers/mosque_page/mosque_provider.dart';
 import 'package:takvim/providers/subscription/subs_list_provider.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -24,7 +25,6 @@ import './data/models/subsTopic.dart';
 import './common/styling.dart';
 import 'pages/pages.dart';
 import './pages/contact.dart';
-import './pages/map.dart';
 import 'package:takvim/providers/language_page/language_provider.dart';
 
 void main() async {

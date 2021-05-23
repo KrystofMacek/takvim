@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:takvim/common/styling.dart';
 import 'package:takvim/data/models/dateBounds.dart';
 import 'package:takvim/providers/home_page/date_provider.dart';
@@ -14,30 +15,57 @@ class CalendarDayPicker extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Material(
-      elevation: 2,
-      borderRadius: BorderRadius.circular(10),
-      child: IconButton(
-        padding: EdgeInsets.zero,
-        icon: Icon(
-          Icons.calendar_today,
-          color: CustomColors.mainColor,
-          size: 40,
-        ),
-        onPressed: () async {
-          DateBounds bounds = await _selectedDate.getFirestoreDateBounds();
+    bool isToday = (DateTime.now().day == _selectedDate.state.day &&
+        DateTime.now().month == _selectedDate.state.month &&
+        DateTime.now().year == _selectedDate.state.year);
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Material(
+          elevation: 2,
+          borderRadius: BorderRadius.circular(10),
+          child: IconButton(
+            padding: EdgeInsets.zero,
+            icon: Icon(
+              Icons.calendar_today,
+              color: CustomColors.mainColor,
+              size: 40,
+            ),
+            onPressed: () async {
+              DateBounds bounds = await _selectedDate.getFirestoreDateBounds();
 
-          final DateTime picked = await showDatePicker(
-            context: context,
-            initialDate: DateTime.now(),
-            firstDate: bounds.firstDate,
-            lastDate: bounds.lastDate,
-          );
-          if (picked != null) {
-            _selectedDate.updateSelectedDate(picked);
-          }
-        },
-      ),
+              final DateTime picked = await showDatePicker(
+                context: context,
+                initialDate: _selectedDate.state,
+                firstDate: bounds.firstDate,
+                lastDate: bounds.lastDate,
+              );
+              if (picked != null) {
+                _selectedDate.updateSelectedDate(picked);
+              }
+            },
+          ),
+        ),
+        SizedBox(
+          width: !isToday ? 10 : 0,
+        ),
+        !isToday
+            ? Material(
+                elevation: 2,
+                borderRadius: BorderRadius.circular(10),
+                child: IconButton(
+                  icon: FaIcon(
+                    FontAwesomeIcons.sync,
+                    color: CustomColors.mainColor,
+                    size: 24,
+                  ),
+                  onPressed: () async {
+                    _selectedDate.updateSelectedDate(DateTime.now());
+                  },
+                ),
+              )
+            : SizedBox(),
+      ],
     );
   }
 }
