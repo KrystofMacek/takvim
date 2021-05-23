@@ -22,45 +22,46 @@ class VersionCheck extends StateNotifier<bool> {
   LanguagePack _appLanguage;
 
   void showUpdateAlert(BuildContext context) async {
-    DocumentSnapshot doc =
-        await _firestore.collection('settings').doc('appVersion').get();
+    if (state) {
+      state = false;
+      DocumentSnapshot doc =
+          await _firestore.collection('settings').doc('appVersion').get();
 
-    String _version = doc.get('latest');
-
-    if (_version != CURRENT_VERSION && state) {
-      showDialog(
-        context: context,
-        builder: (context) {
-          return AlertDialog(
-            title: Text('${_appLanguage.updateMessage}'),
-            actions: <Widget>[
-              TextButton(
-                child: Text('${_appLanguage.cancel}'),
-                onPressed: () {
-                  Navigator.of(context).pop();
-                  state = false;
-                },
-              ),
-              Container(
-                decoration: BoxDecoration(
-                  color: Theme.of(context).primaryColor,
-                  borderRadius: BorderRadius.circular(5),
-                ),
-                child: TextButton(
-                  child: Text(
-                    '${_appLanguage.update}',
-                    style: TextStyle(color: Colors.white),
-                  ),
+      String _version = doc.get('latest');
+      if (_version != CURRENT_VERSION) {
+        showDialog(
+          context: context,
+          builder: (context) {
+            return AlertDialog(
+              title: Text('${_appLanguage.updateMessage}'),
+              actions: <Widget>[
+                TextButton(
+                  child: Text('${_appLanguage.cancel}'),
                   onPressed: () {
-                    StoreRedirect.redirect();
-                    state = false;
+                    Navigator.of(context).pop();
                   },
                 ),
-              ),
-            ],
-          );
-        },
-      );
+                Container(
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).primaryColor,
+                    borderRadius: BorderRadius.circular(5),
+                  ),
+                  child: TextButton(
+                    child: Text(
+                      '${_appLanguage.update}',
+                      style: TextStyle(color: Colors.white),
+                    ),
+                    onPressed: () {
+                      StoreRedirect.redirect(iOSAppId: "1548479130");
+                      Navigator.of(context).pop();
+                    },
+                  ),
+                ),
+              ],
+            );
+          },
+        );
+      } else {}
     }
   }
 }

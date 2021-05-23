@@ -60,7 +60,9 @@ class DeviceSnapshot extends StateNotifier<DateTime> {
 
       Position _currentPosition;
       String address = '';
-      if (await Geolocator.checkPermission() == LocationPermission.always) {
+      LocationPermission loc = await Geolocator.checkPermission();
+      if (loc == LocationPermission.always ||
+          loc == LocationPermission.whileInUse) {
         _currentPosition = await Geolocator.getCurrentPosition();
         List<Address> addresses = await Geocoder.local
             .findAddressesFromCoordinates(Coordinates(
@@ -71,7 +73,6 @@ class DeviceSnapshot extends StateNotifier<DateTime> {
           String reg = addresses.first.adminArea;
           String city = addresses.first.subAdminArea;
           address = '$city, $reg, $country';
-          print(address);
         }
       }
 
@@ -85,7 +86,7 @@ class DeviceSnapshot extends StateNotifier<DateTime> {
       } else if (Platform.isIOS) {
         await deviceInfo.iosInfo.then((info) {
           _deviceManufacturer = 'Apple';
-          _model = info.model;
+          _model = info.utsname.machine;
           _os = Platform.operatingSystem;
           _osVersion = Platform.operatingSystemVersion;
         });

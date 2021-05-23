@@ -52,50 +52,50 @@ class NotificationController extends StateNotifier<NotificationController> {
     DayData thridDay = await _mosqueController
         .getThridDay(DateTime.now().add(Duration(days: 2)));
 
-    if (_activeTimes.state.isNotEmpty) {
-      for (var i = 1; i < 4; i++) {
-        for (var j = 0; j < PRAYER_TIMES.length; j++) {
-          Map<String, dynamic> map;
-          if (i == 1) {
-            map = today.toJson();
-          } else if (i == 2) {
-            map = tomorrow.toJson();
-          } else {
-            map = thridDay.toJson();
-          }
-          String timeData = map[PRAYER_TIMES[j]].toString();
-          String dateData = map['Date'].toString();
+    await _notificationProvider.clear().then((_) {
+      if (_activeTimes.state.isNotEmpty) {
+        for (var i = 1; i < 4; i++) {
+          for (var j = 0; j < PRAYER_TIMES.length; j++) {
+            Map<String, dynamic> map;
+            if (i == 1) {
+              map = today.toJson();
+            } else if (i == 2) {
+              map = tomorrow.toJson();
+            } else {
+              map = thridDay.toJson();
+            }
+            String timeData = map[PRAYER_TIMES[j]].toString();
+            String dateData = map['Date'].toString();
 
-          List<String> timeValues = timeData.split(':');
-          List<String> dateValues = dateData.split('.');
+            List<String> timeValues = timeData.split(':');
+            List<String> dateValues = dateData.split('.');
 
-          DateTime newNotificationDate = DateTime(
-            int.parse(dateValues[2]),
-            int.parse(dateValues[1]),
-            int.parse(dateValues[0]),
-            int.parse(timeValues[0]),
-            int.parse(timeValues[1]),
-          );
-
-          if (_activeTimes.state.contains(j)) {
-            _notifications.add(
-              LocalNotification(
-                newNotificationDate.subtract(
-                  Duration(minutes: _timesNotificationMinutes.state[j]),
-                ),
-                _timesNotificationMinutes.state[j],
-                j,
-                timeData,
-              ),
+            DateTime newNotificationDate = DateTime(
+              int.parse(dateValues[2]),
+              int.parse(dateValues[1]),
+              int.parse(dateValues[0]),
+              int.parse(timeValues[0]),
+              int.parse(timeValues[1]),
             );
+
+            if (_activeTimes.state.contains(j)) {
+              _notifications.add(
+                LocalNotification(
+                  newNotificationDate.subtract(
+                    Duration(minutes: _timesNotificationMinutes.state[j]),
+                  ),
+                  _timesNotificationMinutes.state[j],
+                  j,
+                  timeData,
+                ),
+              );
+            }
           }
         }
-      }
-      _notifications.removeWhere(
-        (element) => element.dateOfNotification.isBefore(DateTime.now()),
-      );
+        _notifications.removeWhere(
+          (element) => element.dateOfNotification.isBefore(DateTime.now()),
+        );
 
-      await _notificationProvider.clear().then((_) {
         for (var i = 0; i < _notifications.length; i++) {
           LocalNotification notification = _notifications[i];
           bool skip = false;
@@ -115,8 +115,8 @@ class NotificationController extends StateNotifier<NotificationController> {
             );
           }
         }
-      });
-    }
+      }
+    });
   }
 }
 

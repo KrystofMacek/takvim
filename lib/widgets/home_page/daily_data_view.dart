@@ -121,24 +121,25 @@ class DailyDataView extends ConsumerWidget {
                                   },
                                 ),
                               ),
-                              SizedBox(
-                                height: 4,
-                              ),
                               Consumer(
                                 builder: (context, watch, child) {
-                                  int page = watch(pageViewProvider.state);
-                                  int length = data.notes.split('//').length;
+                                  if (data.notes != null) {
+                                    int page = watch(pageViewProvider.state);
+                                    int length = data.notes.split('//').length;
 
-                                  if (length > 1) {
-                                    return Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        Text(
-                                          '$page / $length',
-                                        ),
-                                      ],
-                                    );
+                                    if (length > 1) {
+                                      return Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          Text(
+                                            '$page / $length',
+                                          ),
+                                        ],
+                                      );
+                                    } else {
+                                      return SizedBox();
+                                    }
                                   } else {
                                     return SizedBox();
                                   }

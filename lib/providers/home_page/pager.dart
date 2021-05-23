@@ -7,6 +7,6 @@ class PageViewProvider extends StateNotifier<int> {
   PageViewProvider() : super(1);
 
   update(int page) {
-    state = page;
+    state = page + 1;
   }
 }
