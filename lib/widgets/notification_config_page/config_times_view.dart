@@ -2,16 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/all.dart';
 import 'package:numberpicker/numberpicker.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:takvim/common/constants.dart';
-import 'package:takvim/common/styling.dart';
-import 'package:takvim/common/utils.dart';
-import 'package:takvim/data/models/day_data.dart';
-import 'package:takvim/data/models/language_pack.dart';
-import 'package:takvim/providers/common/notification_provider.dart';
-import 'package:takvim/providers/common/permission.dart';
-import 'package:takvim/providers/language_page/language_provider.dart';
-import 'package:takvim/providers/notification_config_page/notification_config_providers.dart';
-import 'package:takvim/widgets/subscription_page/checkbox.dart';
+import 'package:MyMosq/common/constants.dart';
+import 'package:MyMosq/common/styling.dart';
+import 'package:MyMosq/common/utils.dart';
+import 'package:MyMosq/data/models/day_data.dart';
+import 'package:MyMosq/data/models/language_pack.dart';
+import 'package:MyMosq/providers/common/notification_provider.dart';
+import 'package:MyMosq/providers/language_page/language_provider.dart';
+import 'package:MyMosq/providers/notification_config_page/notification_config_providers.dart';
+import 'package:MyMosq/widgets/subscription_page/checkbox.dart';
 // import './custom_dropdown.dart' as custom;
 
 class ConfigTimesView extends ConsumerWidget {

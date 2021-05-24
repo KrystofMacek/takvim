@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:riverpod/all.dart';
 import 'package:hive/hive.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:takvim/providers/firestore_provider.dart';
+import 'package:MyMosq/providers/firestore_provider.dart';
 
 import '../../data/models/subsTopic.dart';
 

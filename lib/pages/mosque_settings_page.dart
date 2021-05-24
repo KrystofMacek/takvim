@@ -2,21 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/all.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:hive/hive.dart';
-import 'package:takvim/data/models/language_pack.dart';
-import 'package:takvim/data/models/mosque_data.dart';
-import 'package:takvim/providers/common/device_snapshot_provider.dart';
-import 'package:takvim/providers/language_page/language_provider.dart';
-import 'package:takvim/providers/mosque_page/mosque_provider.dart';
-import 'package:takvim/providers/subscription/subs_list_provider.dart';
-import 'package:takvim/widgets/home_page/app_bar.dart';
-import 'package:takvim/widgets/mosque_page/app_bar_content.dart';
+import 'package:MyMosq/data/models/language_pack.dart';
+import 'package:MyMosq/data/models/mosque_data.dart';
+import 'package:MyMosq/providers/common/device_snapshot_provider.dart';
+import 'package:MyMosq/providers/language_page/language_provider.dart';
+import 'package:MyMosq/providers/mosque_page/mosque_provider.dart';
+import 'package:MyMosq/providers/subscription/subs_list_provider.dart';
+import 'package:MyMosq/widgets/home_page/app_bar.dart';
+import 'package:MyMosq/widgets/mosque_page/app_bar_content.dart';
 import 'package:cross_connectivity/cross_connectivity.dart';
 import '../widgets/mosque_page/mosque_page_widgets.dart';
 import '../providers/home_page/date_provider.dart';
 import 'package:firebase_database/firebase_database.dart';
 import '../widgets/mosque_page/drawer.dart';
-import '../providers/common/geolocator_provider.dart';
-import 'package:geolocator/geolocator.dart';
 
 class MosqueSettingsPage extends ConsumerWidget {
   @override

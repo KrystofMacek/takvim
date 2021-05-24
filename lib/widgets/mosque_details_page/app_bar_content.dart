@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:takvim/data/models/mosque_data.dart';
+import 'package:MyMosq/data/models/mosque_data.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class DetailsAppBarContent extends StatelessWidget {

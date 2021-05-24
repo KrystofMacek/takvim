@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:takvim/data/models/language_pack.dart';
-import 'package:takvim/providers/language_page/language_provider.dart';
-import 'package:takvim/providers/mosque_page/mosque_provider.dart';
-import 'package:takvim/widgets/home_page/app_bar.dart';
+import 'package:MyMosq/data/models/language_pack.dart';
+import 'package:MyMosq/providers/language_page/language_provider.dart';
+import 'package:MyMosq/providers/mosque_page/mosque_provider.dart';
+import 'package:MyMosq/widgets/home_page/app_bar.dart';
 import '../widgets/compass_page/compass_widgets.dart';
 
 class CompassPage extends ConsumerWidget {

@@ -3,10 +3,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/all.dart';
 import 'package:store_redirect/store_redirect.dart';
-import 'package:takvim/common/constants.dart';
-import 'package:takvim/data/models/language_pack.dart';
-import 'package:takvim/providers/firestore_provider.dart';
-import 'package:takvim/providers/language_page/language_provider.dart';
+import 'package:MyMosq/common/constants.dart';
+import 'package:MyMosq/data/models/language_pack.dart';
+import 'package:MyMosq/providers/firestore_provider.dart';
+import 'package:MyMosq/providers/language_page/language_provider.dart';
 
 final versionCheckProvider = StateNotifierProvider<VersionCheck>((ref) =>
     VersionCheck(ref.watch(firestoreProvider),
@@ -20,6 +20,10 @@ class VersionCheck extends StateNotifier<bool> {
 
   FirebaseFirestore _firestore;
   LanguagePack _appLanguage;
+
+  void update(bool show) => state = show;
+
+  bool get state;
 
   void showUpdateAlert(BuildContext context) async {
     if (state) {
@@ -61,7 +65,7 @@ class VersionCheck extends StateNotifier<bool> {
             );
           },
         );
-      } else {}
+      }
     }
   }
 }

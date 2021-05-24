@@ -1,13 +1,10 @@
 import 'package:cloud_functions/cloud_functions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:mailer/mailer.dart';
-import 'package:mailer/smtp_server.dart';
-import 'package:mailer/smtp_server/gmail.dart';
-import 'package:takvim/common/styling.dart';
-import 'package:takvim/data/models/language_pack.dart';
-import 'package:takvim/providers/common/waiting_indicator_provider.dart';
-import 'package:takvim/providers/language_page/language_provider.dart';
+import 'package:MyMosq/common/styling.dart';
+import 'package:MyMosq/data/models/language_pack.dart';
+import 'package:MyMosq/providers/common/waiting_indicator_provider.dart';
+import 'package:MyMosq/providers/language_page/language_provider.dart';
 
 class EmailForm extends StatefulWidget {
   const EmailForm({

@@ -6,9 +6,9 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_riverpod/all.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:hive/hive.dart';
-import 'package:takvim/providers/firestore_provider.dart';
-import 'package:takvim/providers/mosque_page/mosque_provider.dart';
-import 'package:takvim/providers/subscription/subs_list_provider.dart';
+import 'package:MyMosq/providers/firestore_provider.dart';
+import 'package:MyMosq/providers/mosque_page/mosque_provider.dart';
+import 'package:MyMosq/providers/subscription/subs_list_provider.dart';
 import 'package:geocoder/geocoder.dart';
 
 final deviceSnapshotProvider =

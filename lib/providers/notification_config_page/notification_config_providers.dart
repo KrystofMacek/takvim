@@ -1,6 +1,6 @@
 import 'package:flutter_riverpod/all.dart';
 import 'package:hive/hive.dart';
-import 'package:takvim/common/constants.dart';
+import 'package:MyMosq/common/constants.dart';
 
 final activeTimesProvider =
     StateNotifierProvider<ActiveTimes>((ref) => ActiveTimes());

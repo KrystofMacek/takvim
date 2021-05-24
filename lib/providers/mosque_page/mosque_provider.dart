@@ -3,11 +3,11 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/semantics.dart';
 import 'package:flutter_riverpod/all.dart';
 import 'package:hive/hive.dart';
-import 'package:takvim/common/utils.dart';
-import 'package:takvim/data/models/day_data.dart';
-import 'package:takvim/data/models/mosque_data.dart';
-import 'package:takvim/providers/common/geolocator_provider.dart';
-import 'package:takvim/providers/firestore_provider.dart';
+import 'package:MyMosq/common/utils.dart';
+import 'package:MyMosq/data/models/day_data.dart';
+import 'package:MyMosq/data/models/mosque_data.dart';
+import 'package:MyMosq/providers/common/geolocator_provider.dart';
+import 'package:MyMosq/providers/firestore_provider.dart';
 import 'package:geolocator/geolocator.dart';
 
 final tempSelectedMosque = StateNotifierProvider<TempSelectedMosque>((ref) {

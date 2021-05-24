@@ -2,9 +2,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter_riverpod/all.dart';
 import 'package:intl/intl.dart';
-import 'package:takvim/data/models/dateBounds.dart';
-import 'package:takvim/data/models/language_pack.dart';
-import 'package:takvim/providers/firestore_provider.dart';
+import 'package:MyMosq/data/models/dateBounds.dart';
+import 'package:MyMosq/data/models/language_pack.dart';
+import 'package:MyMosq/providers/firestore_provider.dart';
 
 final selectedDate = StateNotifierProvider<SelectedDate>((ref) {
   return SelectedDate(

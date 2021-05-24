@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/all.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:takvim/common/styling.dart';
-import 'package:takvim/providers/home_page/date_provider.dart';
-import 'package:takvim/providers/notification_config_page/notification_config_providers.dart';
+import 'package:MyMosq/common/styling.dart';
+import 'package:MyMosq/providers/home_page/date_provider.dart';
+import 'package:MyMosq/providers/notification_config_page/notification_config_providers.dart';
 import '../../common/utils.dart';
 
 class PrayerTimeItem extends ConsumerWidget {

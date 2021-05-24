@@ -7,7 +7,7 @@ import '../../providers/firestore_provider.dart';
 import '../../data/models/language_pack.dart';
 import '../../providers/language_page/language_provider.dart';
 import 'package:flutter_riverpod/all.dart';
-import 'package:takvim/providers/firestore_provider.dart';
+import 'package:MyMosq/providers/firestore_provider.dart';
 import '../../widgets/home_page/app_bar.dart';
 import '../../widgets/news_page/appbar_content.dart';
 import '../../widgets/news_page/news_drawer.dart';

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:takvim/common/utils.dart';
-import 'package:takvim/providers/news_page/selected_mosque_news_provider.dart';
+import 'package:MyMosq/common/utils.dart';
+import 'package:MyMosq/providers/news_page/selected_mosque_news_provider.dart';
 import '../../data/models/language_pack.dart';
 import '../../common/styling.dart';
 import 'package:hive/hive.dart';

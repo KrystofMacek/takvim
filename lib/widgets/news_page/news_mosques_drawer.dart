@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:takvim/common/constants.dart';
+import 'package:MyMosq/common/constants.dart';
 import '../../data/models/language_pack.dart';
 import '../../common/styling.dart';
 import 'package:hive/hive.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../../providers/firestore_provider.dart';
 import 'package:cross_connectivity/cross_connectivity.dart';
 
 class NewsMosquesDrawer extends ConsumerWidget {

@@ -1,5 +1,5 @@
 import 'package:flutter_riverpod/all.dart';
-import 'package:takvim/data/models/mosque_data.dart';
+import 'package:MyMosq/data/models/mosque_data.dart';
 
 final selectedMosqueDetail =
     StateNotifierProvider<SelectedMosqueDetailIdProvider>((ref) {

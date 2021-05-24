@@ -2,18 +2,18 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:takvim/common/constants.dart';
-import 'package:takvim/data/models/day_data.dart';
-import 'package:takvim/data/models/language_pack.dart';
-import 'package:takvim/providers/common/notification_provider.dart';
-import 'package:takvim/providers/home_page/date_provider.dart';
-import 'package:takvim/providers/mosque_page/mosque_provider.dart';
+import 'package:MyMosq/common/constants.dart';
+import 'package:MyMosq/data/models/day_data.dart';
+import 'package:MyMosq/data/models/language_pack.dart';
+import 'package:MyMosq/providers/common/notification_provider.dart';
+import 'package:MyMosq/providers/home_page/date_provider.dart';
+import 'package:MyMosq/providers/mosque_page/mosque_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import './prayer_time_item.dart';
 import '../../common/utils.dart';
 import '../../providers/home_page/time_provider.dart';
 import 'package:linkwell/linkwell.dart';
-import 'package:takvim/providers/home_page/pager.dart';
+import 'package:MyMosq/providers/home_page/pager.dart';
 
 class DailyDataView extends ConsumerWidget {
   const DailyDataView({

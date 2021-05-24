@@ -1,14 +1,13 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/all.dart';
-import 'package:takvim/common/constants.dart';
-import 'package:takvim/data/models/day_data.dart';
+import 'package:MyMosq/common/constants.dart';
+import 'package:MyMosq/data/models/day_data.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:takvim/data/models/language_pack.dart';
-import 'package:takvim/data/models/localNotification.dart';
-import 'package:takvim/providers/language_page/language_provider.dart';
-import 'package:takvim/providers/mosque_page/mosque_provider.dart';
-import 'package:takvim/providers/notification_config_page/notification_config_providers.dart';
+import 'package:MyMosq/data/models/language_pack.dart';
+import 'package:MyMosq/data/models/localNotification.dart';
+import 'package:MyMosq/providers/language_page/language_provider.dart';
+import 'package:MyMosq/providers/mosque_page/mosque_provider.dart';
+import 'package:MyMosq/providers/notification_config_page/notification_config_providers.dart';
 
 final notificationController = StateNotifierProvider<NotificationController>(
   (ref) => NotificationController(
@@ -16,7 +15,6 @@ final notificationController = StateNotifierProvider<NotificationController>(
     ref.watch(activeTimesProvider),
     ref.watch(notificationMinutesProvider),
     ref.watch(appLanguagePackProvider.state),
-    ref.watch(pendingNotificationList),
     ref.watch(mosqueController),
   ),
 );
@@ -27,13 +25,11 @@ class NotificationController extends StateNotifier<NotificationController> {
     ActiveTimes activeTimes,
     TimesNotificationMinutes timesNotificationMinutes,
     LanguagePack activeLanguage,
-    PendingNotificationList pendingNotificationList,
     MosqueController mosqueController,
   )   : _notificationProvider = notificationProvider,
         _timesNotificationMinutes = timesNotificationMinutes,
         _activeTimes = activeTimes,
         _activeLanguage = activeLanguage,
-        _pendingNotificationList = pendingNotificationList,
         _mosqueController = mosqueController,
         super(null);
 
@@ -41,7 +37,6 @@ class NotificationController extends StateNotifier<NotificationController> {
   final TimesNotificationMinutes _timesNotificationMinutes;
   final ActiveTimes _activeTimes;
   final LanguagePack _activeLanguage;
-  final PendingNotificationList _pendingNotificationList;
   final MosqueController _mosqueController;
 
   void scheduleNotification(DayData today, DayData tomorrow) async {

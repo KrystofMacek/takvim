@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:takvim/providers/subscription/subs_list_provider.dart';
+import 'package:MyMosq/providers/subscription/subs_list_provider.dart';
 
 class NewsPageFab extends ConsumerWidget {
   const NewsPageFab({

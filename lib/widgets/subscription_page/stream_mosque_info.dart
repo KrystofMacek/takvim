@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:takvim/common/styling.dart';
+import 'package:MyMosq/common/styling.dart';
 import '../../providers/mosque_page/mosque_provider.dart';
 import 'package:firebase_database/firebase_database.dart';
 import '../../data/models/mosque_data.dart';

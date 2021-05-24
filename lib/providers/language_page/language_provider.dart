@@ -14,6 +14,8 @@ class AppLanguagePackProvider extends StateNotifier<LanguagePack> {
   void setLang(LanguagePack languagePack) {
     state = languagePack;
   }
+
+  LanguagePack get state;
 }
 
 final languagePackController =

@@ -1,20 +1,26 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/all.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:hive/hive.dart';
-import 'package:takvim/data/models/language_pack.dart';
-import 'package:takvim/providers/common/device_snapshot_provider.dart';
-import 'package:takvim/providers/common/version_check_provider.dart';
-import 'package:takvim/providers/language_page/language_provider.dart';
-import 'package:takvim/widgets/home_page/app_bar.dart';
-import 'package:takvim/widgets/language_page/app_bar_content.dart';
+import 'package:store_redirect/store_redirect.dart';
+import 'package:MyMosq/common/constants.dart';
+import 'package:MyMosq/data/models/language_pack.dart';
+import 'package:MyMosq/providers/common/device_snapshot_provider.dart';
+import 'package:MyMosq/providers/common/version_check_provider.dart';
+import 'package:MyMosq/providers/firestore_provider.dart';
+import 'package:MyMosq/providers/language_page/language_provider.dart';
+import 'package:MyMosq/widgets/home_page/app_bar.dart';
+import 'package:MyMosq/widgets/language_page/app_bar_content.dart';
 import '../widgets/language_page/language_page_widgets.dart';
 
 class LangSettingsPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, ScopedReader watch) {
-    context.read(versionCheckProvider).showUpdateAlert(context);
+    // context.read(versionCheckProvider).showUpdateAlert(context);
+
+    FirebaseFirestore _firestore = watch(firestoreProvider);
 
     final LanguagePack _appLang = watch(appLanguagePackProvider.state);
     final LanguagePackController _langPackController =
@@ -23,6 +29,54 @@ class LangSettingsPage extends ConsumerWidget {
     if (_appLang == null) {
       _langPackController.updateAppLanguage();
     }
+
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
+      // context.read(versionCheckProvider).showUpdateAlert(context);
+
+      if (context.read(versionCheckProvider.state)) {
+        context.read(versionCheckProvider).update(false);
+        DocumentSnapshot doc =
+            await _firestore.collection('settings').doc('appVersion').get();
+
+        String _version = doc.get('latest');
+        if (_version != CURRENT_VERSION) {
+          showDialog(
+            context: context,
+            builder: (context) {
+              return AlertDialog(
+                title: Text('${_appLang.updateMessage}'),
+                actions: <Widget>[
+                  TextButton(
+                    child: Text('${_appLang.cancel}'),
+                    onPressed: () {
+                      Navigator.popUntil(context, ModalRoute.withName('/lang'));
+                    },
+                  ),
+                  Container(
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).primaryColor,
+                      borderRadius: BorderRadius.circular(5),
+                    ),
+                    child: TextButton(
+                      child: Text(
+                        '${_appLang.update}',
+                        style: TextStyle(color: Colors.white),
+                      ),
+                      onPressed: () {
+                        StoreRedirect.redirect(iOSAppId: "1548479130");
+                        Navigator.popUntil(
+                            context, ModalRoute.withName('/lang'));
+                      },
+                    ),
+                  ),
+                ],
+              );
+            },
+          );
+        }
+      }
+    });
+
     return Container(
       color: Theme.of(context).primaryColor,
       child: SafeArea(

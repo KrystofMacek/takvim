@@ -2,8 +2,8 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:takvim/data/models/mosque_data.dart';
-import 'package:takvim/providers/mosque_page/mosque_detail_provider.dart';
+import 'package:MyMosq/data/models/mosque_data.dart';
+import 'package:MyMosq/providers/mosque_page/mosque_detail_provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:auto_size_text/auto_size_text.dart';

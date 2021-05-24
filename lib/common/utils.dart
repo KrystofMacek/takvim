@@ -1,6 +1,6 @@
 import 'package:intl/intl.dart';
 import 'package:hive/hive.dart';
-import 'package:takvim/data/models/day_data.dart';
+import 'package:MyMosq/data/models/day_data.dart';
 import '../providers/news_page/selected_mosque_news_provider.dart';
 
 String formatDateToID(DateTime date) {

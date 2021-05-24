@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/all.dart';
-import 'package:takvim/providers/firestore_provider.dart';
+import 'package:MyMosq/providers/firestore_provider.dart';
 import 'package:cross_connectivity/cross_connectivity.dart';
 import './opened_subs_item.dart';
 import '../../providers/subscription/selected_subs_item_provider.dart';

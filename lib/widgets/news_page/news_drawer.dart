@@ -4,7 +4,6 @@ import '../../data/models/language_pack.dart';
 import '../../common/styling.dart';
 import 'package:hive/hive.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../../providers/firestore_provider.dart';
 import 'package:cross_connectivity/cross_connectivity.dart';
 import '../../common/constants.dart';
 

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:takvim/providers/common/device_snapshot_provider.dart';
+import 'package:MyMosq/providers/common/device_snapshot_provider.dart';
 import '../widgets/subscription_page/widgets.dart';
 import '../widgets/home_page/app_bar.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';

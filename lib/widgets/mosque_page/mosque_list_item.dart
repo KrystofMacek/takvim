@@ -2,7 +2,7 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:takvim/providers/mosque_page/mosque_detail_provider.dart';
+import 'package:MyMosq/providers/mosque_page/mosque_detail_provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../providers/mosque_page/mosque_provider.dart';
 import '../../data/models/mosque_data.dart';
@@ -22,7 +22,6 @@ class MosqueItem extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, ScopedReader watch) {
-    SelectedMosque _mosqueSelector = watch(selectedMosque);
     final LanguagePack _appLang = watch(appLanguagePackProvider.state);
 
     bool dist = watch(sortByDistanceToggle.state);
@@ -180,8 +179,7 @@ class MosqueItem extends ConsumerWidget {
                 ),
                 Consumer(
                   builder: (context, watch, child) {
-                    SelectedMosqueDetailIdProvider detailsId =
-                        watch(selectedMosqueDetail);
+                    watch(selectedMosqueDetail);
 
                     return IconButton(
                       hoverColor: Colors.transparent,

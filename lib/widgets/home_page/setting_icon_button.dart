@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:takvim/common/constants.dart';
-import 'package:takvim/data/models/language_pack.dart';
+import 'package:MyMosq/common/constants.dart';
+import 'package:MyMosq/data/models/language_pack.dart';
 import 'package:cross_connectivity/cross_connectivity.dart';
 
 class SettingBtnView extends StatelessWidget {
