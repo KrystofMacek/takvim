@@ -11,23 +11,22 @@ import 'package:flutter_riverpod/all.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:responsive_framework/responsive_framework.dart';
-import 'package:takvim/pages/lang_settings_page.dart';
-import 'package:takvim/pages/mosque_settings_page.dart';
-import 'package:takvim/pages/news/news_mosques_page.dart';
-import 'package:takvim/pages/news/news_page.dart';
-import 'package:takvim/pages/notification_config_page.dart';
-import 'package:takvim/pages/subscribtion_page.dart';
-import 'package:takvim/providers/common/notification_provider.dart';
-import 'package:takvim/providers/common/version_check_provider.dart';
-import 'package:takvim/providers/mosque_page/mosque_provider.dart';
-import 'package:takvim/providers/subscription/subs_list_provider.dart';
+import 'package:MyMosq/pages/lang_settings_page.dart';
+import 'package:MyMosq/pages/mosque_settings_page.dart';
+import 'package:MyMosq/pages/news/news_mosques_page.dart';
+import 'package:MyMosq/pages/news/news_page.dart';
+import 'package:MyMosq/pages/notification_config_page.dart';
+import 'package:MyMosq/pages/subscribtion_page.dart';
+import 'package:MyMosq/providers/common/notification_provider.dart';
+import 'package:MyMosq/providers/mosque_page/mosque_provider.dart';
+import 'package:MyMosq/providers/subscription/subs_list_provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 import './pages/compass_page.dart';
 import './data/models/subsTopic.dart';
 import './common/styling.dart';
 import 'pages/pages.dart';
 import './pages/contact.dart';
-import 'package:takvim/providers/language_page/language_provider.dart';
+import 'package:MyMosq/providers/language_page/language_provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -174,7 +173,7 @@ class _MyAppState extends State<MyApp> {
         ],
       ),
       debugShowCheckedModeBanner: false,
-      title: 'Takvim',
+      title: 'MyMosq',
       themeMode: currentTheme.currentTheme(),
       darkTheme: buildDarkThemeData(),
       theme: buildLightThemeData(),
