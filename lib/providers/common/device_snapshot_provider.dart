@@ -92,24 +92,53 @@ class DeviceSnapshot extends StateNotifier<DateTime> {
         });
       }
 
-      _firestore
+      DocumentSnapshot snap = await _firestore
           .collection('statistics')
           .doc('statistics')
           .collection('deviceSnapshots')
           .doc(id)
-          .set(
-        {
-          'deviceManufacturer': _deviceManufacturer,
-          'deviceModel': _model,
-          'deviceOsType': _os,
-          'deviceOsVersion': _osVersion,
-          'lastCheckIn': _lastCheckIn,
-          'mosqueId': _selectedMosqueId,
-          'languageId': _selectedLangId,
-          'subscriptions': subs,
-          'location': address,
-        },
-      );
+          .get();
+
+      Map<String, dynamic> data = snap.data();
+
+      if (data != null && address == '' && data['location'] != '') {
+        _firestore
+            .collection('statistics')
+            .doc('statistics')
+            .collection('deviceSnapshots')
+            .doc(id)
+            .update(
+          {
+            'deviceManufacturer': _deviceManufacturer,
+            'deviceModel': _model,
+            'deviceOsType': _os,
+            'deviceOsVersion': _osVersion,
+            'lastCheckIn': _lastCheckIn,
+            'mosqueId': _selectedMosqueId,
+            'languageId': _selectedLangId,
+            'subscriptions': subs,
+          },
+        );
+      } else {
+        _firestore
+            .collection('statistics')
+            .doc('statistics')
+            .collection('deviceSnapshots')
+            .doc(id)
+            .set(
+          {
+            'deviceManufacturer': _deviceManufacturer,
+            'deviceModel': _model,
+            'deviceOsType': _os,
+            'deviceOsVersion': _osVersion,
+            'lastCheckIn': _lastCheckIn,
+            'mosqueId': _selectedMosqueId,
+            'languageId': _selectedLangId,
+            'subscriptions': subs,
+            'location': address,
+          },
+        );
+      }
     }
   }
 }

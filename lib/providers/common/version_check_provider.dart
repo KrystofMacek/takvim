@@ -1,71 +1,12 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/all.dart';
-import 'package:store_redirect/store_redirect.dart';
-import 'package:MyMosq/common/constants.dart';
-import 'package:MyMosq/data/models/language_pack.dart';
-import 'package:MyMosq/providers/firestore_provider.dart';
-import 'package:MyMosq/providers/language_page/language_provider.dart';
 
-final versionCheckProvider = StateNotifierProvider<VersionCheck>((ref) =>
-    VersionCheck(ref.watch(firestoreProvider),
-        ref.watch(appLanguagePackProvider.state)));
+final versionCheckProvider =
+    StateNotifierProvider<VersionCheck>((ref) => VersionCheck());
 
 class VersionCheck extends StateNotifier<bool> {
-  VersionCheck(FirebaseFirestore firestore, LanguagePack langPack)
-      : _appLanguage = langPack,
-        _firestore = firestore,
-        super(true);
-
-  FirebaseFirestore _firestore;
-  LanguagePack _appLanguage;
+  VersionCheck() : super(true);
 
   void update(bool show) => state = show;
 
   bool get state;
-
-  void showUpdateAlert(BuildContext context) async {
-    if (state) {
-      state = false;
-      DocumentSnapshot doc =
-          await _firestore.collection('settings').doc('appVersion').get();
-
-      String _version = doc.get('latest');
-      if (_version != CURRENT_VERSION) {
-        showDialog(
-          context: context,
-          builder: (context) {
-            return AlertDialog(
-              title: Text('${_appLanguage.updateMessage}'),
-              actions: <Widget>[
-                TextButton(
-                  child: Text('${_appLanguage.cancel}'),
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                ),
-                Container(
-                  decoration: BoxDecoration(
-                    color: Theme.of(context).primaryColor,
-                    borderRadius: BorderRadius.circular(5),
-                  ),
-                  child: TextButton(
-                    child: Text(
-                      '${_appLanguage.update}',
-                      style: TextStyle(color: Colors.white),
-                    ),
-                    onPressed: () {
-                      StoreRedirect.redirect(iOSAppId: "1548479130");
-                      Navigator.of(context).pop();
-                    },
-                  ),
-                ),
-              ],
-            );
-          },
-        );
-      }
-    }
-  }
 }

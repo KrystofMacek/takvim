@@ -190,9 +190,9 @@ class MosqueItem extends ConsumerWidget {
                       ),
                       onPressed: () async {
                         if (await canLaunch(
-                            'https://news.takvim.ch/mosque/${data.mosqueId}?integratedView=true&languageId=${_appLang.languageId}')) {
+                            'https://mymosq.ch/mosque/${data.mosqueId}?integratedView=true&languageId=${_appLang.languageId}')) {
                           await launch(
-                            'https://news.takvim.ch/mosque/${data.mosqueId}?integratedView=true&languageId=${_appLang.languageId}',
+                            'https://mymosq.ch/mosque/${data.mosqueId}?integratedView=true&languageId=${_appLang.languageId}',
                             forceSafariVC: false,
                           );
                         } else {

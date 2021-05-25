@@ -18,8 +18,6 @@ import '../widgets/language_page/language_page_widgets.dart';
 class LangSettingsPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, ScopedReader watch) {
-    // context.read(versionCheckProvider).showUpdateAlert(context);
-
     FirebaseFirestore _firestore = watch(firestoreProvider);
 
     final LanguagePack _appLang = watch(appLanguagePackProvider.state);
@@ -31,8 +29,6 @@ class LangSettingsPage extends ConsumerWidget {
     }
 
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
-      // context.read(versionCheckProvider).showUpdateAlert(context);
-
       if (context.read(versionCheckProvider.state)) {
         context.read(versionCheckProvider).update(false);
         DocumentSnapshot doc =
@@ -49,6 +45,7 @@ class LangSettingsPage extends ConsumerWidget {
                   TextButton(
                     child: Text('${_appLang.cancel}'),
                     onPressed: () {
+                      context.read(versionCheckProvider).update(false);
                       Navigator.popUntil(context, ModalRoute.withName('/lang'));
                     },
                   ),
@@ -63,6 +60,7 @@ class LangSettingsPage extends ConsumerWidget {
                         style: TextStyle(color: Colors.white),
                       ),
                       onPressed: () {
+                        context.read(versionCheckProvider).update(false);
                         StoreRedirect.redirect(iOSAppId: "1548479130");
                         Navigator.popUntil(
                             context, ModalRoute.withName('/lang'));

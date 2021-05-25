@@ -73,9 +73,9 @@ class HomePageAppBarContent extends StatelessWidget {
                 ),
                 onPressed: () async {
                   if (await canLaunch(
-                      'https://news.takvim.ch/mosque/$_selectedMosqueId?integratedView=true&languageId=${_appLang.languageId}')) {
+                      'https://mymosq.ch/mosque/$_selectedMosqueId?integratedView=true&languageId=${_appLang.languageId}')) {
                     await launch(
-                      'https://news.takvim.ch/mosque/$_selectedMosqueId?integratedView=true&languageId=${_appLang.languageId}',
+                      'https://mymosq.ch/mosque/$_selectedMosqueId?integratedView=true&languageId=${_appLang.languageId}',
                       forceSafariVC: false,
                     );
                   } else {

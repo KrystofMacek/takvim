@@ -91,35 +91,15 @@ class MosqueSettingsAppBarContent extends StatelessWidget {
                                 context.read(sortByDistanceToggle).toggle();
                               }
                             }),
-                        // watch(locationGranted.state)
-                        //     ? IconButton(
-                        //         icon: FaIcon(
-                        //           FontAwesomeIcons.streetView,
-                        //           color: watch(sortByDistanceToggle.state)
-                        //               ? Theme.of(context).colorScheme.onPrimary
-                        //               : Theme.of(context).iconTheme.color,
-                        //         ),
-                        //         onPressed: () async {
-                        //           Position position = await context
-                        //               .read(locationProvider)
-                        //               .getUsersPosition();
-                        //           if (position != null) {
-                        //             context
-                        //                 .read(usersPosition)
-                        //                 .update(position);
-                        //             context.read(sortByDistanceToggle).toggle();
-                        //           }
-                        //         })
-                        //     : SizedBox(),
                         IconButton(
                           icon: FaIcon(
                             FontAwesomeIcons.mapMarked,
                           ),
                           onPressed: () async {
                             if (await canLaunch(
-                                'https://news.takvim.ch/map?integratedView=true&languageId=${_appLang.languageId}')) {
+                                'https://mymosq.ch/map?integratedView=true&languageId=${_appLang.languageId}')) {
                               await launch(
-                                'https://news.takvim.ch/map?integratedView=true&languageId=${_appLang.languageId}',
+                                'https://mymosq.ch/map?integratedView=true&languageId=${_appLang.languageId}',
                                 forceSafariVC: false,
                               );
                             } else {
@@ -129,23 +109,6 @@ class MosqueSettingsAppBarContent extends StatelessWidget {
                         )
                       ],
                     ),
-                    // Row(
-                    //   children: [
-                    //     // Switch(
-                    //     //   activeTrackColor:
-                    //     //       Theme.of(context).colorScheme.primaryVariant,
-                    //     //   inactiveThumbColor: Colors.white,
-                    //     //   activeColor: Colors.white,
-                    //     //   value: watch(sortByDistanceToggle.state),
-                    //     //   onChanged: (value) =>
-                    //     //       context.read(sortByDistanceToggle).toggle(),
-                    //     // ),
-                    //     IconButton(
-                    //         icon: FaIcon(FontAwesomeIcons.streetView),
-                    //         onPressed: () =>
-                    //             context.read(sortByDistanceToggle).toggle()),
-                    //   ],
-                    // ),
                   ],
                 ),
               ),

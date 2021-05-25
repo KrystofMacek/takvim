@@ -102,7 +102,6 @@ class MosqueSettingsPage extends ConsumerWidget {
                   } else {
                     _selectedDateController.updateSelectedDate(DateTime.now());
                     Navigator.popUntil(context, ModalRoute.withName('/home'));
-                    context.read(deviceSnapshotProvider).updateSnapshot(true);
                   }
                   filteringController.resetFilter();
                   context.read(currentSubsListProvider).autoSubscribe(mosqueId);

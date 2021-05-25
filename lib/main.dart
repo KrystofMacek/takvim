@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:MyMosq/pages/home_page.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:firebase_database/firebase_database.dart';
@@ -24,7 +25,6 @@ import 'package:url_launcher/url_launcher.dart';
 import './pages/compass_page.dart';
 import './data/models/subsTopic.dart';
 import './common/styling.dart';
-import 'pages/pages.dart';
 import './pages/contact.dart';
 import 'package:MyMosq/providers/language_page/language_provider.dart';
 

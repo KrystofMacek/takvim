@@ -1,4 +1,6 @@
+import 'package:MyMosq/providers/common/device_snapshot_provider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
 import 'package:riverpod/all.dart';
 import 'package:hive/hive.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -73,7 +75,7 @@ class CurrentSubsList extends StateNotifier<List<SubsTopic>> {
     }
   }
 
-  void autoSubscribe(String mosqueId) async {
+  Future<void> autoSubscribe(String mosqueId) async {
     List<SubsTopic> newMosqueTopics = [];
     QuerySnapshot snap = await _firestore
         .collection('topics')
