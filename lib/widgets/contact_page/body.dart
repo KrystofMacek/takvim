@@ -33,7 +33,32 @@ class _EmailFormState extends State<EmailForm> {
     FirebaseFunctions.instance
         .httpsCallable('sendMail')
         .call(data)
-        .then((value) => context.read(waitingIndicatorProvider).toggle());
+        .then((value) {
+      context.read(waitingIndicatorProvider).toggle();
+      _messageController.clear();
+      return Scaffold.of(context).showSnackBar(
+        SnackBar(
+          content: Consumer(
+            builder: (context, watch, child) {
+              LanguagePack lang = watch(appLanguagePackProvider.state);
+              return Text('${lang.contactSuccessMessage}');
+            },
+          ),
+        ),
+      );
+    }).onError((error, stackTrace) {
+      context.read(waitingIndicatorProvider).toggle();
+      return Scaffold.of(context).showSnackBar(
+        SnackBar(
+          content: Consumer(
+            builder: (context, watch, child) {
+              LanguagePack lang = watch(appLanguagePackProvider.state);
+              return Text('${lang.contactErrorMessage}');
+            },
+          ),
+        ),
+      );
+    });
   }
 
   @override

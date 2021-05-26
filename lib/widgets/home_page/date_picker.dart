@@ -1,8 +1,10 @@
+import 'package:MyMosq/providers/home_page/pager.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:MyMosq/common/styling.dart';
 import 'package:MyMosq/data/models/dateBounds.dart';
 import 'package:MyMosq/providers/home_page/date_provider.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class CalendarDayPicker extends StatelessWidget {
   const CalendarDayPicker({

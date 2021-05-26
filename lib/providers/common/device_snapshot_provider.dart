@@ -34,7 +34,12 @@ class DeviceSnapshot extends StateNotifier<DateTime> {
   CurrentSubsList _currentSubsList;
 
   void updateSnapshot(bool configChange) async {
-    if (state.difference(DateTime.now()).inHours.abs() >= 12 || configChange) {
+    DocumentSnapshot doc =
+        await _firestore.collection('settings').doc('statistics').get();
+
+    int fq = doc.get('phoneLastCheckinFrequency');
+
+    if (state.difference(DateTime.now()).inHours.abs() >= fq || configChange) {
       Hive.box('pref').put('lastCheckIn', DateTime.now());
       FieldValue _timestamp = FieldValue.serverTimestamp();
 
@@ -81,7 +86,7 @@ class DeviceSnapshot extends StateNotifier<DateTime> {
           _deviceManufacturer = info.manufacturer;
           _model = info.model;
           _os = Platform.operatingSystem;
-          _osVersion = Platform.operatingSystemVersion;
+          _osVersion = info.version.release;
         });
       } else if (Platform.isIOS) {
         await deviceInfo.iosInfo.then((info) {

@@ -1,3 +1,4 @@
+import 'package:MyMosq/providers/home_page/pager.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/all.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';

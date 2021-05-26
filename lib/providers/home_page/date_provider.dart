@@ -1,5 +1,7 @@
+import 'package:MyMosq/providers/home_page/pager.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_database/firebase_database.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/all.dart';
 import 'package:intl/intl.dart';
 import 'package:MyMosq/data/models/dateBounds.dart';
@@ -9,15 +11,18 @@ import 'package:MyMosq/providers/firestore_provider.dart';
 final selectedDate = StateNotifierProvider<SelectedDate>((ref) {
   return SelectedDate(
     ref.watch(firestoreProvider),
+    ref.watch(pageViewControllerProvider),
   );
 });
 
 class SelectedDate extends StateNotifier<DateTime> {
   SelectedDate(
     this._firebaseFirestore,
+    this._pageViewController,
   ) : super(DateTime.now());
 
   DateTime get state;
+  PageViewController _pageViewController;
 
   DatabaseReference db = FirebaseDatabase.instance.reference();
   final FirebaseFirestore _firebaseFirestore;
@@ -32,11 +37,13 @@ class SelectedDate extends StateNotifier<DateTime> {
 
   void updateSelectedDate(DateTime date) {
     state = date;
+    _pageViewController.goToPage(0);
   }
 
   void onRefresh() async {
     await Future.delayed(Duration(microseconds: 500));
     state = DateTime.now();
+    _pageViewController.goToPage(0);
   }
 
   void subsOneDay(DateTime first) {
@@ -44,6 +51,7 @@ class SelectedDate extends StateNotifier<DateTime> {
     if (newDate.isAfter(first) ||
         (newDate.year == first.year && newDate.day == first.day)) {
       state = newDate;
+      _pageViewController.goToPage(0);
     }
   }
 
@@ -52,6 +60,7 @@ class SelectedDate extends StateNotifier<DateTime> {
     if (newDate.isBefore(last) ||
         (newDate.year == last.year && newDate.day == last.day)) {
       state = newDate;
+      _pageViewController.goToPage(0);
     }
   }
 
