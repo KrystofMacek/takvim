@@ -22,7 +22,7 @@ class CalendarDayPicker extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Container(
-          padding: EdgeInsets.all(6),
+          padding: EdgeInsets.all(5),
           decoration: BoxDecoration(
             color: Theme.of(context).scaffoldBackgroundColor,
             borderRadius: BorderRadius.circular(5),
@@ -47,16 +47,16 @@ class CalendarDayPicker extends StatelessWidget {
             child: Icon(
               Icons.calendar_today,
               color: CustomColors.mainColor,
-              size: 30,
+              size: 26,
             ),
           ),
         ),
         SizedBox(
-          width: !isToday ? 14 : 0,
+          width: !isToday ? 18 : 0,
         ),
         !isToday
             ? Container(
-                padding: EdgeInsets.all(9),
+                padding: EdgeInsets.all(8),
                 decoration: BoxDecoration(
                   color: Theme.of(context).scaffoldBackgroundColor,
                   borderRadius: BorderRadius.circular(5),
@@ -72,7 +72,7 @@ class CalendarDayPicker extends StatelessWidget {
                   child: FaIcon(
                     FontAwesomeIcons.sync,
                     color: CustomColors.mainColor,
-                    size: 22,
+                    size: 20,
                   ),
                 ),
               )

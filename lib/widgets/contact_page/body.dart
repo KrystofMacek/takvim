@@ -30,7 +30,7 @@ class _EmailFormState extends State<EmailForm> {
       'message': '[App] ${_messageController.text.toString()}',
     };
 
-    FirebaseFunctions.instance
+    FirebaseFunctions.instanceFor(region: "europe-west1")
         .httpsCallable('sendMail')
         .call(data)
         .then((value) {
@@ -48,6 +48,7 @@ class _EmailFormState extends State<EmailForm> {
       );
     }).onError((error, stackTrace) {
       context.read(waitingIndicatorProvider).toggle();
+      print(error);
       return Scaffold.of(context).showSnackBar(
         SnackBar(
           content: Consumer(
