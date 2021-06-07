@@ -1,10 +1,8 @@
-import 'package:MyMosq/providers/home_page/pager.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:MyMosq/common/styling.dart';
 import 'package:MyMosq/data/models/dateBounds.dart';
 import 'package:MyMosq/providers/home_page/date_provider.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class CalendarDayPicker extends StatelessWidget {
   const CalendarDayPicker({
@@ -23,17 +21,17 @@ class CalendarDayPicker extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Material(
-          elevation: 2,
-          borderRadius: BorderRadius.circular(10),
-          child: IconButton(
-            padding: EdgeInsets.zero,
-            icon: Icon(
-              Icons.calendar_today,
-              color: CustomColors.mainColor,
-              size: 40,
-            ),
-            onPressed: () async {
+        Container(
+          padding: EdgeInsets.all(6),
+          decoration: BoxDecoration(
+            color: Theme.of(context).scaffoldBackgroundColor,
+            borderRadius: BorderRadius.circular(5),
+            boxShadow: [
+              BoxShadow(spreadRadius: .5, blurRadius: 2, color: Colors.grey),
+            ],
+          ),
+          child: GestureDetector(
+            onTap: () async {
               DateBounds bounds = await _selectedDate.getFirestoreDateBounds();
 
               final DateTime picked = await showDatePicker(
@@ -46,24 +44,36 @@ class CalendarDayPicker extends StatelessWidget {
                 _selectedDate.updateSelectedDate(picked);
               }
             },
+            child: Icon(
+              Icons.calendar_today,
+              color: CustomColors.mainColor,
+              size: 30,
+            ),
           ),
         ),
         SizedBox(
-          width: !isToday ? 10 : 0,
+          width: !isToday ? 14 : 0,
         ),
         !isToday
-            ? Material(
-                elevation: 2,
-                borderRadius: BorderRadius.circular(10),
-                child: IconButton(
-                  icon: FaIcon(
-                    FontAwesomeIcons.sync,
-                    color: CustomColors.mainColor,
-                    size: 24,
-                  ),
-                  onPressed: () async {
+            ? Container(
+                padding: EdgeInsets.all(9),
+                decoration: BoxDecoration(
+                  color: Theme.of(context).scaffoldBackgroundColor,
+                  borderRadius: BorderRadius.circular(5),
+                  boxShadow: [
+                    BoxShadow(
+                        spreadRadius: .5, blurRadius: 2, color: Colors.grey),
+                  ],
+                ),
+                child: GestureDetector(
+                  onTap: () async {
                     _selectedDate.updateSelectedDate(DateTime.now());
                   },
+                  child: FaIcon(
+                    FontAwesomeIcons.sync,
+                    color: CustomColors.mainColor,
+                    size: 22,
+                  ),
                 ),
               )
             : SizedBox(),

@@ -39,6 +39,7 @@ export const writeNewsPostNotification = functions.firestore
             
                 if(newPost.sendNotification == true && !isDraft) {
                     console.log(`${newPost.title} ${newPost.url} ${admin.database.ServerValue.TIMESTAMP}`);
+                    firestore.collection('posts').doc(snapshot.after.id).update({sendNotification: false});
                     return fcm.sendToTopic(newPost.topicId, payload);
                 } else {
                     return;

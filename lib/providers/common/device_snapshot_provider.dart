@@ -59,7 +59,9 @@ class DeviceSnapshot extends StateNotifier<DateTime> {
 
       if (_currentSubsList != null) {
         _currentSubsList.state.forEach((element) {
-          subs.add(element.topic);
+          if (!subs.contains(element.topic)) {
+            subs.add(element.topic);
+          }
         });
       }
 
@@ -97,22 +99,13 @@ class DeviceSnapshot extends StateNotifier<DateTime> {
         });
       }
 
-      DocumentSnapshot snap = await _firestore
-          .collection('statistics')
-          .doc('statistics')
-          .collection('deviceSnapshots')
-          .doc(id)
-          .get();
+      DocumentSnapshot snap =
+          await _firestore.collection('deviceSnapshots').doc(id).get();
 
       Map<String, dynamic> data = snap.data();
 
       if (data != null && address == '' && data['location'] != '') {
-        _firestore
-            .collection('statistics')
-            .doc('statistics')
-            .collection('deviceSnapshots')
-            .doc(id)
-            .update(
+        _firestore.collection('deviceSnapshots').doc(id).update(
           {
             'deviceManufacturer': _deviceManufacturer,
             'deviceModel': _model,
@@ -125,12 +118,7 @@ class DeviceSnapshot extends StateNotifier<DateTime> {
           },
         );
       } else {
-        _firestore
-            .collection('statistics')
-            .doc('statistics')
-            .collection('deviceSnapshots')
-            .doc(id)
-            .set(
+        _firestore.collection('deviceSnapshots').doc(id).set(
           {
             'deviceManufacturer': _deviceManufacturer,
             'deviceModel': _model,
