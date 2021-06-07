@@ -6,7 +6,7 @@ admin.initializeApp();
 const fcm = admin.messaging();
 const firestore = admin.firestore();
 
-export const writeNewsPostNotification = functions.firestore
+export const writeNewsPostNotification = functions.region('europe-west1').firestore
 .document('posts/{postId}')
 .onWrite(async snapshot => {
     
