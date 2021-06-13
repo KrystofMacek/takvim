@@ -58,7 +58,8 @@ class CalendarDayPicker extends StatelessWidget {
         ),
         !isToday
             ? Container(
-                padding: EdgeInsets.all(Platform.isIOS ? 8 : 7),
+                padding: EdgeInsets.symmetric(
+                    vertical: Platform.isIOS ? 8 : 7, horizontal: 8),
                 decoration: BoxDecoration(
                   color: Theme.of(context).scaffoldBackgroundColor,
                   borderRadius: BorderRadius.circular(5),
