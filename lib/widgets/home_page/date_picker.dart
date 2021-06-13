@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:MyMosq/common/styling.dart';
@@ -56,7 +58,7 @@ class CalendarDayPicker extends StatelessWidget {
         ),
         !isToday
             ? Container(
-                padding: EdgeInsets.all(7),
+                padding: EdgeInsets.all(Platform.isIOS ? 8 : 7),
                 decoration: BoxDecoration(
                   color: Theme.of(context).scaffoldBackgroundColor,
                   borderRadius: BorderRadius.circular(5),

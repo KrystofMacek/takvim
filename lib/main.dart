@@ -57,9 +57,9 @@ void main() async {
         url = message['data']['URL'];
       }
 
-      if (await canLaunch('http://$url')) {
+      if (await canLaunch('http://$url?integratedView=true')) {
         await launch(
-          'http://$url',
+          'http://$url?integratedView=true',
           forceSafariVC: false,
         );
       } else {
