@@ -56,7 +56,6 @@ void main() async {
       if (Platform.isAndroid) {
         url = message['data']['URL'];
       }
-      print(url);
 
       if (await canLaunch('http://$url')) {
         await launch(
@@ -75,11 +74,10 @@ void main() async {
       if (Platform.isAndroid) {
         url = message['data']['URL'];
       }
-      print(url);
 
-      if (await canLaunch('http://$url')) {
+      if (await canLaunch('http://$url?integratedView=true')) {
         await launch(
-          'http://$url',
+          'http://$url?integratedView=true',
           forceSafariVC: false,
         );
       } else {

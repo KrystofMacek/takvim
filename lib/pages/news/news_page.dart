@@ -240,9 +240,9 @@ class NewsListView extends ConsumerWidget {
                                 splashColor: CustomColors.highlightColor,
                                 onTap: () async {
                                   if (await canLaunch(
-                                      'http://${data.url}?languageId=${_appLang.languageId}')) {
+                                      'http://${data.url}?languageId=${_appLang.languageId}&integratedView=true')) {
                                     await launch(
-                                      'http://${data.url}?languageId=${_appLang.languageId}',
+                                      'http://${data.url}?languageId=${_appLang.languageId}&integratedView=true',
                                       forceSafariVC: false,
                                     );
                                   } else {
