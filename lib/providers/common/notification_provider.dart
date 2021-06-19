@@ -87,6 +87,7 @@ class NotificationController extends StateNotifier<NotificationController> {
             }
           }
         }
+
         _notifications.removeWhere(
           (element) => element.dateOfNotification.isBefore(DateTime.now()),
         );
@@ -94,9 +95,10 @@ class NotificationController extends StateNotifier<NotificationController> {
         for (var i = 0; i < _notifications.length; i++) {
           LocalNotification notification = _notifications[i];
           bool skip = false;
+          // e.g in case dhuhr and dhuhr time are same skip one
           if (i < _notifications.length - 1) {
-            skip = notification.timeDisplayed ==
-                _notifications[i + 1].timeDisplayed;
+            skip = notification.dateOfNotification ==
+                _notifications[i + 1].dateOfNotification;
           }
           if (!skip) {
             String name = dataMap['${PRAYER_TIMES[notification.nameOfTime]}'];
