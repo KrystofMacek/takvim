@@ -29,13 +29,13 @@
 	<key>NSContactsUsageDescription</key>
 	<string>App does not require access to contact usage</string>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
-	<string>To get location and direction</string>
+	<string>Location is needed to find direction to kibla and distances from mosques</string>
 	<key>NSLocationAlwaysUsageDescription</key>
-	<string>To get location and direction</string>
+	<string>Location is needed to find direction to kibla and distances from mosques</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>To get location and direction</string>
+	<string>Location is needed to find direction to kibla and distances from mosques</string>
 	<key>NSMotionUsageDescription</key>
-	<string>To get direction for compass</string>
+	<string>Location is needed to find direction to kibla and distances from mosques</string>
 	<key>NSSpeechRecognitionUsageDescription</key>
 	<string>App does not use Speech Recognition</string>
 	<key>UIBackgroundModes</key>
