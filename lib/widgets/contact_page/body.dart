@@ -210,25 +210,3 @@ class _EmailFormState extends State<EmailForm> {
     );
   }
 }
-
-abstract class CustomDecoration {
-  static InputDecoration getInputDecoration(String hint) => InputDecoration(
-        contentPadding: EdgeInsets.symmetric(vertical: 8, horizontal: 10),
-        hintText: hint,
-        isDense: true,
-        fillColor: Colors.white,
-        filled: true,
-        enabledBorder: OutlineInputBorder(
-          borderSide: BorderSide(color: Colors.grey, width: 1),
-        ),
-        focusedBorder: OutlineInputBorder(
-          borderSide: BorderSide(color: CustomColors.mainColor, width: 1.5),
-        ),
-        errorBorder: OutlineInputBorder(
-          borderSide: BorderSide(color: Colors.red[300], width: 1),
-        ),
-        focusedErrorBorder: OutlineInputBorder(
-          borderSide: BorderSide(color: Colors.red[300], width: 1.5),
-        ),
-      );
-}

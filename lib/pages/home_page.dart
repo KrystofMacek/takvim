@@ -1,4 +1,6 @@
-import 'package:MyMosq/providers/home_page/pager.dart';
+import 'package:MyMosq/widgets/home_page/app_bar.dart';
+import 'package:MyMosq/widgets/home_page/body_wrapper.dart';
+import 'package:MyMosq/widgets/home_page/drawer.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/all.dart';
@@ -12,9 +14,7 @@ import 'package:MyMosq/providers/home_page/date_provider.dart';
 import 'package:MyMosq/providers/language_page/language_provider.dart';
 import 'package:MyMosq/providers/mosque_page/mosque_provider.dart';
 import 'package:MyMosq/widgets/home_page/app_bar_content.dart';
-import '../widgets/home_page/home_page_widgets.dart';
 import '../providers/home_page/date_provider.dart';
-import '../widgets/home_page/widgets_home.dart';
 
 class HomePage extends StatelessWidget {
   @override
@@ -109,75 +109,12 @@ class HomePage extends StatelessWidget {
               drawer: DrawerHomePage(
                 languagePack: _appLang,
               ),
-              body: Container(
-                padding:
-                    EdgeInsets.only(top: 15, left: 20, right: 20, bottom: 15),
-                child: Center(
-                  child: FutureBuilder(
-                    future: _langPackController.getAppLangPack(),
-                    builder: (BuildContext context, AsyncSnapshot snapshot) {
-                      if (snapshot.hasData) {
-                        return ConstrainedBox(
-                            constraints: BoxConstraints(maxWidth: colWidth),
-                            child: Flex(
-                              direction: Axis.vertical,
-                              children: [
-                                Expanded(
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
-                                    children: [
-                                      Consumer(
-                                        builder: (context, watch, child) {
-                                          watch(selectedDate.state);
-                                          return Expanded(
-                                            child: Container(
-                                              child: Column(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.center,
-                                                children: [
-                                                  CalendarDayPicker(
-                                                      selectedDate:
-                                                          _selectedDate),
-                                                  SizedBox(
-                                                    height: 12,
-                                                  ),
-                                                  DateSelectorRow(
-                                                      selectedDate:
-                                                          _selectedDate,
-                                                      appLang: _appLang),
-                                                  SizedBox(
-                                                    height: 15,
-                                                  ),
-                                                  Expanded(
-                                                    child: Container(
-                                                      child: DailyDataView(
-                                                        mosqueController:
-                                                            _mosqueController,
-                                                        selectedDate:
-                                                            _selectedDate,
-                                                        appLang: _appLang,
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                          );
-                                        },
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ],
-                            ));
-                      } else {
-                        return CircularProgressIndicator();
-                      }
-                    },
-                  ),
-                ),
+              body: HomePageBodyWrapper(
+                langPackController: _langPackController,
+                colWidth: colWidth,
+                selectedDate: _selectedDate,
+                appLang: _appLang,
+                mosqueController: _mosqueController,
               ),
             ),
           ),

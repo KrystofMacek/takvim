@@ -51,36 +51,3 @@ class SelectedMosqueView extends StatelessWidget {
     );
   }
 }
-
-// FutureBuilder<MosqueData>(
-//       future: _mosqueController.getSelectedMosque(_selectedMosque),
-//       builder: (BuildContext context, AsyncSnapshot<MosqueData> snapshot) {
-//         if (snapshot.hasData) {
-//           return Column(
-//             mainAxisAlignment: MainAxisAlignment.center,
-//             children: [
-//               Container(
-//                 padding: EdgeInsets.only(top: 10),
-//                 child: Text(
-//                   '${snapshot.data.ort} ${snapshot.data.kanton}',
-//                   style: CustomTextFonts.appBarTextNormal,
-//                 ),
-//               ),
-//               RichText(
-//                 textAlign: TextAlign.center,
-//                 text: TextSpan(children: [
-//                   TextSpan(
-//                     text: '${snapshot.data.name}',
-//                     style: CustomTextFonts.appBarTextItalic,
-//                   ),
-//                 ]),
-//               ),
-//             ],
-//           );
-//         } else {
-//           return Center(
-//             child: CircularProgressIndicator(),
-//           );
-//         }
-//       },
-//     );

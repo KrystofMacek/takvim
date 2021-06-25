@@ -1,6 +1,8 @@
 import 'dart:io';
 
 import 'package:MyMosq/pages/home_page.dart';
+import 'package:MyMosq/pages/news/mosques_sub_page.dart';
+import 'package:MyMosq/pages/news/posts_sub_page.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:firebase_database/firebase_database.dart';
@@ -14,8 +16,6 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 import 'package:MyMosq/pages/lang_settings_page.dart';
 import 'package:MyMosq/pages/mosque_settings_page.dart';
-import 'package:MyMosq/pages/news/news_mosques_page.dart';
-import 'package:MyMosq/pages/news/news_page.dart';
 import 'package:MyMosq/pages/notification_config_page.dart';
 import 'package:MyMosq/pages/subscribtion_page.dart';
 import 'package:MyMosq/providers/common/notification_provider.dart';
@@ -32,10 +32,13 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setPreferredOrientations(
       [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
+  // initialize local storage db
   await Hive.initFlutter();
   Hive.registerAdapter(SubsTopicAdapter());
+  // initialize db boxes
   await Hive.openBox('pref');
   await Hive.openBox('notificationConfig');
+  // initialize firebase
   await Firebase.initializeApp();
   FirebaseDatabase.instance.setPersistenceEnabled(true);
 
@@ -112,11 +115,14 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     super.initState();
+    //get user preferences
     final prefBox = Hive.box('pref');
 
+    // get values from user preferences
     final String appLang = prefBox.get('appLang');
-    String mosque = prefBox.get('mosque');
+    final String mosque = prefBox.get('mosque');
 
+    // setup theme changing
     currentTheme.addListener(() {
       setState(() {});
     });
@@ -128,14 +134,19 @@ class _MyAppState extends State<MyApp> {
       currentTheme.setThemeDark();
     }
 
+    // initialize mosque and applang ids if empty
     if (appLang == null && mosque == null) {
       prefBox.put('mosque', '1001');
       prefBox.put('appLang', '101');
       firstOpen = true;
     }
+    // set the current state with initialized values
     context.read(selectedMosque).updateSelectedMosque(mosque);
+    // autosub if necessary
     context.read(currentSubsListProvider).autoSubscribe(mosque ?? '1001');
+    // save info about first open
     prefBox.put('firstOpen', firstOpen);
+    // prayer time notifications initialized
     context.read(notificationProvider).initialize(context);
   }
 

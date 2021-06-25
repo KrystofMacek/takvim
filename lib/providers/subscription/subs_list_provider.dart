@@ -31,8 +31,10 @@ class CurrentSubsList extends StateNotifier<List<SubsTopic>> {
         _whitelist = whitelist,
         _firestore = firestore,
         _currentMosqueSubs = currentMosqueSubs,
-        super(prefBox
-            .get('subsList', defaultValue: <SubsTopic>[]).cast<SubsTopic>());
+        super(
+          prefBox
+              .get('subsList', defaultValue: <SubsTopic>[]).cast<SubsTopic>(),
+        );
 
   final Box _prefBox;
   final FirebaseMessaging _fcm;

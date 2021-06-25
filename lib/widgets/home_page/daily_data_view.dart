@@ -1,19 +1,16 @@
+import 'package:MyMosq/widgets/home_page/prayer_time_data_view.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:MyMosq/common/constants.dart';
 import 'package:MyMosq/data/models/day_data.dart';
 import 'package:MyMosq/data/models/language_pack.dart';
 import 'package:MyMosq/providers/common/notification_provider.dart';
 import 'package:MyMosq/providers/home_page/date_provider.dart';
 import 'package:MyMosq/providers/mosque_page/mosque_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import './prayer_time_item.dart';
 import '../../common/utils.dart';
 import '../../providers/home_page/time_provider.dart';
-import 'package:linkwell/linkwell.dart';
-import 'package:MyMosq/providers/home_page/pager.dart';
 
 class DailyDataView extends ConsumerWidget {
   const DailyDataView({
@@ -61,9 +58,6 @@ class DailyDataView extends ConsumerWidget {
                     .read(notificationController)
                     .scheduleNotification(data, tomorrow);
 
-                bool skipIshaTime = skipTime(data, PRAYER_TIMES[7]);
-                bool skipDhuhrTime = skipTime(data, PRAYER_TIMES[3]);
-
                 return Consumer(
                   builder: (context, watch, child) {
                     int upcoming = _findUpcoming(data);
@@ -73,83 +67,11 @@ class DailyDataView extends ConsumerWidget {
                     }
                     return watch(timeProvider).when(
                         data: (timeData) {
-                          return Column(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Container(
-                                child: ListView.separated(
-                                  shrinkWrap: true,
-                                  physics: const NeverScrollableScrollPhysics(),
-                                  itemCount: PRAYER_TIMES.length,
-                                  itemBuilder: (context, index) {
-                                    Map<String, String> dataMap =
-                                        _getTimeName(index, _appLang, data);
-
-                                    bool isUpcoming = upcoming == index;
-
-                                    bool minor = false;
-
-                                    if (index == 0 ||
-                                        index == 3 ||
-                                        index == 2 ||
-                                        index == 7) {
-                                      if (isUpcoming) {
-                                        isUpcoming = false;
-                                        upcoming += 1;
-                                      }
-                                      minor = true;
-                                    }
-
-                                    if (index == 7 && skipIshaTime) {
-                                      return SizedBox();
-                                    }
-                                    if (index == 3 && skipDhuhrTime) {
-                                      return SizedBox();
-                                    }
-                                    return PrayerTimeItem(
-                                      dataMap: dataMap,
-                                      minor: minor,
-                                      isUpcoming: isUpcoming,
-                                      timeData: timeData,
-                                      timeIndex: index,
-                                    );
-                                  },
-                                  separatorBuilder: (context, index) {
-                                    return SizedBox(
-                                      height: 2,
-                                    );
-                                  },
-                                ),
-                              ),
-                              // Consumer(
-                              //   builder: (context, watch, child) {
-                              //     if (data.notes != null) {
-                              //       // int page = watch(pageViewProvider.state);
-                              //       int length = data.notes.split('//').length;
-
-                              //       if (length > 1) {
-                              //         return Row(
-                              //           mainAxisAlignment:
-                              //               MainAxisAlignment.center,
-                              //           children: [
-                              //             Text(
-                              //               '${page + 1} / $length',
-                              //             ),
-                              //           ],
-                              //         );
-                              //       } else {
-                              //         return SizedBox();
-                              //       }
-                              //     } else {
-                              //       return SizedBox();
-                              //     }
-                              //   },
-                              // ),
-                              SizedBox(
-                                height: 4,
-                              ),
-                              NotePager(data: data),
-                            ],
+                          return PrayerTimeDataView(
+                            data: data,
+                            appLang: _appLang,
+                            upcoming: upcoming,
+                            timeData: timeData,
                           );
                         },
                         loading: () => Center(
@@ -202,133 +124,5 @@ class DailyDataView extends ConsumerWidget {
     int index = times.indexWhere(
         (element) => (element == getStringTimeAsComparableInt(hourMin)));
     return index;
-  }
-
-  Map<String, String> _getTimeName(int index, LanguagePack lang, DayData data) {
-    Map<String, String> timeName = {
-      "name": '',
-      "time": '',
-    };
-    switch (PRAYER_TIMES[index]) {
-      case 'Fajr':
-        timeName.update('name', (value) => lang.fajr);
-        timeName.update('time', (value) => data.fajr);
-        break;
-      case 'Sabah':
-        timeName.update('name', (value) => lang.sabah);
-        timeName.update('time', (value) => data.sabah);
-        break;
-      case 'Sunrise':
-        timeName.update('name', (value) => lang.sunrise);
-        timeName.update('time', (value) => data.sunrise);
-        break;
-      case 'Dhuhr':
-        timeName.update('name', (value) => lang.dhuhr);
-        timeName.update('time', (value) => data.dhuhr);
-        break;
-      case 'DhuhrTime':
-        timeName.update('name', (value) => lang.dhuhrTime);
-        timeName.update('time', (value) => data.dhuhrTime);
-        break;
-      case 'Asr':
-        timeName.update('name', (value) => lang.asr);
-        timeName.update('time', (value) => data.asr);
-        break;
-      case 'Maghrib':
-        timeName.update('name', (value) => lang.maghrib);
-        timeName.update('time', (value) => data.maghrib);
-        break;
-      case 'IshaTime':
-        timeName.update('name', (value) => lang.ishaTime);
-        timeName.update('time', (value) => data.ishaTime);
-        break;
-      case 'Isha':
-        timeName.update('name', (value) => lang.isha);
-        timeName.update('time', (value) => data.isha);
-        break;
-
-      default:
-        break;
-    }
-
-    return timeName;
-  }
-}
-
-class NotePager extends ConsumerWidget {
-  const NotePager({
-    Key key,
-    @required this.data,
-  }) : super(key: key);
-
-  final DayData data;
-
-  @override
-  Widget build(BuildContext context, ScopedReader watch) {
-    if (data.notes != null && data.notes.isNotEmpty) {
-      List<String> _notePages = data.notes.split('//');
-      int length = _notePages.length;
-
-      int _currentPage = watch(pageViewProvider.state);
-      PageController _pageController = watch(pageViewControllerProvider.state);
-
-      return Flexible(
-        fit: FlexFit.loose,
-        child: Column(
-          children: [
-            (length > 1)
-                ? Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        '${_currentPage + 1}/ $length',
-                      ),
-                    ],
-                  )
-                : SizedBox(),
-            Flexible(
-              fit: FlexFit.loose,
-              child: PageView.builder(
-                controller: _pageController,
-                onPageChanged: (value) {
-                  context.read(pageViewControllerProvider).goToPage(value);
-                },
-                itemCount: _notePages.length,
-                itemBuilder: (context, index) {
-                  return SingleChildScrollView(
-                    child: Container(
-                      padding: EdgeInsets.symmetric(horizontal: 4),
-                      child: Row(
-                        children: [
-                          Expanded(
-                            child: Container(
-                              decoration: BoxDecoration(
-                                color: data.notes.isNotEmpty
-                                    ? Theme.of(context).colorScheme.surface
-                                    : Colors.transparent,
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                              padding: EdgeInsets.symmetric(
-                                  vertical: 5, horizontal: 10),
-                              child: LinkWell(
-                                '${_notePages[index]}',
-                                style: Theme.of(context).textTheme.headline3,
-                                textAlign: TextAlign.center,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  );
-                },
-              ),
-            ),
-          ],
-        ),
-      );
-    } else {
-      return SizedBox();
-    }
   }
 }

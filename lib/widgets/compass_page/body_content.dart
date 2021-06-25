@@ -57,7 +57,7 @@ class _CompassBodyContentState extends State<CompassBodyContent> {
             final LanguagePack _appLang = watch(appLanguagePackProvider.state);
             return watch(bearingAngleProvider).when(
               data: (bearingAngle) {
-                double anl = (((direction + (360 - bearingAngle)) ?? 0) *
+                double angl = (((direction + (360 - bearingAngle)) ?? 0) *
                     (math.pi / 180) *
                     -1);
 
@@ -89,7 +89,7 @@ class _CompassBodyContentState extends State<CompassBodyContent> {
                             : CustomColors.highlightColor,
                       ),
                       child: Transform.rotate(
-                        angle: anl,
+                        angle: angl,
                         child: Container(
                           color: Colors.transparent,
                           child: Image.asset(

@@ -66,21 +66,6 @@ class LanguagePackController extends StateNotifier<LanguagePackController> {
     return true;
   }
 
-  Future<List<LanguagePack>> getLanguages() async {
-    final DataSnapshot langSnap =
-        await _firebaseDatabase.child('languages').orderByKey().once();
-    print('languages - ${langSnap.value.toString()}');
-
-    List<LanguagePack> languagePacks = [];
-
-    langSnap.value.forEach(
-        (key, value) => languagePacks.add(LanguagePack.fromFirebase(value)));
-
-    print('languages - ${languagePacks.toString()}');
-
-    return languagePacks;
-  }
-
   Stream<Event> watchLanguages() {
     return _firebaseDatabase.child('languages').orderByKey().onValue;
   }

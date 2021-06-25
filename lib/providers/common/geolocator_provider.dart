@@ -103,8 +103,3 @@ final bearingAngleProvider = FutureProvider.autoDispose<double>((ref) async {
 
   return _angle;
 });
-
-// final distanceProvider =
-//     FutureProvider.autoDispose.family<double, Position>((ref) {
-//   return Future.value(5);
-// });

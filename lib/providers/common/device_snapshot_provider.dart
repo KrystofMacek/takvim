@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:MyMosq/data/models/subsTopic.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:device_info/device_info.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -15,29 +16,27 @@ final deviceSnapshotProvider =
     StateNotifierProvider<DeviceSnapshot>((ref) => DeviceSnapshot(
           ref.watch(firestoreProvider),
           ref.watch(selectedMosque),
-          ref.watch(currentSubsListProvider),
         ));
 
 class DeviceSnapshot extends StateNotifier<DateTime> {
   DeviceSnapshot(
     FirebaseFirestore firebaseFirestore,
     SelectedMosque selectedMosque,
-    CurrentSubsList currentSubsList,
   )   : _firestore = firebaseFirestore,
         _selectedMosque = selectedMosque,
-        _currentSubsList = currentSubsList,
         super(
             Hive.box('pref').get('lastCheckIn', defaultValue: DateTime(2021)));
 
   FirebaseFirestore _firestore;
   SelectedMosque _selectedMosque;
-  CurrentSubsList _currentSubsList;
 
   void updateSnapshot(bool configChange) async {
     DocumentSnapshot doc =
         await _firestore.collection('settings').doc('statistics').get();
 
     int fq = doc.get('phoneLastCheckinFrequency');
+    List<SubsTopic> _currentSubsList = Hive.box('pref')
+        .get('subsList', defaultValue: <SubsTopic>[]).cast<SubsTopic>();
 
     if (state.difference(DateTime.now()).inHours.abs() >= fq || configChange) {
       Hive.box('pref').put('lastCheckIn', DateTime.now());
@@ -58,7 +57,7 @@ class DeviceSnapshot extends StateNotifier<DateTime> {
       List<String> subs = [];
 
       if (_currentSubsList != null) {
-        _currentSubsList.state.forEach((element) {
+        _currentSubsList.forEach((element) {
           if (!subs.contains(element.topic)) {
             subs.add(element.topic);
           }

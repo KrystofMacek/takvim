@@ -39,16 +39,17 @@ class LangSettingsPage extends ConsumerWidget {
             ),
             backgroundColor: Theme.of(context).primaryColor,
             onPressed: () {
+              // save selected language to user preferences
               final prefBox = Hive.box('pref');
-
               prefBox.put('appLang', _appLang.languageId);
 
+              // check if its first open - navigate accordingly
               bool firstOpen = prefBox.get('firstOpen');
               if (firstOpen) {
                 Navigator.pushReplacementNamed(context, '/mosque');
-                // Navigator.popAndPushNamed(context, '/mosque');
               } else {
                 Navigator.popUntil(context, ModalRoute.withName('/home'));
+                // if its not fisrt open update snapshot
                 context.read(deviceSnapshotProvider).updateSnapshot(true);
               }
             },

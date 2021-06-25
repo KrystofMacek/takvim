@@ -2,9 +2,9 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import '../../data/models/mosque_data.dart';
-import '../../common/styling.dart';
-import '../../providers/news_page/selected_mosque_news_provider.dart';
+import '../../../data/models/mosque_data.dart';
+import '../../../common/styling.dart';
+import '../../../providers/news_page/selected_mosque_news_provider.dart';
 
 class SubsMosqueItem extends ConsumerWidget {
   const SubsMosqueItem({
